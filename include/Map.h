@@ -11,14 +11,6 @@
 
 
 class Map {
-
-    enum class TileType{
-        grass, wall
-    };
-    struct WallTiles : GameObject{
-
-    };
-
 public:
     Map();
     ~Map();

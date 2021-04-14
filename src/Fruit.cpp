@@ -25,6 +25,7 @@ void Fruit::SetNewPosition() {
         default:
             break;
     }
+    //TextureManager::GetInstance().TestFunction("Fruit");
     UpdateTexture();
 
     // x = 23, y = 18 because map size is [25][20] and we take -1 for each side (top/bottom) (left/right)

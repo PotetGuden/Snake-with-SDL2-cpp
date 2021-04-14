@@ -42,11 +42,14 @@ void Snake::Render() {
     //for(auto &snakePart : snakeBodyVector){
     //    SDL_RenderCopy(GameManager::renderer,snakePart.texture, nullptr, &snakePart.coords);
     //}
-    SDL_RenderCopy(GameManager::renderer,snakeHead->texture, nullptr, &snakeHead->coords);
-
+    //SDL_RenderCopy(GameManager::renderer,snakeHead->texture, nullptr, &snakeHead->coords);
+    snakeHead->Render();
     std::for_each(snakeBodyVector.begin(),snakeBodyVector.end(),[](std::shared_ptr<SnakePart> &snakePart){
-        SDL_RenderCopy(GameManager::renderer,snakePart->texture, nullptr, &snakePart->coords);
+        //SDL_RenderCopy(GameManager::renderer,snakePart->texture, nullptr, &snakePart->coords);
+        snakePart->Render();
     });
+
+    //SDL_RenderCopyEx(GameManager::renderer,TextureManager::GetInstance().allTextures.find("headTextureUp")->second, nullptr, &headsNextMove, 0, nullptr, SDL_FLIP_NONE);
 }
 
 Snake::~Snake() {
@@ -67,12 +70,24 @@ Snake::Snake() {
     bodyTextureRightUpDownLeft = TextureManager::GetInstance().LoadTexture("../images/SnakeBodyRightUpDownLeft.png");
     bodyTextureUpRightLeftDown = TextureManager::GetInstance().LoadTexture("../images/SnakeBodyUpRightLeftDown.png");
 
-    tailTextureUp = TextureManager::GetInstance().LoadTexture("../images/SnakeTailUp.png");
-    tailTextureDown = TextureManager::GetInstance().LoadTexture("../images/SnakeTailDown.png");
-    tailTextureLeft = TextureManager::GetInstance().LoadTexture("../images/SnakeTailLeft.png");
-    tailTextureRight = TextureManager::GetInstance().LoadTexture("../images/SnakeTailRight.png");
 
-    TextureManager::GetInstance().LoadTextures("headTextureUp", "../images/SnakeHeadUp.png");
+
+    TextureManager::GetInstance().LoadTextures("headTextureUp", "../images/SnakeHeadUp.png",0);
+    TextureManager::GetInstance().LoadTextures("headTextureDown", "../images/SnakeHeadUp.png",90);
+    TextureManager::GetInstance().LoadTextures("headTextureLeft", "../images/SnakeHeadUp.png",180);
+    TextureManager::GetInstance().LoadTextures("headTextureRight", "../images/SnakeHeadUp.png",270);
+
+    TextureManager::GetInstance().LoadTextures("bodyTextureUpDown", "../images/SnakeBodyUpDown.png",0);
+    TextureManager::GetInstance().LoadTextures("bodyTextureLeftRight", "../images/SnakeBodyUpDown.png",0);
+    TextureManager::GetInstance().LoadTextures("bodyTextureLeftUpDownRight", "../images/SnakeBodyUpDown.png",0);
+    TextureManager::GetInstance().LoadTextures("bodyTextureRightDownUpLeft", "../images/SnakeBodyRightDownUpLeft.png",0);
+    TextureManager::GetInstance().LoadTextures("bodyTextureRightUpDownLeft", "../images/SnakeBodyUpDown.png",0);
+    TextureManager::GetInstance().LoadTextures("bodyTextureUpRightLeftDown", "../images/SnakeBodyUpDown.png",0);
+
+
+
+    TextureManager::GetInstance().LoadTextures("tailTextureRight", "../images/SnakeTailRight.png",270);
+
     //TextureManager::GetInstance().LoadTextures(, "../images/SnakeHeadDown.png");
 
     //SnakePart snakeHeadStart{},snakeBodyStart{},snakeTailStart{};
@@ -82,8 +97,9 @@ Snake::Snake() {
     //snakeHead->partDirection = Direction::NONE;
 
     snakeHeadStart.coords = SetSnakePartCoords(BLOCK_SIZE * 5, BLOCK_SIZE * 4 + 160); // 160 offset
-    snakeHeadStart.texture = headTextureRight;
+    snakeHeadStart.texture = TextureManager::GetInstance().allTextures.find("headTextureUp")->second;
     snakeHeadStart.partDirection = Direction::RIGHT;
+    snakeHeadStart.angleTextureFlip = 0;
 
     *snakeHead = snakeHeadStart;
     directionWhenSnakeStopped = Direction::RIGHT; // Since snake has the right texture as starting position
@@ -91,10 +107,12 @@ Snake::Snake() {
     snakeBodyStart.coords = SetSnakePartCoords(BLOCK_SIZE * 4, BLOCK_SIZE * 4 + 160);
     snakeBodyStart.texture = bodyTextureLeftRight;
     snakeBodyStart.partDirection = Direction::RIGHT;
+    snakeHeadStart.angleTextureFlip = 90;
 
     snakeTailStart.coords = SetSnakePartCoords(BLOCK_SIZE * 3, BLOCK_SIZE * 4 + 160);
-    snakeTailStart.texture = tailTextureRight;
+    snakeTailStart.texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;
     snakeTailStart.partDirection = snakeBodyStart.partDirection;
+    snakeHeadStart.angleTextureFlip = 0;
 
     //snakeBodyVector.emplace_back(snakeHeadStart);
     /*std::shared_ptr<SnakePart> bodyPtr = std::make_shared<SnakePart>();
@@ -109,47 +127,32 @@ Snake::Snake() {
 
     startPosition = true;
 
-
-    std::ifstream textureConfigFile ("../Textures/textures.txt");
-    if (textureConfigFile.is_open()){
-        std::string line;
-        while(getline(textureConfigFile, line)){
-            //line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
-            if( line.empty() || line[0] == '#' )
-                continue;
-
-            auto delimiterPos = line.find('=');
-            auto name = line.substr(0, delimiterPos);
-            auto value = line.substr(delimiterPos + 1);
-            if("Snake" == name)
-                std::cout << name << " " << value << '\n';
-        }
-    }
-    else
-        std::cerr << "Couldn't open config file for reading.\n";
-
+    //auto snakeTextures = TextureManager::GetInstance().TestFunction("Snake");
+    //snakeTextures.find()
 }
 
-void Snake::Grow(int xTimes) {
+void Snake::Grow(int xTimes) { // bare copy hele newPart -> .back()
     SnakePart newPart{};
 
     for(int i = 0; i < xTimes; i++) {
-        newPart.coords = SetSnakePartCoords(snakeBodyVector.back()->coords.x, snakeBodyVector.back()->coords.y);
+        /*newPart.coords = SetSnakePartCoords(snakeBodyVector.back()->coords.x, snakeBodyVector.back()->coords.y);
         newPart.partDirection = snakeBodyVector.back()->partDirection;
 
         if (newPart.partDirection == Direction::UP) {
-            newPart.texture = tailTextureUp;
+            newPart.texture = snakeBodyVector.back()->texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;;
             //SDL_RenderCopy(GameManager::renderer, bodyTextureUpDown, nullptr, &snakeBodyVector.back().coords);
         } else if (newPart.partDirection == Direction::DOWN) {
-            newPart.texture = tailTextureDown;
+            newPart.texture = snakeBodyVector.back()->texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;;
             //SDL_RenderCopy(GameManager::renderer, bodyTextureUpDown, nullptr, &snakeBodyVector.back().coords);
         } else if (newPart.partDirection == Direction::LEFT) {
-            newPart.texture = tailTextureLeft;
+            newPart.texture = snakeBodyVector.back()->texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;;
             //SDL_RenderCopy(GameManager::renderer, bodyTextureLeftRight, nullptr, &snakeBodyVector.back().coords);
         } else if (newPart.partDirection == Direction::RIGHT) {
-            newPart.texture = tailTextureRight;
+            newPart.texture = snakeBodyVector.back()->texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;;
             //SDL_RenderCopy(GameManager::renderer, bodyTextureLeftRight, nullptr, &snakeBodyVector.back().coords);
-        }
+        }*/
+
+        newPart = *snakeBodyVector.back();
         //std::shared_ptr<SnakePart> tmpPtr = std::make_shared<SnakePart>();
         //*tmpPtr = newPart;
         snakeBodyVector.emplace_back(std::make_shared<SnakePart>(newPart));
@@ -173,16 +176,22 @@ void Snake::UpdateTexture() {
     // Head Texture
     switch(snakeHead->partDirection){
         case Direction::UP:
-            snakeHead->texture = TextureManager::GetInstance().allTextures.find("headTextureUp")->second;
+            snakeHead->angleTextureFlip = 0;
+            //snakeHead->texture = TextureManager::GetInstance().allTextures.find("headTextureUp")->second;
             break;
         case Direction::DOWN:
-            snakeHead->texture = lol->second;
+            snakeHead->angleTextureFlip = 180;
+            //snakeHead->texture = TextureManager::GetInstance().allTextures.find("headTextureDown")->second;
             break;
         case Direction::LEFT:
-            snakeHead->texture = headTextureLeft;
+            //snakeHead->texture = TextureManager::GetInstance().allTextures.find("headTextureLeft")->second;
+            snakeHead->angleTextureFlip = 270;
+            snakeHead->renderFlip = SDL_FLIP_HORIZONTAL;
             break;
         case Direction::RIGHT:
-            snakeHead->texture = headTextureRight;
+            //snakeHead->texture = TextureManager::GetInstance().allTextures.find("headTextureRight")->second;
+            snakeHead->angleTextureFlip = 90;
+            snakeHead->renderFlip = SDL_FLIP_NONE;
             break;
         case Direction::NONE:
 
@@ -200,34 +209,54 @@ void Snake::UpdateTexture() {
             snakeBodyVector[i]->texture = snakeBodyVector.back()->texture;
         } else if(snakeBodyVector[i]->partDirection == Direction::UP && prevPosition.partDirection == Direction::RIGHT ||
            snakeBodyVector[i]->partDirection == Direction::LEFT && prevPosition.partDirection == Direction::DOWN){
-            snakeBodyVector[i]->texture = bodyTextureUpRightLeftDown;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureRightDownUpLeft")->second;
+            snakeBodyVector[i]->angleTextureFlip = 270;
+            snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::UP && prevPosition.partDirection == Direction::LEFT ||
                   snakeBodyVector[i]->partDirection == Direction::RIGHT && prevPosition.partDirection == Direction::DOWN){
-            snakeBodyVector[i]->texture = bodyTextureRightDownUpLeft;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureRightDownUpLeft")->second;
+            snakeBodyVector[i]->angleTextureFlip = 0;
+            snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::DOWN && prevPosition.partDirection == Direction::RIGHT ||
                   snakeBodyVector[i]->partDirection == Direction::LEFT && prevPosition.partDirection == Direction::UP){
-            snakeBodyVector[i]->texture = bodyTextureLeftUpDownRight;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureRightDownUpLeft")->second;
+            snakeBodyVector[i]->angleTextureFlip = 180;
+            snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::DOWN && prevPosition.partDirection == Direction::LEFT ||
                   snakeBodyVector[i]->partDirection == Direction::RIGHT && prevPosition.partDirection == Direction::UP){
-            snakeBodyVector[i]->texture = bodyTextureRightUpDownLeft;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureRightDownUpLeft")->second;
+            snakeBodyVector[i]->angleTextureFlip = 90;
+            snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::RIGHT && prevPosition.partDirection == Direction::RIGHT ||
                   snakeBodyVector[i]->partDirection == Direction::LEFT && prevPosition.partDirection == Direction::LEFT){
-            snakeBodyVector[i]->texture = bodyTextureLeftRight;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureUpDown")->second;
+            snakeBodyVector[i]->angleTextureFlip = 90;
+            snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::UP && prevPosition.partDirection == Direction::UP ||
                   snakeBodyVector[i]->partDirection == Direction::DOWN && prevPosition.partDirection == Direction::DOWN){
-            snakeBodyVector[i]->texture = bodyTextureUpDown;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureUpDown")->second;
+            snakeBodyVector[i]->angleTextureFlip = 0;
+            snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         }
         prevPosition = *snakeBodyVector[i];
     }
     // Tail Texture
     if(snakeBodyVector.back()->partDirection == Direction::UP){
-        snakeBodyVector.back()->texture = tailTextureUp;
+        snakeBodyVector.back()->texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;
+        snakeBodyVector.back()->angleTextureFlip = 270;
+        snakeBodyVector.back()->renderFlip = SDL_FLIP_VERTICAL;
     } else if(snakeBodyVector.back()->partDirection == Direction::DOWN){
-        snakeBodyVector.back()->texture = tailTextureDown;
+        snakeBodyVector.back()->angleTextureFlip = 90;
+        snakeBodyVector.back()->renderFlip = SDL_FLIP_NONE;
+        snakeBodyVector.back()->texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;
     } else if(snakeBodyVector.back()->partDirection == Direction::LEFT){
-        snakeBodyVector.back()->texture = tailTextureLeft;
+        snakeBodyVector.back()->angleTextureFlip = 180;
+        snakeBodyVector.back()->renderFlip = SDL_FLIP_VERTICAL;
+        snakeBodyVector.back()->texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;
     } else if(snakeBodyVector.back()->partDirection == Direction::RIGHT){
-        snakeBodyVector.back()->texture = tailTextureRight;
+        snakeBodyVector.back()->angleTextureFlip = 0;
+        snakeBodyVector.back()->renderFlip = SDL_FLIP_NONE;
+        snakeBodyVector.back()->texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;
     }
 }
 
@@ -254,12 +283,16 @@ SDL_Rect Snake::HeadsNextMove() {
 }
 
 void Snake::ChangeDirection(const Direction potentialDir, const Direction oppositeDir) {
-    if(snakeHead->partDirection != oppositeDir){
+    if(snakeHead->partDirection != oppositeDir && isAbleToChangeDirection){
         snakeHead->partDirection = potentialDir;
         startPosition = false;
         snakeSpeed = 32;
         //StartWallCollisionThread();
+        isAbleToChangeDirection = false;
     }
+
+    //bool isAbleToChangeDirection = false;
+
 
     //isColliding = false;
 
@@ -268,11 +301,15 @@ void Snake::ChangeDirection(const Direction potentialDir, const Direction opposi
     }*/
 }
 
+
+
 void Snake::MoveSnakeHead() {
     if(isNextTileWall.get() && snakeSpeed != 0){
         StopSnake();
         MainState::GetInstance().ReduceLives();
     } else{
+
+
         if(snakeSpeed != 0 && !startPosition){
             switch (snakeHead->partDirection) {
                 case Direction::UP:
@@ -337,6 +374,7 @@ void Snake::StartPosition() {  // Thread for å få denne til å kjøre først?
 void Snake::Update() {
     //if(snakeHead->partDirection != Direction::NONE)
     prevPosition = *snakeHead;
+    isAbleToChangeDirection = true;
 }
 
 std::mutex collisionMutex;

@@ -1,4 +1,4 @@
 Snake="../images/SnakeHeadUp.png"
-some=text=i=want
 Snake="../images/SnakeHeadDown.png"
-hmm=asdasd
+Fruit="../images/AppleFruit.png"
+Fruit="../images/Banana.png"

@@ -25,6 +25,7 @@ public:
         type = fruit;
         UpdateTexture();
         isFruitEaten = false;
+
     }
 
     void UpdateTexture();

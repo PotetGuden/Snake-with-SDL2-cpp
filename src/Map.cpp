@@ -50,6 +50,7 @@ void Map::DrawMap() {
                       //  wall.Render();
                     //wallCoords.emplace_back(dest);
                     break;
+
             }
         }
     }

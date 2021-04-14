@@ -133,6 +133,7 @@ void MainState::Update() {
         //Snake::GetInstance().MoveBodyAndTail();
         Snake::GetInstance().UpdateTexture();
         Snake::GetInstance().Update();
+        //boool  = true;
     }
 
     if(lives != 0 && timeLeft > 0){

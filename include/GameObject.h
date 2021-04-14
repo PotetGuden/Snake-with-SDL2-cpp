@@ -9,7 +9,7 @@
 #include <SDL.h>
 
 class GameObject {
-public:
+public: // TODO Sett variabler i cpp filen istedenfor
     GameObject() = default;
     GameObject(int x, int y, int w, int h){
         coords.x = x;
@@ -24,11 +24,14 @@ public:
         coords.h = h;
         this->texture = texture;
     }
+
     ~GameObject();
 
     void Render();
     SDL_Texture* texture;
     SDL_Rect coords;
+    double angleTextureFlip = 0;
+    SDL_RendererFlip renderFlip = SDL_FLIP_NONE; // Standard
 };
 
 
