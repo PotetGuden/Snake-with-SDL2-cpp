@@ -57,40 +57,14 @@ private:
     SnakePart snakeHeadStart{},snakeBodyStart{},snakeTailStart{};
     std::vector<std::shared_ptr<SnakePart>> snakeBodyVector;
     std::shared_ptr<SnakePart> snakeHead = std::make_shared<SnakePart>();
-
     SnakePart prevPosition{}; // Kunne kanskje vært weak_ptr
 
     SDL_Rect SetSnakePartCoords(int x, int y);
-    // Legg til i en vector/map i TextureManager
-    SDL_Texture* headTextureUp;
-    SDL_Texture *headTextureDown;
-    SDL_Texture *headTextureLeft;
-    SDL_Texture *headTextureRight;
-    SDL_Texture *bodyTextureLeftRight;
-    SDL_Texture *bodyTextureUpDown;
-    SDL_Texture *bodyTextureLeftUpDownRight;
-    SDL_Texture *bodyTextureRightDownUpLeft;
-    SDL_Texture *bodyTextureRightUpDownLeft;
-    SDL_Texture *bodyTextureUpRightLeftDown;
-    SDL_Texture *tailTextureUp;
-    SDL_Texture *tailTextureDown;
-    SDL_Texture *tailTextureRight;
-
-    SDL_Texture *tailTextureLeft;
-
-    SDL_Rect potentialPosition;
-
-    //std::unique_ptr<TextureManager> textureManager = std::make_unique<TextureManager>(); // Bruk heller TextureManager::
 
     bool startPosition;
     int snakeSpeed;
-    Direction directionWhenSnakeStopped;
     SDL_Rect headsNextMove;
-
     std::future<bool> isNextTileWall; // TODO LEGG DENNE SAMMEN MED DEN ANDRE COLLISION
-
-
-
     bool isAbleToChangeDirection = true; // Siden handle inputs kjører kjappere enn vi flytter snake head, så trenger vi å locke input når vi først ha endret direction
     // forklar hvorfor kollisjon sjekkene er i snake
 };
