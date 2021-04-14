@@ -16,7 +16,6 @@ constexpr SDL_Color GREEN_COLOR = {0, 255, 0, 255};
 
 MainState::MainState() :
     currentLvl(0),
-    fontManager(std::make_unique<FontManager>()),
     scoreManager(std::make_unique<ScoreManager>()),
     enableMovement(true),
     frameCounterSpeed(10),
@@ -35,7 +34,7 @@ MainState::MainState() :
         scoreManager->SortScores();
 
         TTF_Init();
-        fontManager->SetFont();
+        //FontManager::GetInstance().SetFont();
 
         headerObject->texture = TextureManager::GetInstance().LoadTexture("../images/header.png");
 
@@ -58,18 +57,18 @@ void MainState::Render() {
 
 void MainState::RenderHeaderText() {
     SDL_Color textColor = { 255, 255, 255 ,255};
-    fontManager->RenderFont("Score: " + std::to_string(score), BLACK_COLOR, false, 10, 10, 150, 60);
-    fontManager->RenderFont("Time left: " + std::to_string(timeLeft), WHITE_COLOR, false, 570, 10, 150, 60);
-    fontManager->RenderFont("Lives: " + std::to_string(lives), BLACK_COLOR, false,10, 90, 100, 60);
-    fontManager->RenderFont("SNEEEK", GREEN_COLOR, false, 300, 5, 200, 100);
-    fontManager->RenderFont("Highscore:  " + std::to_string(scoreManager->GetHighScore()), BLACK_COLOR, false,312, 90, 175, 60);
-    fontManager->RenderFont("Level: " + std::to_string(currentLvl), WHITE_COLOR, false, 570, 90, 150, 60);
+    FontManager::GetInstance().RenderFont("Score: " + std::to_string(score), BLACK_COLOR, false, 10, 10, 150, 60);
+    FontManager::GetInstance().RenderFont("Time left: " + std::to_string(timeLeft), WHITE_COLOR, false, 570, 10, 150, 60);
+    FontManager::GetInstance().RenderFont("Lives: " + std::to_string(lives), BLACK_COLOR, false,10, 90, 100, 60);
+    FontManager::GetInstance().RenderFont("SNEEEK", GREEN_COLOR, false, 300, 5, 200, 100);
+    FontManager::GetInstance().RenderFont("Highscore:  " + std::to_string(scoreManager->GetHighScore()), BLACK_COLOR, false,312, 90, 175, 60);
+    FontManager::GetInstance().RenderFont("Level: " + std::to_string(currentLvl), WHITE_COLOR, false, 570, 90, 150, 60);
 
     if(showNextLvlMessage) {
         enableMovement = false;
         bonusScoreText += (bonusScoreText < score) ? 1 : 0;
-        fontManager->RenderFont(" Congratulations, you made it to ", BLACK_COLOR,true, 250, 380, 300, 45); // TODO
-        fontManager->RenderFont(" level " + std::to_string(currentLvl) + " and you score is now " + std::to_string(bonusScoreText) + " ", BLACK_COLOR, true, 250, 425, 300, 45); // TODO
+        FontManager::GetInstance().RenderFont(" Congratulations, you made it to ", BLACK_COLOR,true, 250, 380, 300, 45); // TODO
+        FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + " and you score is now " + std::to_string(bonusScoreText) + " ", BLACK_COLOR, true, 250, 425, 300, 45); // TODO
 
         if(bonusScoreText >= score){
             timer++;
@@ -165,6 +164,9 @@ void MainState::HandleInputs() {
         } else if(im.KeyDown(SDL_SCANCODE_R)){
             Snake::GetInstance().ChangeDirection(Snake::Direction::NONE, Snake::Direction::NONE);
             Map::GetInstance().MapTest();
+        } else if(im.KeyDown(SDL_SCANCODE_P)){
+            GameManager::GetInstance().SwitchScreen();
+
         }
     } else if(!showNextLvlMessage){ // Sjekker først om det er en pause state som kjører
         if(im.KeyDown(SDL_SCANCODE_T)){  // Reset

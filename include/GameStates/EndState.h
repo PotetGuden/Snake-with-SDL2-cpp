@@ -27,9 +27,9 @@ public:
 
 private:
 
-    std::shared_ptr<FontManager> fontManager;
-    std::unique_ptr<GameObject> playerScore;
+    //std::shared_ptr<FontManager> fontManager;
     std::unique_ptr<GameObject> endBackground;
+    std::unique_ptr<GameObject> playerScore;
     std::unique_ptr<GameObject> highScore;
     std::unique_ptr<ScoreManager> scoreManager;
     std::vector<int> scores;

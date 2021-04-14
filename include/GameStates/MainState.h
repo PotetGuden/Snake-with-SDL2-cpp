@@ -63,7 +63,7 @@ protected:
     std::unique_ptr<ScoreManager> scoreManager;
     std::vector<std::shared_ptr<Fruit>> fruits;
 
-    std::unique_ptr<FontManager> fontManager;
+    //std::unique_ptr<FontManager> fontManager;
 
     void AddThreeDifferentApples();
 };

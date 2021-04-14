@@ -18,7 +18,8 @@ SDL_Renderer *GameManager::renderer = nullptr;
 // TODO lage loops for å emplace_back() fruits
 // TODO sette variabler med function() : variabelNavn(name)
 // TODO pass by value i funksjoner "&"
-
+// TODO Loade alle textures i gamemanager for å destroye de i construcor??
+// TODO FIKS FRUIT ON FRUIT??
 void GameManager::Init(){
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         std::cout << "Gamehandler Initialised!" << std::endl;
@@ -41,7 +42,7 @@ void GameManager::Init(){
     startScreen = std::make_unique<StartState>();
     //mainScreen = std::make_unique<MainState>();
     //endScreen = std::make_unique<EndState>();
-
+    //FontManager::GetInstance().SetFont();
 
 }
 
@@ -120,4 +121,9 @@ void GameManager::GameLoop() {
         Update();
         frameCounter++;
     }
+}
+
+void GameManager::SwitchScreen() {
+    if(state < 3)
+        state++;
 }

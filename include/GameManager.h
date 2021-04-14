@@ -46,6 +46,8 @@ public:
     bool gameRunning;
     int frameCounter;
 
+    void SwitchScreen();
+
 private:
     GameManager();
     ~GameManager();

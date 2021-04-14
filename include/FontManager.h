@@ -15,7 +15,7 @@
 class FontManager {
 public:
 
-    /*static FontManager &GetInstance(){
+    static FontManager &GetInstance(){
         static FontManager instance;
         return instance;
     }
@@ -23,25 +23,15 @@ public:
     FontManager(FontManager const &&) = delete;    // Move Constructor
     void operator = (FontManager const&) = delete;  // Likhetsoperator*/
 
-    FontManager() = default;
     ~FontManager();
     void RenderFont(const std::string& text, SDL_Color textColor, bool isShaded, int x, int y, int w, int h);
     void SetFont();
+    TTF_Font* gFont = TTF_OpenFont( "../fonts/Roboto-Regular.ttf", 50 );
 
 private:
-
-    std::string labelText;
-    std::string labelFont;
-    SDL_Color textColour{};
-    SDL_Texture* labelTexture{};
-
-    TTF_Font* gFont{};
+    FontManager() = default;
 
     SDL_Rect position;
-
-    //Image dimensions
-    int mWidth{};
-    int mHeight{};
 
     //SDL_QueryTexture(labelTexture, nullptr, nullptr, &position.w, &position.h);   // Henter inn w/h fra texture/image vi har lagd
     // SDL_Surface* surface = TTF_RenderText_Blended(fm->GetFont(font), text.c_str(), textColour);
