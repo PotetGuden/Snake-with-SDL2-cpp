@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <future>
+#include <fstream>
 #include "../include/Snake.h"
 #include "../include/GameManager.h"
 
@@ -54,24 +55,25 @@ Snake::~Snake() {
 
 
 Snake::Snake() {
-    headTextureUp = textureManager->LoadTexture("../images/SnakeHeadUp.png");
-    headTextureDown = textureManager->LoadTexture("../images/SnakeHeadDown.png");
-    headTextureLeft = textureManager->LoadTexture("../images/SnakeHeadLeft.png");
-    headTextureRight = textureManager->LoadTexture("../images/SnakeHeadRight.png");
+    headTextureUp = TextureManager::GetInstance().LoadTexture("../images/SnakeHeadUp.png");
+    headTextureDown = TextureManager::GetInstance().LoadTexture("../images/SnakeHeadDown.png");
+    headTextureLeft = TextureManager::GetInstance().LoadTexture("../images/SnakeHeadLeft.png");
+    headTextureRight = TextureManager::GetInstance().LoadTexture("../images/SnakeHeadRight.png");
 
-    bodyTextureUpDown = textureManager->LoadTexture("../images/SnakeBodyUpDown.png");
-    bodyTextureLeftRight = textureManager->LoadTexture("../images/SnakeBodyLeftRight.png");
-    bodyTextureLeftUpDownRight = textureManager->LoadTexture("../images/SnakeBodyLeftUpDownRight.png");
-    bodyTextureRightDownUpLeft = textureManager->LoadTexture("../images/SnakeBodyRightDownUpLeft.png");
-    bodyTextureRightUpDownLeft = textureManager->LoadTexture("../images/SnakeBodyRightUpDownLeft.png");
-    bodyTextureUpRightLeftDown = textureManager->LoadTexture("../images/SnakeBodyUpRightLeftDown.png");
+    bodyTextureUpDown = TextureManager::GetInstance().LoadTexture("../images/SnakeBodyUpDown.png");
+    bodyTextureLeftRight = TextureManager::GetInstance().LoadTexture("../images/SnakeBodyLeftRight.png");
+    bodyTextureLeftUpDownRight = TextureManager::GetInstance().LoadTexture("../images/SnakeBodyLeftUpDownRight.png");
+    bodyTextureRightDownUpLeft = TextureManager::GetInstance().LoadTexture("../images/SnakeBodyRightDownUpLeft.png");
+    bodyTextureRightUpDownLeft = TextureManager::GetInstance().LoadTexture("../images/SnakeBodyRightUpDownLeft.png");
+    bodyTextureUpRightLeftDown = TextureManager::GetInstance().LoadTexture("../images/SnakeBodyUpRightLeftDown.png");
 
-    tailTextureUp = textureManager->LoadTexture("../images/SnakeTailUp.png");
-    tailTextureDown = textureManager->LoadTexture("../images/SnakeTailDown.png");
-    tailTextureLeft = textureManager->LoadTexture("../images/SnakeTailLeft.png");
-    tailTextureRight = textureManager->LoadTexture("../images/SnakeTailRight.png");
+    tailTextureUp = TextureManager::GetInstance().LoadTexture("../images/SnakeTailUp.png");
+    tailTextureDown = TextureManager::GetInstance().LoadTexture("../images/SnakeTailDown.png");
+    tailTextureLeft = TextureManager::GetInstance().LoadTexture("../images/SnakeTailLeft.png");
+    tailTextureRight = TextureManager::GetInstance().LoadTexture("../images/SnakeTailRight.png");
 
     TextureManager::GetInstance().LoadTextures("headTextureUp", "../images/SnakeHeadUp.png");
+    //TextureManager::GetInstance().LoadTextures(, "../images/SnakeHeadDown.png");
 
     //SnakePart snakeHeadStart{},snakeBodyStart{},snakeTailStart{};
 
@@ -99,7 +101,7 @@ Snake::Snake() {
     std::shared_ptr<SnakePart> tailPtr = std::make_shared<SnakePart>();
     *bodyPtr = snakeBodyStart;
     *tailPtr = snakeTailStart;*/
-    snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeBodyStart)); // TODO Er litt usikker på denne
+    snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeBodyStart));
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeTailStart));
 
     //snakeSpeed = BLOCK_SIZE;
@@ -107,25 +109,25 @@ Snake::Snake() {
 
     startPosition = true;
 
-    //isColliding = false;
-    // TODO FIKS AT SNAKE IKKE KAN KJØRE GJENNOM VEGGER
-    /*isNextTileWall = std::async(std::launch::async,[this](){
-        while(GameManager::GetInstance().gameRunning) { // mainstate lifetime?
-            std::this_thread::sleep_for(std::chrono::milliseconds(5) );
-            if(!isColliding){
-                bool result = false;
-                headsNextMove = HeadsNextMove();
-                //std::cout << "Thread: " << std::this_thread::get_id() << " Running" << std::endl;
-                for (auto &wall : Map::GetInstance().GetWallTiles()) {
-                    if (SDL_HasIntersection(&headsNextMove, &wall.coords) && snakeHead->partDirection != Direction::NONE) {
-                        result = true;
-                        std::cout << "colliiiididiididid" << std::endl;
-                    }
-                }
-                isColliding = result;
-            }
+
+    std::ifstream textureConfigFile ("../Textures/textures.txt");
+    if (textureConfigFile.is_open()){
+        std::string line;
+        while(getline(textureConfigFile, line)){
+            //line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
+            if( line.empty() || line[0] == '#' )
+                continue;
+
+            auto delimiterPos = line.find('=');
+            auto name = line.substr(0, delimiterPos);
+            auto value = line.substr(delimiterPos + 1);
+            if("Snake" == name)
+                std::cout << name << " " << value << '\n';
         }
-    });*/
+    }
+    else
+        std::cerr << "Couldn't open config file for reading.\n";
+
 }
 
 void Snake::Grow(int xTimes) {
@@ -166,17 +168,15 @@ SDL_Rect Snake::SetSnakePartCoords(int x, int y) { // kanskje legg inn SDL_Rect 
 }
 
 void Snake::UpdateTexture() {
-    // Head Texture
-    //auto lol = TextureManager::allTextures.find("headTextureUp");
-    //headTextureUp = lol->second;
+    auto lol = TextureManager::GetInstance().allTextures.find("headTextureUp");
 
+    // Head Texture
     switch(snakeHead->partDirection){
         case Direction::UP:
-            snakeHead->texture = headTextureUp;
-            //snakeHead->texture = lol->second;
+            snakeHead->texture = TextureManager::GetInstance().allTextures.find("headTextureUp")->second;
             break;
         case Direction::DOWN:
-            snakeHead->texture = headTextureDown;
+            snakeHead->texture = lol->second;
             break;
         case Direction::LEFT:
             snakeHead->texture = headTextureLeft;

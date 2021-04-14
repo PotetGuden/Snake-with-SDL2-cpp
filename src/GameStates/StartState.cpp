@@ -18,7 +18,7 @@ StartState::StartState() {
     snakeBackground = std::make_unique<GameObject>(0,0,800,800);
     playGameText = std::make_unique<GameObject>(208,500,384,80);
 
-    snakeText->texture = TextureManager::LoadTexture("../images/SnakeTextStartScreen.png");
-    snakeBackground->texture = TextureManager::LoadTexture("../images/SnakeStartBackground.png");
-    playGameText->texture = TextureManager::LoadTexture("../images/PlayGameText.png"); // TODO Bytt til ttf text
+    snakeText->texture = TextureManager::GetInstance().LoadTexture("../images/SnakeTextStartScreen.png");
+    snakeBackground->texture = TextureManager::GetInstance().LoadTexture("../images/SnakeStartBackground.png");
+    playGameText->texture = TextureManager::GetInstance().LoadTexture("../images/PlayGameText.png"); // TODO Bytt til ttf text
 }

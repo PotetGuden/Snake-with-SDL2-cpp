@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <fstream>
 #include "../include/GameManager.h"
 
 // .reset() shared_ptr
@@ -16,6 +17,7 @@ SDL_Renderer *GameManager::renderer = nullptr;
 // TODO sette alle funksjoner/variabler som private om mulig (bare de som ikke blir kalt fra andre klasser)
 // TODO lage loops for å emplace_back() fruits
 // TODO sette variabler med function() : variabelNavn(name)
+// TODO pass by value i funksjoner "&"
 
 void GameManager::Init(){
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
@@ -39,6 +41,7 @@ void GameManager::Init(){
     startScreen = std::make_unique<StartState>();
     //mainScreen = std::make_unique<MainState>();
     //endScreen = std::make_unique<EndState>();
+
 
 }
 

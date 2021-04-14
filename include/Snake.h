@@ -80,7 +80,7 @@ private:
 
     SDL_Rect potentialPosition;
 
-    std::unique_ptr<TextureManager> textureManager = std::make_unique<TextureManager>(); // Bruk heller TextureManager::
+    //std::unique_ptr<TextureManager> textureManager = std::make_unique<TextureManager>(); // Bruk heller TextureManager::
 
     bool startPosition;
     int snakeSpeed;

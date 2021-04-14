@@ -32,7 +32,7 @@ void TextureManager::Draw(SDL_Texture *texture, SDL_Rect* src, SDL_Rect* dest) {
     SDL_RenderCopy(GameManager::renderer, texture, src, dest);
 }
 
-void TextureManager::LoadTextures(std::string textureName, const char* fileName) {
+void TextureManager::LoadTextures(const std::string& textureName, const char* fileName) {
 
     SDL_Surface* surface = IMG_Load(fileName);
 
@@ -41,11 +41,12 @@ void TextureManager::LoadTextures(std::string textureName, const char* fileName)
         SDL_DestroyRenderer(GameManager::renderer);
         SDL_Quit();
     }
-    //SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::renderer, surface); // Legg til feilsjekk
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::renderer, surface); // Legg til feilsjekk
     SDL_FreeSurface(surface);
-
+    std::cout << "For map.insert()" << std::endl;
     // static std::map<std::string, SDL_Texture *> allTextures;
-    allTextures.insert(std::pair<std::string, SDL_Texture*>(textureName, SDL_CreateTextureFromSurface(GameManager::renderer, surface)));
+    allTextures.insert(std::pair<std::string, SDL_Texture*>(textureName, texture));
+    std::cout << "Etter map.insert()" << std::endl;
 
 }
 

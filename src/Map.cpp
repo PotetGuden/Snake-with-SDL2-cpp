@@ -10,8 +10,8 @@
 
 
 Map::Map() {
-    grass = TextureManager::LoadTexture("../images/grass.png");
-    wall = TextureManager::LoadTexture("../images/wall.png");
+    grass = TextureManager::GetInstance().LoadTexture("../images/grass.png");
+    wall = TextureManager::GetInstance().LoadTexture("../images/wall.png");
 
     //LoadMap(lvl1);
     //LoadMap(lvl2);
@@ -42,10 +42,10 @@ void Map::DrawMap() {
 
             switch(tileType){
                 case 0:
-                    TextureManager::Draw(grass, &src, &dest);
+                    TextureManager::GetInstance().Draw(grass, &src, &dest);
                     break;
                 case 1:
-                    TextureManager::Draw(wall, &src,&dest);
+                    TextureManager::GetInstance().Draw(wall, &src,&dest);
                     //for(auto &wall : wallTiles)
                       //  wall.Render();
                     //wallCoords.emplace_back(dest);
@@ -124,9 +124,9 @@ void Map::AddCurrentWallTilesToVector() {
             dest.x = column * BLOCK_SIZE;
             dest.y = row * BLOCK_SIZE + 160;
             if(map[row][column] == 1){
-                wallTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::LoadTexture("../images/wall.png"));
+                wallTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().LoadTexture("../images/wall.png"));
             } else if(map[row][column] == 0){
-                grassTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::LoadTexture("../images/wall.png"));
+                grassTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().LoadTexture("../images/wall.png"));
             }
 
         }

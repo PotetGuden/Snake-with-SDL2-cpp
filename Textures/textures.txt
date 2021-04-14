@@ -1,0 +1,4 @@
+Snake="../images/SnakeHeadUp.png"
+some=text=i=want
+Snake="../images/SnakeHeadDown.png"
+hmm=asdasd

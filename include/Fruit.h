@@ -37,9 +37,9 @@ public:
     TYPE type;
 private:
     SDL_Rect potentialFruitPos;
-    SDL_Texture* appleTexture = TextureManager::LoadTexture("../images/AppleFruit.png");
-    SDL_Texture* bananaTexture = TextureManager::LoadTexture("../images/Banana.png");
-    SDL_Texture* watermelonTexture = TextureManager::LoadTexture("../images/Watermelon.png");
+    SDL_Texture* appleTexture = TextureManager::GetInstance().LoadTexture("../images/AppleFruit.png");
+    SDL_Texture* bananaTexture = TextureManager::GetInstance().LoadTexture("../images/Banana.png");
+    SDL_Texture* watermelonTexture = TextureManager::GetInstance().LoadTexture("../images/Watermelon.png");
 
 protected:
 };

@@ -43,7 +43,7 @@ EndState::EndState() :
     scoreManager = std::make_unique<ScoreManager>();
     scoreManager->GetScoresFromFile("../scores/scores.txt", scores);
 
-    endBackground->texture = TextureManager::LoadTexture("../images/EndScreen.png");
+    endBackground->texture = TextureManager::GetInstance().LoadTexture("../images/EndScreen.png");
 
     std::cout << "Score size = " << scores.size() << std::endl;
 }
