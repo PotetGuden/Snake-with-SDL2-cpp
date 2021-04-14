@@ -4,13 +4,11 @@
 
 #include <iostream>
 #include <SDL_image.h>
-#include <fstream>
+
 #include "../include/TextureManager.h"
 #include "../include/GameManager.h"
 
 // TODO legge all texture i en vector
-
-//static std::map<std::string, SDL_Texture *> allTextures;
 
 SDL_Texture *TextureManager::LoadTexture(const char* fileName) {
 
@@ -24,8 +22,6 @@ SDL_Texture *TextureManager::LoadTexture(const char* fileName) {
     SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::renderer, surface); // Legg til feilsjekk
     SDL_FreeSurface(surface);
 
-    std::string tmp = "hei";
-    //allTextures.insert(std::pair<std::string, SDL_Texture*>(fileName, texture));
     return texture;
 }
 
@@ -33,7 +29,7 @@ void TextureManager::Draw(SDL_Texture *texture, SDL_Rect* src, SDL_Rect* dest) {
     SDL_RenderCopy(GameManager::renderer, texture, src, dest);
 }
 
-void TextureManager::LoadTextures(const char* textureName, const char* fileName, const double angle) {
+void TextureManager::LoadTextures(const char* textureName, const char* fileName) {
 
     SDL_Surface* surface = IMG_Load(fileName);
 
@@ -49,6 +45,12 @@ void TextureManager::LoadTextures(const char* textureName, const char* fileName,
     allTextures.insert(std::pair<std::string, SDL_Texture*>(textureName, texture));
     std::cout << "Etter map.insert()" << std::endl;
 
+}
+
+TextureManager::~TextureManager() {
+    for(auto &texture : allTextures){
+        SDL_DestroyTexture(texture.second);
+    }
 }
 
 /*std::map<std::string, SDL_Texture *>& TextureManager::TestFunction(const std::string& className) {

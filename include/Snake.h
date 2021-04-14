@@ -48,7 +48,7 @@ public:
 
     SDL_Rect HeadsNextMove();
     Snake();
-    bool CheckNewFruitCollisionSnake(SDL_Rect potentialPos);
+    bool CheckNewFruitCollisionSnake(SDL_Rect* potentialPos) const;
     void CheckForCollisions(); // Kunne delt denne funksjon litt opp, men har valgt å ikke gjøre det.
     void StartWallCollisionThread();
 private:
