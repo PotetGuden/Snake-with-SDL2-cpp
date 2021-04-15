@@ -6,8 +6,8 @@
 #include "../include/GameManager.h"
 #include <random>
 #include <iostream>
-// TODO Frukt kan treffe frukt, og walls
 
+// TODO Frukt kan treffe frukt, og walls
 
 void Fruit::SetNewPosition() {
     // do-while?

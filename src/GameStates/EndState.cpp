@@ -27,7 +27,6 @@ void EndState::Render() {
             FontManager::GetInstance().RenderFont("  " + std::to_string(i+1) + ":    " + std::to_string(scores[i]) + "      ",SDL_Color{50, 50, 50, 50}, true, 300, 415 + i * 60, 200, 60);
         }
     }
-
 }
 
 EndState::EndState(){

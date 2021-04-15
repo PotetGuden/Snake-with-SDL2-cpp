@@ -15,6 +15,7 @@
 #include "../Map.h"
 #include "../Snake.h"
 #include <future>
+#include <SDL_mixer.h>
 
 
 constexpr int BLOCK_SIZE = 32; // Modern c++ instead of #define
@@ -59,6 +60,9 @@ private:
     // Må lagre denne futuren selvom vi ikke bruker den, sånn at lifetimen til futuren vil vare
     // så lenge MainState gjør, og at main thread ikke venter på at denne skal bli "ferdig"
     std::future<void> dummyVariable;
+
+    Mix_Music *music = nullptr;  // Music
+    Mix_Chunk *crashSound = nullptr;   // Crash Sound
 protected:
     std::unique_ptr<ScoreManager> scoreManager;
     std::vector<std::shared_ptr<Fruit>> fruits;

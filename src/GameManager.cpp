@@ -7,6 +7,7 @@
 #include <SDL_ttf.h>
 #include <fstream>
 #include "../include/GameManager.h"
+#include "../include/AudioManager.h"
 
 // .reset() shared_ptr
 
@@ -21,7 +22,7 @@ SDL_Renderer *GameManager::renderer = nullptr;
 // TODO Loade alle textures i gamemanager for å destroye de i construcor??
 // TODO FIKS FRUIT ON FRUIT??
 void GameManager::Init(){
-    if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
+    if(SDL_Init(SDL_INIT_EVERYTHING) == 0){ // Tar med lyd/audio
         std::cout << "Gamehandler Initialised!" << std::endl;
 
         window = SDL_CreateWindow(
@@ -38,12 +39,6 @@ void GameManager::Init(){
     }else{
         gameRunning = false;
     }
-
-    startScreen = std::make_unique<StartState>();
-    //mainScreen = std::make_unique<MainState>();
-    //endScreen = std::make_unique<EndState>();
-    //FontManager::GetInstance().SetFont();
-
 }
 
 void GameManager::Render() {
@@ -58,8 +53,7 @@ void GameManager::Render() {
 
     switch(state){
         case 0:
-            startScreen->Render();
-            //StartState::GetInstance().Render();
+            StartState::GetInstance().Render();
             break;
         case 1:
             //mainScreen->Render();
@@ -84,6 +78,8 @@ void GameManager::DestroySDLObjects(){
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
 
+    AudioManager::GetInstance().CleanAudio();
+
     SDL_Quit();
     IMG_Quit();
     TTF_Quit();
@@ -102,6 +98,8 @@ GameManager::~GameManager() {
 
 GameManager::GameManager(){
     state = 0;
+    TTF_Init();
+
 }
 
 void GameManager::GameLoop() {
@@ -113,7 +111,6 @@ void GameManager::GameLoop() {
         auto lastFrame = currentTimeFrame;
         currentTimeFrame = std::chrono::high_resolution_clock::now();
         std::chrono::duration<float, std::milli> deltaTimeMs = currentTimeFrame - lastFrame;
-
         if((20ms - deltaTimeMs) > std::chrono::duration<float, std::milli>(0)){
             std::this_thread::sleep_for(20ms - deltaTimeMs);
         }

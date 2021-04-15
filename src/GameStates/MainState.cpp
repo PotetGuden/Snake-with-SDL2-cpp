@@ -6,7 +6,8 @@
 #include <future>
 #include "../../include/GameStates/MainState.h"
 #include "../../include/GameManager.h"
-
+#include <SDL_mixer.h>
+#include "../../include/AudioManager.h"
 
 constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0};
 constexpr SDL_Color WHITE_COLOR = {255, 255, 255, 255};
@@ -33,7 +34,7 @@ MainState::MainState() :
         scoreManager->PrintScores();
         scoreManager->SortScores();
 
-        TTF_Init();
+        //TTF_Init();
         //FontManager::GetInstance().SetFont();
 
         headerObject->texture = TextureManager::GetInstance().LoadTexture("../images/header.png");
@@ -42,6 +43,28 @@ MainState::MainState() :
             while (GameManager::GetInstance().gameRunning)
                 Snake::GetInstance().CheckForCollisions();
         });
+
+
+
+
+        //Load music
+        /*gMusic = Mix_LoadMUS( "21_sound_effects_and_music/beat.wav" );
+        if( gMusic == NULL )
+        {
+            printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+            success = false;
+        }*/
+
+       /* crashSound = Mix_LoadWAV( "../Audio/crash-to-wall.wav" );
+
+        if( crashSound == NULL )
+        {
+            printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+            GameManager::GetInstance().gameRunning = false;
+        }*/
+        // Mix_FreeChunk( gScratch );  gScratch = NULL;
+
+        //Free the music Mix_FreeMusic( gMusic ); gMusic = NULL;
 }
 
 void MainState::Render() {
@@ -91,13 +114,6 @@ void MainState::Update() {
         GoToNextLvl();
     }
 
-    /*
-     * [&ptr](){
-        return ptr->foo();
-     * */
-
-
-
 
     /*for(auto &fruit : fruits) {
         if (FruitEaten(fruit)) {
@@ -140,6 +156,7 @@ void MainState::Update() {
             timeLeft--;
         }
     } else{
+
         Snake::GetInstance().StopSnake();
         enableMovement = false;
     }
@@ -166,7 +183,8 @@ void MainState::HandleInputs() {
             Map::GetInstance().MapTest();
         } else if(im.KeyDown(SDL_SCANCODE_P)){
             GameManager::GetInstance().SwitchScreen();
-
+        } else if(im.KeyDown(SDL_SCANCODE_O)){
+            AudioManager::GetInstance().PlaySound("crashSound");
         }
     } else if(!showNextLvlMessage){ // Sjekker først om det er en pause state som kjører
         if(im.KeyDown(SDL_SCANCODE_T)){  // Reset
@@ -207,7 +225,7 @@ void MainState::ReduceLives() {
     lives--;
 }
 
-std::vector<std::shared_ptr<Fruit>> &MainState::GetFruitVector() {
+std::vector<std::shared_ptr<Fruit>>& MainState::GetFruitVector() {
     return fruits;
 }
 

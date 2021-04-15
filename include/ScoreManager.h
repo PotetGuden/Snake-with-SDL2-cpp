@@ -13,15 +13,13 @@ class ScoreManager {
 public:
     bool GetScoresFromFile(const std::string& fileName, std::vector<int> &scoreVector);
     void AddScore(const std::string& fileName, int currScore);
-    void PrintScores();
+    void PrintScores(); // Trenger ikke denne
     int GetHighScore();
 
     void SortScores();
     std::vector<int> GetScores();
 private:
     std::vector<int> scores;
-
-
 };
 
 

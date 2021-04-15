@@ -12,6 +12,7 @@
 #include "TextureManager.h"
 #include "GameObject.h"
 #include <future>
+#include <SDL_mixer.h>
 
 
 class Snake {
@@ -67,6 +68,8 @@ private:
     std::future<bool> isNextTileWall; // TODO LEGG DENNE SAMMEN MED DEN ANDRE COLLISION
     bool isAbleToChangeDirection = true; // Siden handle inputs kjører kjappere enn vi flytter snake head, så trenger vi å locke input når vi først ha endret direction
     // forklar hvorfor kollisjon sjekkene er i snake
+
+    Mix_Chunk *eatFruitSound = nullptr;   // Crash Sound
 };
 
 

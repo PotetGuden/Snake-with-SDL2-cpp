@@ -7,17 +7,14 @@
 #include <future>
 #include "../include/Snake.h"
 #include "../include/GameManager.h"
+#include "../include/AudioManager.h"
 
-// Todo fikse at snake texture ikke bugger seg når direction er none
-// TODO kanskje bytte at når snake stopper så blir dir = none til snakespeed = 0
+
+// TODO Fjerne NONE Direction?
 
 void Snake::MoveBodyAndTail() {
-    //if(snakeHead->partDirection != Direction::NONE) {
     if(snakeSpeed != 0 && snakeHead->partDirection != Direction::NONE) {
         for(auto &snakePart : snakeBodyVector){
-                /*SnakePart currPosition = *snakePart;
-                *snakePart = prevPosition;
-                prevPosition = currPosition;*/
                 SnakePart currPosition{};
                 currPosition.partDirection = snakePart->partDirection;
                 currPosition.coords = snakePart->coords;
@@ -32,8 +29,6 @@ void Snake::MoveBodyAndTail() {
         if(snakeBodyVector[snakeBodyVector.size() - 2]->partDirection != Direction::NONE) {
             snakeBodyVector.back()->partDirection = snakeBodyVector[snakeBodyVector.size() - 2]->partDirection;
         }
-
-        //UpdateTexture();
     }
 }
 
@@ -41,14 +36,10 @@ void Snake::Render() {
     //for(auto &snakePart : snakeBodyVector){
     //    SDL_RenderCopy(GameManager::renderer,snakePart.texture, nullptr, &snakePart.coords);
     //}
-    //SDL_RenderCopy(GameManager::renderer,snakeHead->texture, nullptr, &snakeHead->coords);
     snakeHead->Render();
-    std::for_each(snakeBodyVector.begin(),snakeBodyVector.end(),[](std::shared_ptr<SnakePart> &snakePart){
-        //SDL_RenderCopy(GameManager::renderer,snakePart->texture, nullptr, &snakePart->coords);
+    std::for_each(snakeBodyVector.begin(),snakeBodyVector.end(),[](auto &snakePart){
         snakePart->Render();
     });
-
-    //SDL_RenderCopyEx(GameManager::renderer,TextureManager::GetInstance().allTextures.find("headTextureUp")->second, nullptr, &headsNextMove, 0, nullptr, SDL_FLIP_NONE);
 }
 
 Snake::~Snake() {
@@ -60,7 +51,7 @@ Snake::Snake() :
     snakeSpeed(0),
     startPosition(true)
     {
-    TextureManager::GetInstance().LoadTextures("headTextureUp", "../images/SnakeHeadUp.png");
+    TextureManager::GetInstance().LoadTextures("headTextureUp", "../images/SnakeHeadRight.png");
     TextureManager::GetInstance().LoadTextures("bodyTextureUpDown", "../images/SnakeBodyUpDown.png");
     TextureManager::GetInstance().LoadTextures("bodyTextureRightDownUpLeft", "../images/SnakeBodyRightDownUpLeft.png");
     TextureManager::GetInstance().LoadTextures("tailTextureRight", "../images/SnakeTailRight.png");
@@ -69,7 +60,7 @@ Snake::Snake() :
     snakeHeadStart.coords = SetSnakePartCoords(BLOCK_SIZE * 5, BLOCK_SIZE * 4 + 160); // 160 offset
     snakeHeadStart.texture = TextureManager::GetInstance().allTextures.find("headTextureUp")->second;
     snakeHeadStart.partDirection = Direction::RIGHT;
-    snakeHeadStart.angleTextureFlip = 90;
+    snakeHeadStart.angleTextureFlip = 0;
     *snakeHead = snakeHeadStart;
     // Start Position Body
     snakeBodyStart.coords = SetSnakePartCoords(BLOCK_SIZE * 4, BLOCK_SIZE * 4 + 160);
@@ -85,9 +76,15 @@ Snake::Snake() :
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeBodyStart));
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeTailStart));
 
+
+    /*eatFruitSound = Mix_LoadWAV( "../Audio/crash-to-wall.wav" );
+    if( eatFruitSound == NULL ){
+        printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        GameManager::GetInstance().gameRunning = false;
+    }*/
 }
 
-void Snake::Grow(int xTimes) { // bare copy hele newPart -> .back()
+void Snake::Grow(int xTimes) {
     SnakePart newPart{};
 
     for(int i = 0; i < xTimes; i++) {
@@ -111,19 +108,19 @@ void Snake::UpdateTexture() {
     // Head Texture
     switch(snakeHead->partDirection){
         case Direction::UP:
-            snakeHead->angleTextureFlip = 0;
-            snakeHead->renderFlip = SDL_FLIP_HORIZONTAL;
+            snakeHead->angleTextureFlip = 270;
+            snakeHead->renderFlip = SDL_FLIP_NONE;
             break;
         case Direction::DOWN:
-            snakeHead->angleTextureFlip = 180;
+            snakeHead->angleTextureFlip = 90;
             snakeHead->renderFlip = SDL_FLIP_NONE;
             break;
         case Direction::LEFT:
-            snakeHead->angleTextureFlip = 270;
-            snakeHead->renderFlip = SDL_FLIP_HORIZONTAL;
+            snakeHead->angleTextureFlip = 180;
+            snakeHead->renderFlip = SDL_FLIP_VERTICAL;
             break;
         case Direction::RIGHT:
-            snakeHead->angleTextureFlip = 90;
+            snakeHead->angleTextureFlip = 0;
             snakeHead->renderFlip = SDL_FLIP_NONE;
             break;
         case Direction::NONE:
@@ -216,6 +213,7 @@ void Snake::MoveSnakeHead() {
     if(isNextTileWall.get() && snakeSpeed != 0){
         StopSnake();
         MainState::GetInstance().ReduceLives();
+        AudioManager::GetInstance().PlaySound("crashSound");
     } else{
         if(snakeSpeed != 0 && !startPosition){
             switch (snakeHead->partDirection) {
@@ -262,23 +260,23 @@ void Snake::Update() {
 std::mutex collisionMutex;
 void Snake::CheckForCollisions() { // TODO DEL OPP
     std::this_thread::sleep_for(std::chrono::milliseconds(5) );
-    //while (GameManager::GetInstance().gameRunning) {
     //std::lock_guard<std::mutex> lock(collisionMutex); //lock_guard unlocker mutex i sin destructor, dvs hver gang denne funksjonen er ferdig
+    // Snake Collision
     for (const auto &bodyPart: snakeBodyVector) {
         if (SDL_HasIntersection(&snakeHead->coords, &bodyPart->coords)) {
+            AudioManager::GetInstance().PlaySound("snakeEatingSnake");
             MainState::GetInstance().ReduceLives();
-
             StartPosition();
-            //SDL_Delay(1000); // funker ikke med multithread
-            std::cout << "SNAKE HIT" << std::endl;
         }
     }
+    //Fruit Collision
     for (auto &fruit : MainState::GetInstance().GetFruitVector()) {
         if (SDL_HasIntersection(&fruit->coords, &snakeHead->coords)) {
-            std::cout << "FRUIT EATEN" << std::endl;
+            //Mix_PlayChannel( -1, eatFruitSound, 0 );
+            AudioManager::GetInstance().PlaySound("eatingFruit");
             switch (fruit->type) {
                 case Fruit::TYPE::APPLE:
-                    Grow(60);
+                    Grow(1);
                     MainState::GetInstance().AddScore(10);
                     break;
                 case Fruit::TYPE::BANANA:
@@ -296,7 +294,6 @@ void Snake::CheckForCollisions() { // TODO DEL OPP
 }
 
 bool Snake::CheckNewFruitCollisionSnake(SDL_Rect* potentialPos) const {
-    std::cout << "CheckNewFruitCollisionSnake has been run" << std::endl;
     if(SDL_HasIntersection(potentialPos, &Snake::GetInstance().snakeHead->coords))
         return true;
 

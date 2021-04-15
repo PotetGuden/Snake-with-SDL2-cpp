@@ -42,7 +42,6 @@ private:
 
     SDL_Texture* wall;
 
-    //std::vector<SDL_Rect> wallCoords;
     std::vector<std::string> mapFilePath = {
             "../maps/lvl1.txt",
             "../maps/lvl2.txt",

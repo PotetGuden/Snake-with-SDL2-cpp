@@ -63,7 +63,7 @@ private:
 
     std::chrono::time_point<std::chrono::high_resolution_clock> currentTimeFrame;
 
-    std::unique_ptr<StartState> startScreen;
+    //std::unique_ptr<StartState> startScreen;
     //std::unique_ptr<MainState> mainScreen;
     //std::unique_ptr<EndState> endScreen;
 };

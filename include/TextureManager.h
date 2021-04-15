@@ -24,7 +24,7 @@ public:
     void operator = (TextureManager const&) = delete;  // Likhetsoperator
 
     SDL_Texture* LoadTexture(const char* fileName); // &?
-    static void Draw(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dest);
+    void Draw(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dest);
 
     void LoadTextures(const char* textureName, const char* fileName);
 
