@@ -76,12 +76,6 @@ Snake::Snake() :
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeBodyStart));
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeTailStart));
 
-
-    /*eatFruitSound = Mix_LoadWAV( "../Audio/crash-to-wall.wav" );
-    if( eatFruitSound == NULL ){
-        printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
-        GameManager::GetInstance().gameRunning = false;
-    }*/
 }
 
 void Snake::Grow(int xTimes) {

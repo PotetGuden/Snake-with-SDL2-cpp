@@ -14,6 +14,7 @@ AudioManager::AudioManager() {
     SetSounds("crashSound", "../Audio/crash-to-wall.wav");
     SetSounds("eatingFruit", "../Audio/eating-fruit.wav");
     SetSounds("snakeEatingSnake", "../Audio/snake-eating-snake.wav");
+    SetSounds("gameOver", "../Audio/game-over-sound-effect.wav");
 }
 
 void AudioManager::SetSounds(const std::string& soundName, const std::string& filePath) {

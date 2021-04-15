@@ -23,7 +23,7 @@ MainState::MainState() :
     headerObject(std::make_unique<GameObject>(0,0,800,160)),
     score(0),
     timeLeft(50),
-    lives(20),
+    lives(3),
     showNextLvlMessage(false),
     timer(0)
     {
@@ -43,28 +43,6 @@ MainState::MainState() :
             while (GameManager::GetInstance().gameRunning)
                 Snake::GetInstance().CheckForCollisions();
         });
-
-
-
-
-        //Load music
-        /*gMusic = Mix_LoadMUS( "21_sound_effects_and_music/beat.wav" );
-        if( gMusic == NULL )
-        {
-            printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
-            success = false;
-        }*/
-
-       /* crashSound = Mix_LoadWAV( "../Audio/crash-to-wall.wav" );
-
-        if( crashSound == NULL )
-        {
-            printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
-            GameManager::GetInstance().gameRunning = false;
-        }*/
-        // Mix_FreeChunk( gScratch );  gScratch = NULL;
-
-        //Free the music Mix_FreeMusic( gMusic ); gMusic = NULL;
 }
 
 void MainState::Render() {
@@ -110,7 +88,7 @@ void MainState::Update() {
     InputManager::GetInstance().Update();
     HandleInputs();
 
-    if( score == 10000 ) {
+    if( score == 100 ) {
         GoToNextLvl();
     }
 
@@ -140,7 +118,7 @@ void MainState::Update() {
     if(score > 100 && score < 200)
         frameCounterSpeed = 8;
     if(score >= 200 )
-        frameCounterSpeed = 5;
+        frameCounterSpeed = 7;
 
     if(GameManager::GetInstance().frameCounter % frameCounterSpeed == 0) { // finne ny metode?
         Snake::GetInstance().StartWallCollisionThread();
@@ -156,9 +134,10 @@ void MainState::Update() {
             timeLeft--;
         }
     } else{
-
+        AudioManager::GetInstance().PlaySound("gameOver");
         Snake::GetInstance().StopSnake();
         enableMovement = false;
+        GameManager::GetInstance().SwitchScreen();
     }
 }
 
