@@ -48,8 +48,8 @@ public:
 
     void SwitchToNextState();
 
-private:
     GameManager();
+private:
     ~GameManager();
 
     void Update();

@@ -26,9 +26,10 @@ public:
     SDL_Texture* LoadTexture(const std::string& fileName); // &?
     void Draw(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dest);
 
-    void LoadTextures(const char* textureName, const char* fileName);
+    void LoadTextures(const std::string& textureName,const std::string& fileName);
+    SDL_Texture* GetTexture(const std::string& name);
 
-    void CleanTextures();
+    bool TestFunction();
 
     std::map<std::string, SDL_Texture*> allTextures;
 private:

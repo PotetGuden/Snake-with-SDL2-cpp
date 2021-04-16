@@ -9,6 +9,8 @@
 #include "../include/GameManager.h"
 
 
+// TODO har wall/grass textures 2 ganger.. fixxxx
+
 Map::Map() {
     grass = TextureManager::GetInstance().LoadTexture("../images/map-obstacle/grass.png");
     wall = TextureManager::GetInstance().LoadTexture("../images/map-obstacle/wall.png");
@@ -33,26 +35,11 @@ void Map::LoadMap(int arr[20][25]) {
 }
 
 void Map::DrawMap() {
-    for(int row = 0; row < 20; row++){
-        for(int column = 0; column < 25; column++){
-            tileType = map[row][column];
-
-            dest.x = column * BLOCK_SIZE;
-            dest.y = row * BLOCK_SIZE + 160;
-
-            switch(tileType){
-                case 0:
-                    TextureManager::GetInstance().Draw(grass, &src, &dest);
-                    break;
-                case 1:
-                    TextureManager::GetInstance().Draw(wall, &src,&dest);
-                    //for(auto &wall : wallTiles)
-                      //  wall.Render();
-                    //wallCoords.emplace_back(dest);
-                    break;
-
-            }
-        }
+    for(auto& wallObject : wallTiles){
+        wallObject.Render();
+    }
+    for(auto& grassObject : grassTiles){
+        grassObject.Render();
     }
 }
 
@@ -104,12 +91,6 @@ bool Map::LoadNextLevel(int lvl) {
     return true;
 }
 
-
-
-void Map::MapTest() {
-
-}
-
 std::vector<GameObject> Map::GetWallTiles() {
     return wallTiles;
 }
@@ -119,15 +100,18 @@ void Map::AddCurrentWallTilesToVector() {
         std::cout << "Deleting "<< wallTiles.size() << " wall pieces" << std::endl;
         wallTiles.erase(wallTiles.begin(), wallTiles.end());
     }
+    if(!grassTiles.empty()){
+        grassTiles.erase(grassTiles.begin(), grassTiles.end());
+    }
 
     for(int row = 0; row < 20; row++){
         for(int column = 0; column < 25; column++){
             dest.x = column * BLOCK_SIZE;
             dest.y = row * BLOCK_SIZE + 160;
             if(map[row][column] == 1){
-                wallTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().LoadTexture("../images/map-obstacle/wall.png"));
+                wallTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("wallTexture"));
             } else if(map[row][column] == 0){
-                grassTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().LoadTexture("../images/map-obstacle/grass.png"));
+                grassTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("grassTexture"));
             }
 
         }

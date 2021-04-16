@@ -13,14 +13,21 @@ StartState::StartState() {
     snakeBackground = std::make_unique<GameObject>(0,0,800,800);
     playGameText = std::make_unique<GameObject>(208,500,384,80);
 
-    TextureManager::GetInstance().LoadTextures("PlayGameBackground", "../images/game-states/start/PlayGameText.png");
-    TextureManager::GetInstance().LoadTextures("PlayGameBackgroundHover", "../images/game-states/start/PlayGameHover.png");
+    //std::string yolo = "PlayGameBackground";
+    //std::string yolo2 = "../images/game-states/start/PlayGameText.png";
+    //TextureManager::GetInstance().LoadTextures(yolo, yolo2);
+    //TextureManager::GetInstance().LoadTextures("PlayGameBackgroundHover", "../images/game-states/start/PlayGameHover.png");
+    //TextureManager::GetInstance().LoadTextures("SnakeTextStartScreen", "../images/game-states/start/SnakeTextStartScreen.png");
+    //TextureManager::GetInstance().LoadTextures("SnakeBackgroundStart", "../images/game-states/start/SnakeStartBackground.png");
 
-    snakeText->texture = TextureManager::GetInstance().LoadTexture("../images/game-states/start/SnakeTextStartScreen.png");
-    snakeBackground->texture = TextureManager::GetInstance().LoadTexture("../images/game-states/start/SnakeStartBackground.png");
-    //playGameText->texture = TextureManager::GetInstance().LoadTexture("../images/game-states/start/PlayGameText.png");
+    snakeText->texture = TextureManager::GetInstance().GetTexture("SnakeTextStartScreen"); // SnakeBackgroundStart
+    snakeBackground->texture = TextureManager::GetInstance().GetTexture("SnakeBackgroundStart");
+    playGameText->texture = TextureManager::GetInstance().GetTexture("PlayGameTextBackground");
+
+    /*snakeText->texture = TextureManager::GetInstance().allTextures.find("SnakeTextStartScreen")->second;
+    snakeBackground->texture = TextureManager::GetInstance().allTextures.find("SnakeBackgroundStart")->second;
     playGameText->texture = TextureManager::GetInstance().allTextures.find("PlayGameBackground")->second;
-
+*/
 }
 
 void StartState::Render() {
@@ -38,9 +45,9 @@ void StartState::Render() {
 void StartState::HandleInputs() {
     SDL_GetMouseState( &mouseXPos, &mouseYPos );
     if(mouseXPos > 208 && mouseXPos < 208+384 && mouseYPos > 500 && mouseYPos < 500+80){
-        playGameText->texture = TextureManager::GetInstance().allTextures.find("PlayGameBackgroundHover")->second;
+        playGameText->texture = TextureManager::GetInstance().GetTexture("PlayGameTextBackgroundHover");
     } else{
-        playGameText->texture = TextureManager::GetInstance().allTextures.find("PlayGameBackground")->second;
+        playGameText->texture = TextureManager::GetInstance().GetTexture("PlayGameTextBackground");
     }
 
     if(InputManager::GetInstance().MouseDown(SDL_BUTTON(1))){

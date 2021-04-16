@@ -64,13 +64,13 @@ int Fruit::GetRandomNumber(int maxNumber) { //  https://codingnest.com/generatin
 void Fruit::UpdateTexture() {
     switch(type){
         case TYPE::APPLE:
-            texture = appleTexture;
+            texture = TextureManager::GetInstance().GetTexture("appleTexture");
             break;
         case TYPE::BANANA:
-            texture = bananaTexture;
+            texture = TextureManager::GetInstance().GetTexture("bananaTexture");
             break;
         case TYPE::WATERMELON:
-            texture = watermelonTexture;
+            texture = TextureManager::GetInstance().GetTexture("watermelonTexture");
             break;
         default:
             break;

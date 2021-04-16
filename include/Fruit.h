@@ -38,9 +38,7 @@ public:
     TYPE type;
 private:
     SDL_Rect potentialFruitPos;
-    SDL_Texture* appleTexture = TextureManager::GetInstance().LoadTexture("../images/fruits/AppleFruit.png");
-    SDL_Texture* bananaTexture = TextureManager::GetInstance().LoadTexture("../images/fruits/Banana.png");
-    SDL_Texture* watermelonTexture = TextureManager::GetInstance().LoadTexture("../images/fruits/Watermelon.png");
+
 
 protected:
 };

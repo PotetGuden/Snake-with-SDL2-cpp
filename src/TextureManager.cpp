@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <SDL_image.h>
+#include <fstream>
 
 #include "../include/TextureManager.h"
 #include "../include/GameManager.h"
@@ -30,9 +31,9 @@ void TextureManager::Draw(SDL_Texture *texture, SDL_Rect* src, SDL_Rect* dest) {
 
 }
 
-void TextureManager::LoadTextures(const char* textureName, const char* fileName) {
+void TextureManager::LoadTextures(const std::string& textureName,const std::string& fileName) {
 
-    SDL_Surface* surface = IMG_Load(fileName);
+    SDL_Surface* surface = IMG_Load(fileName.c_str());
 
     if(surface == nullptr){
         std::cerr << "Failed to load image: " << SDL_GetError() << std::endl;
@@ -42,7 +43,7 @@ void TextureManager::LoadTextures(const char* textureName, const char* fileName)
     SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::renderer, surface); // Legg til feilsjekk
     SDL_FreeSurface(surface);
 
-    allTextures.insert(std::pair<std::string, SDL_Texture*>(textureName, texture));
+    allTextures.insert(std::pair<const std::string&, SDL_Texture*>(textureName, texture));
 }
 
 TextureManager::~TextureManager() {
@@ -51,16 +52,14 @@ TextureManager::~TextureManager() {
     }
 }
 
-void TextureManager::CleanTextures() {
-    //std::cout << "Freeing textures.." << std::endl;
-       /* for(auto& texture : allTextures){
-            SDL_DestroyTexture( texture.second );
-            //texture.second = nullptr;
-        }*/
+SDL_Texture *TextureManager::GetTexture(const std::string &name) {
+    std::cout << "Trying to get texture: " << allTextures.find(name)->first << std::endl;
+    if(allTextures.find(name)->second == nullptr) std::cout << "texture = nullptr" << allTextures.find(name)->second << std::endl;
+    return allTextures.find(name)->second;
 }
 
-/*std::map<std::string, SDL_Texture *>& TextureManager::TestFunction(const std::string& className) {
-    std::map<std::string, SDL_Texture*> classTextures;
+bool TextureManager::TestFunction() {
+    //std::map<std::string, SDL_Texture*> classTextures;
 
     std::ifstream textureConfigFile ("../Textures/textures.txt");
     if (textureConfigFile.is_open()){
@@ -70,16 +69,19 @@ void TextureManager::CleanTextures() {
             if( line.empty() || line[0] == '#' )
                 continue;
 
-            auto delimiterPos = line.find('=');
-            auto name = line.substr(0, delimiterPos);
-            auto value = line.substr(delimiterPos + 1);
-            if(name == className)
-                std::cout << name << " " << value << '\n';
+            std::size_t delimiterPos = line.find('=');
+            std::string name = line.substr(0, delimiterPos);
+            std::string value = line.substr(delimiterPos + 1);
+            //auto value = "../images/game-states/start/SnakeStartBackground.png";
+
+            std::cout << name << " " << value << std::endl;
+            LoadTextures(name, value);
         }
     }
     else
         std::cerr << "Couldn't open config file for reading.\n";
 
-    return classTextures;
-}*/
+    //return classTextures;
+    return true;
+}
 

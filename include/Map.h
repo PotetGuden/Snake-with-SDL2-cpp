@@ -31,7 +31,7 @@ public:
     void LoadMapTest(std::string &filePath);
     bool LoadNextLevel(int lvl);
     void AddCurrentWallTilesToVector();
-    void MapTest();
+
 
     std::vector<GameObject> GetWallTiles();
 

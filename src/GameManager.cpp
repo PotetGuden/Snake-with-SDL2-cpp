@@ -38,6 +38,9 @@ void GameManager::Init(){
     }else{
         gameRunning = false;
     }
+
+    TextureManager::GetInstance().TestFunction();
+
 }
 
 void GameManager::Render() {
@@ -66,7 +69,7 @@ void GameManager::DestroySDLObjects(){
     std::cout << "Cleaning up the game window."<< std::endl;
 
     AudioManager::GetInstance().CleanAudio();
-    TextureManager::GetInstance().CleanTextures(); // Trenger nok ikke denne siden jeg må destroye i destructor
+
 
     SDL_Quit();
     IMG_Quit();
@@ -89,9 +92,12 @@ GameManager::~GameManager() {
 }
 
 GameManager::GameManager(){
+
+
     state = 0;
     TTF_Init();
     FontManager::GetInstance().SetFont();
+
 }
 
 void GameManager::GameLoop() {
