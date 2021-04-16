@@ -25,7 +25,7 @@ void AudioManager::SetSounds(const std::string& soundName, const std::string& fi
         printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
         GameManager::GetInstance().gameRunning = false;
     }
-    sounds.insert(std::pair(soundName, sound));
+    sounds.insert(std::pair<std::string, Mix_Chunk*>(soundName, sound));
 }
 
 void AudioManager::PlaySound(const std::string& soundName) {

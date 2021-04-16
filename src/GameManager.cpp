@@ -5,7 +5,6 @@
 #include <iostream>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-#include <fstream>
 #include "../include/GameManager.h"
 #include "../include/AudioManager.h"
 
@@ -19,7 +18,7 @@ SDL_Renderer *GameManager::renderer = nullptr;
 // TODO pass by value i funksjoner "&"
 // TODO FIKS FRUIT ON FRUIT??
 // TODO Bytt om alle LoadTexture -> LoadTextures for å få de inn i map
-
+// TODO Minnelekssje mest sansynlig textures (kaaanskje audio)
 
 void GameManager::Init(){
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){ // Tar med lyd/audio
@@ -76,7 +75,7 @@ void GameManager::DestroySDLObjects(){
     std::cout << "Cleaning up the game window."<< std::endl;
 
     AudioManager::GetInstance().CleanAudio();
-    TextureManager::GetInstance().CleanTextures();
+    TextureManager::GetInstance().CleanTextures(); // Trenger nok ikke denne siden jeg må destroye i destructor
 
     SDL_Quit();
     IMG_Quit();

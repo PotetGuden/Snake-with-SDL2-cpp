@@ -49,17 +49,17 @@ void TextureManager::LoadTextures(const char* textureName, const char* fileName)
 }
 
 TextureManager::~TextureManager() {
-    /*for(auto &texture : allTextures){
+    for(auto &texture : allTextures){
         SDL_DestroyTexture(texture.second);
-    }*/
+    }
 }
 
 void TextureManager::CleanTextures() {
-    for(auto& texture : allTextures){
-        std::cout << "Freeing " << texture.first << std::endl;
-        SDL_DestroyTexture( texture.second );
-        //texture.second = nullptr;
-    }
+    //std::cout << "Freeing textures.." << std::endl;
+       /* for(auto& texture : allTextures){
+            SDL_DestroyTexture( texture.second );
+            //texture.second = nullptr;
+        }*/
 }
 
 /*std::map<std::string, SDL_Texture *>& TextureManager::TestFunction(const std::string& className) {

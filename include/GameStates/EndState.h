@@ -25,7 +25,6 @@ public:
 
     void Render() override;
     void HandleInputs() override;
-    void Update();
 
 private:
     //std::shared_ptr<FontManager> fontManager;
