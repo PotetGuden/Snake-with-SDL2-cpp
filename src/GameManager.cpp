@@ -98,8 +98,8 @@ void GameManager::GameLoop() {
     currentTimeFrame = std::chrono::high_resolution_clock::now(); // static?
     frameCounter = 0;
 
+    using namespace std::chrono_literals;
     while(gameRunning){
-        using namespace std::chrono_literals;
         auto lastFrame = currentTimeFrame;
         currentTimeFrame = std::chrono::high_resolution_clock::now();
         std::chrono::duration<float, std::milli> deltaTimeMs = currentTimeFrame - lastFrame;

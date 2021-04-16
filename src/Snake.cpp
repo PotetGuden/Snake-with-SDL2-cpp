@@ -51,10 +51,10 @@ Snake::Snake() :
     snakeSpeed(0),
     startPosition(true)
     {
-    TextureManager::GetInstance().LoadTextures("headTextureUp", "../images/SnakeHeadRight.png");
-    TextureManager::GetInstance().LoadTextures("bodyTextureUpDown", "../images/SnakeBodyUpDown.png");
-    TextureManager::GetInstance().LoadTextures("bodyTextureRightDownUpLeft", "../images/SnakeBodyRightDownUpLeft.png");
-    TextureManager::GetInstance().LoadTextures("tailTextureRight", "../images/SnakeTailRight.png");
+    TextureManager::GetInstance().LoadTextures("headTextureUp", "../images/snake/SnakeHeadRight.png");
+    TextureManager::GetInstance().LoadTextures("bodyTextureUpDown", "../images/snake/SnakeBodyUpDown.png");
+    TextureManager::GetInstance().LoadTextures("bodyTextureRightDownUpLeft", "../images/snake/SnakeBodyRightDownUpLeft.png");
+    TextureManager::GetInstance().LoadTextures("tailTextureRight", "../images/snake/SnakeTailRight.png");
 
     // Start position Head
     snakeHeadStart.coords = SetSnakePartCoords(BLOCK_SIZE * 5, BLOCK_SIZE * 4 + 160); // 160 offset

@@ -13,12 +13,12 @@ StartState::StartState() {
     snakeBackground = std::make_unique<GameObject>(0,0,800,800);
     playGameText = std::make_unique<GameObject>(208,500,384,80);
 
-    TextureManager::GetInstance().LoadTextures("PlayGameBackground", "../images/PlayGameText.png");
-    TextureManager::GetInstance().LoadTextures("PlayGameBackgroundHover", "../images/PlayGameHover.png");
+    TextureManager::GetInstance().LoadTextures("PlayGameBackground", "../images/game-states/start/PlayGameText.png");
+    TextureManager::GetInstance().LoadTextures("PlayGameBackgroundHover", "../images/game-states/start/PlayGameHover.png");
 
-    snakeText->texture = TextureManager::GetInstance().LoadTexture("../images/SnakeTextStartScreen.png");
-    snakeBackground->texture = TextureManager::GetInstance().LoadTexture("../images/SnakeStartBackground.png");
-    playGameText->texture = TextureManager::GetInstance().LoadTexture("../images/PlayGameText.png");
+    snakeText->texture = TextureManager::GetInstance().LoadTexture("../images/game-states/start/SnakeTextStartScreen.png");
+    snakeBackground->texture = TextureManager::GetInstance().LoadTexture("../images/game-states/start/SnakeStartBackground.png");
+    //playGameText->texture = TextureManager::GetInstance().LoadTexture("../images/game-states/start/PlayGameText.png");
     playGameText->texture = TextureManager::GetInstance().allTextures.find("PlayGameBackground")->second;
 
 }

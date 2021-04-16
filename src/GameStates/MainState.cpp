@@ -37,7 +37,7 @@ MainState::MainState() :
         //TTF_Init();
         //FontManager::GetInstance().SetFont();
 
-        headerObject->texture = TextureManager::GetInstance().LoadTexture("../images/header.png");
+        headerObject->texture = TextureManager::GetInstance().LoadTexture("../images/game-states/main/header.png");
 
         dummyVariable = std::async(std::launch::async, []() {
             while (GameManager::GetInstance().gameRunning)

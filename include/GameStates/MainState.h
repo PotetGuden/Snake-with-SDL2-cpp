@@ -61,13 +61,9 @@ private:
     // så lenge MainState gjør, og at main thread ikke venter på at denne skal bli "ferdig"
     std::future<void> dummyVariable;
 
-    Mix_Music *music = nullptr;  // Music
-    Mix_Chunk *crashSound = nullptr;   // Crash Sound
 protected:
     std::unique_ptr<ScoreManager> scoreManager;
     std::vector<std::shared_ptr<Fruit>> fruits;
-
-    //std::unique_ptr<FontManager> fontManager;
 
     void AddThreeDifferentApples();
 };
