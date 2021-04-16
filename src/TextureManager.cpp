@@ -41,11 +41,8 @@ void TextureManager::LoadTextures(const char* textureName, const char* fileName)
     }
     SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::renderer, surface); // Legg til feilsjekk
     SDL_FreeSurface(surface);
-    std::cout << "For map.insert()" << std::endl;
-    // static std::map<std::string, SDL_Texture *> allTextures;
-    allTextures.insert(std::pair<std::string, SDL_Texture*>(textureName, texture));
-    std::cout << "Etter map.insert()" << std::endl;
 
+    allTextures.insert(std::pair<std::string, SDL_Texture*>(textureName, texture));
 }
 
 TextureManager::~TextureManager() {

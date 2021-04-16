@@ -48,9 +48,7 @@ int ScoreManager::GetHighScore() {
 
 void ScoreManager::SortScores() {
     if(!scores.empty()) {
-        std::cout << "Is not sorted yet." << std::endl;
         std::sort(scores.begin(), scores.end(), std::greater<>());
-        std::cout << "Is now sorted." << std::endl;
     }
 
     std::ofstream scoreFile("../scores/scores.txt");
