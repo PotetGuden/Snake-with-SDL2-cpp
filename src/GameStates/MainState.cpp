@@ -134,19 +134,24 @@ void MainState::Update() {
             timeLeft--;
         }
     } else{
-        AudioManager::GetInstance().PlaySound("gameOver");
+        AudioManager::GetInstance().PlaySound("gameOver"); // TODO GameOver funksjon
         Snake::GetInstance().StopSnake();
-        enableMovement = false;
-        GameManager::GetInstance().SwitchScreen();
+        Snake::GetInstance().StartPosition();
+        lives = 3;
+        timeLeft = 50;
+        score = 0;
+        frameCounterSpeed = 8;
+        //enableMovement = false;
+        GameManager::GetInstance().SwitchToNextState();
     }
 }
 
 void MainState::HandleInputs() {
     InputManager &im = InputManager::GetInstance();
 
-    if(im.KeyDown(SDL_SCANCODE_ESCAPE) || SDL_HasEvent(SDL_QUIT)){
+    /*if(im.KeyDown(SDL_SCANCODE_ESCAPE) || SDL_HasEvent(SDL_QUIT)){
         GameManager::GetInstance().gameRunning = false;
-    }
+    }*/
     // Keyboard testing - Trenger en thread for at man ikke kan trykke 2 knapper samtidig ish
     if(enableMovement){
         if(im.KeyDown(SDL_SCANCODE_W)){
@@ -161,7 +166,7 @@ void MainState::HandleInputs() {
             Snake::GetInstance().ChangeDirection(Snake::Direction::NONE, Snake::Direction::NONE);
             Map::GetInstance().MapTest();
         } else if(im.KeyDown(SDL_SCANCODE_P)){
-            GameManager::GetInstance().SwitchScreen();
+            GameManager::GetInstance().SwitchToNextState();
         } else if(im.KeyDown(SDL_SCANCODE_O)){
             AudioManager::GetInstance().PlaySound("crashSound");
         }

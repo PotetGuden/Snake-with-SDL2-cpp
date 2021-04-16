@@ -24,6 +24,7 @@ public:
     void operator = (EndState const&) = delete;  // Likhetsoperator
 
     void Render() override;
+    void HandleInputs() override;
 
 private:
 

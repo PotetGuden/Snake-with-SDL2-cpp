@@ -7,11 +7,6 @@
 #include "../../include/GameStates/StartState.h"
 #include "../../include/GameManager.h"
 
-void StartState::Render() {
-    snakeBackground->Render();
-    snakeText->Render();
-    playGameText->Render();
-}
 
 StartState::StartState() {
     snakeText = std::make_unique<GameObject>(208,304,384,192);
@@ -21,4 +16,17 @@ StartState::StartState() {
     snakeText->texture = TextureManager::GetInstance().LoadTexture("../images/SnakeTextStartScreen.png");
     snakeBackground->texture = TextureManager::GetInstance().LoadTexture("../images/SnakeStartBackground.png");
     playGameText->texture = TextureManager::GetInstance().LoadTexture("../images/PlayGameText.png"); // TODO Bytt til ttf text
+}
+
+void StartState::Render() {
+    snakeBackground->Render();
+    snakeText->Render();
+    playGameText->Render();
+}
+
+void StartState::HandleInputs() {
+    if(InputManager::GetInstance().MouseDown(SDL_BUTTON(1))){
+        std::cout << "Switching state to main screen" << std::endl;
+        GameManager::GetInstance().SwitchToNextState();
+    }
 }

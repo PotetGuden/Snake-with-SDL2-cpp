@@ -24,7 +24,7 @@ public:
     StartState(StartState const &&) = delete;    // Move Constructor
     void operator = (StartState const&) = delete;  // Likhetsoperator
 
-
+    void HandleInputs() override;
     void Render() override;
 
 private:

@@ -10,6 +10,7 @@
 class StateInterface {
 public:
     virtual void Render() = 0;
+    virtual void HandleInputs() = 0;
 };
 
 

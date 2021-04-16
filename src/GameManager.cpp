@@ -42,18 +42,19 @@ void GameManager::Init(){
 }
 
 void GameManager::Render() {
-    if(InputManager::GetInstance().MouseDown(SDL_BUTTON(1))){
-        std::cout << "Switching state to main screen" << std::endl;
+    /*if(InputManager::GetInstance().MouseDown(SDL_BUTTON(1))){
+        std::cout << "Switching state to end screen" << std::endl;
         state = 1;
-    }
-    if(InputManager::GetInstance().MouseDown(SDL_BUTTON(3))){
+    }*/
+    /*if(InputManager::GetInstance().MouseDown(SDL_BUTTON(3))){
         std::cout << "Switching state to end screen" << std::endl;
         state = 2;
-    }
+    }*/
 
     switch(state){
         case 0:
             StartState::GetInstance().Render();
+            StartState::GetInstance().HandleInputs();
             break;
         case 1:
             //mainScreen->Render();
@@ -64,6 +65,7 @@ void GameManager::Render() {
         case 2:
             //endScreen->Render();
             EndState::GetInstance().Render();
+            EndState::GetInstance().HandleInputs();
             break;
         default:
             break;
@@ -88,7 +90,9 @@ void GameManager::DestroySDLObjects(){
 
 void GameManager::Update(){
     InputManager::GetInstance().Update();
-
+    if(InputManager::GetInstance().KeyDown(SDL_SCANCODE_ESCAPE) || SDL_HasEvent(SDL_QUIT)){
+        GameManager::GetInstance().gameRunning = false;
+    }
     //mainScreen->Update();
 }
 
@@ -120,7 +124,11 @@ void GameManager::GameLoop() {
     }
 }
 
-void GameManager::SwitchScreen() {
-    if(state < 3)
+void GameManager::SwitchToNextState() {
+    if(state < 2)
         state++;
+    else
+        state--;
+
+    // state = (state < 3) ? state++ : state-- ; hør med kjetil
 }

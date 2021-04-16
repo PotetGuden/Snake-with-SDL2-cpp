@@ -5,6 +5,8 @@
 #include <iostream>
 #include "../../include/GameStates/EndState.h"
 #include "../../include/TextureManager.h"
+#include "../../include/InputManager.h"
+#include "../../include/GameManager.h"
 
 
 constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0};
@@ -41,4 +43,10 @@ EndState::EndState(){
 
 
     std::cout << "Score size = " << scores.size() << std::endl;
+}
+
+void EndState::HandleInputs() {
+    if(InputManager::GetInstance().KeyDown(SDL_SCANCODE_Y)){
+        GameManager::GetInstance().SwitchToNextState();
+    }
 }
