@@ -37,7 +37,7 @@ public:
     void Render() override;
     void Update();
 
-    void AddScore(const int number);
+    void AddScore(int number);
     void ReduceLives();
     std::vector<std::shared_ptr<Fruit>> &GetFruitVector();
 private:

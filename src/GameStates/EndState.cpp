@@ -41,7 +41,6 @@ EndState::EndState(){
     scoreManager = std::make_unique<ScoreManager>();
     scoreManager->GetScoresFromFile("../scores/scores.txt", scores);
 
-
     std::cout << "Score size = " << scores.size() << std::endl;
 }
 
@@ -50,3 +49,4 @@ void EndState::HandleInputs() {
         GameManager::GetInstance().SwitchToNextState();
     }
 }
+

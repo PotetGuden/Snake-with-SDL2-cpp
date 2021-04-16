@@ -10,9 +10,9 @@
 
 // TODO legge all texture i en vector
 
-SDL_Texture *TextureManager::LoadTexture(const char* fileName) {
+SDL_Texture *TextureManager::LoadTexture(const std::string& fileName) {
 
-    SDL_Surface* surface = IMG_Load(fileName);
+    SDL_Surface* surface = IMG_Load(fileName.c_str());
 
     if(surface == nullptr){
         std::cerr << "Failed to load image: " << SDL_GetError() << std::endl;
@@ -49,8 +49,16 @@ void TextureManager::LoadTextures(const char* textureName, const char* fileName)
 }
 
 TextureManager::~TextureManager() {
-    for(auto &texture : allTextures){
+    /*for(auto &texture : allTextures){
         SDL_DestroyTexture(texture.second);
+    }*/
+}
+
+void TextureManager::CleanTextures() {
+    for(auto& texture : allTextures){
+        std::cout << "Freeing " << texture.first << std::endl;
+        SDL_DestroyTexture( texture.second );
+        //texture.second = nullptr;
     }
 }
 

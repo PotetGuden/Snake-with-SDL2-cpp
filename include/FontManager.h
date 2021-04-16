@@ -28,6 +28,7 @@ public:
     void SetFont();
     TTF_Font* gFont = TTF_OpenFont( "../fonts/Roboto-Regular.ttf", 50 );
 
+
 private:
     FontManager() = default;
 

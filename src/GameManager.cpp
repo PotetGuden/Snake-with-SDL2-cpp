@@ -14,13 +14,13 @@
 SDL_Renderer *GameManager::renderer = nullptr;
 
 // TODO const etter funksjonsnavn?
-// TODO sdl_destroy texture
 // TODO sette alle funksjoner/variabler som private om mulig (bare de som ikke blir kalt fra andre klasser)
-// TODO lage loops for å emplace_back() fruits
 // TODO sette variabler med function() : variabelNavn(name)
 // TODO pass by value i funksjoner "&"
-// TODO Loade alle textures i gamemanager for å destroye de i construcor??
 // TODO FIKS FRUIT ON FRUIT??
+// TODO Bytt om alle LoadTexture -> LoadTextures for å få de inn i map
+
+
 void GameManager::Init(){
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){ // Tar med lyd/audio
         std::cout << "Gamehandler Initialised!" << std::endl;
@@ -57,13 +57,10 @@ void GameManager::Render() {
             StartState::GetInstance().HandleInputs();
             break;
         case 1:
-            //mainScreen->Render();
-            //mainScreen->Update();
             MainState::GetInstance().Render();
             MainState::GetInstance().Update();
             break;
         case 2:
-            //endScreen->Render();
             EndState::GetInstance().Render();
             EndState::GetInstance().HandleInputs();
             break;
@@ -77,14 +74,15 @@ void GameManager::Render() {
 
 void GameManager::DestroySDLObjects(){
     std::cout << "Cleaning up the game window."<< std::endl;
-    SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);
 
     AudioManager::GetInstance().CleanAudio();
+    TextureManager::GetInstance().CleanTextures();
 
     SDL_Quit();
     IMG_Quit();
     TTF_Quit();
+    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
 }
 
 

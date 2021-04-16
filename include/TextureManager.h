@@ -23,13 +23,14 @@ public:
     TextureManager(TextureManager const &&) = delete;    // Move Constructor
     void operator = (TextureManager const&) = delete;  // Likhetsoperator
 
-    SDL_Texture* LoadTexture(const char* fileName); // &?
+    SDL_Texture* LoadTexture(const std::string& fileName); // &?
     void Draw(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dest);
 
     void LoadTextures(const char* textureName, const char* fileName);
 
-    std::map<std::string, SDL_Texture*> allTextures;
+    void CleanTextures();
 
+    std::map<std::string, SDL_Texture*> allTextures;
 private:
 
     TextureManager() = default;

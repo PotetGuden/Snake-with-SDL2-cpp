@@ -25,9 +25,9 @@ public:
 
     void Render() override;
     void HandleInputs() override;
+    void Update();
 
 private:
-
     //std::shared_ptr<FontManager> fontManager;
     std::unique_ptr<GameObject> endBackground;
     std::unique_ptr<GameObject> playerScore;

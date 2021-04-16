@@ -56,7 +56,6 @@ private:
     void Render();
     void DestroySDLObjects();
 
-
     SDL_Window *window;
 
     int state;
