@@ -8,7 +8,6 @@
 #include "../../include/InputManager.h"
 #include "../../include/GameManager.h"
 
-
 constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0};
 constexpr SDL_Color WHITE_COLOR = {255, 255, 255, 255};
 constexpr SDL_Color GREEN_COLOR2 = {0, 255, 0, 255};
