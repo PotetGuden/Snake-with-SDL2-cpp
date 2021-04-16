@@ -31,7 +31,7 @@ void EndState::Render() {
 }
 
 EndState::EndState(){
-    FontManager::GetInstance().SetFont();
+    //FontManager::GetInstance().SetFont();
     endBackground = std::make_unique<GameObject>(0,0,800,800,TextureManager::GetInstance().LoadTexture("../images/EndScreen.png"));
     endBackground->texture = TextureManager::GetInstance().LoadTexture("../images/EndScreen.png");
     scoreManager = std::make_unique<ScoreManager>();

@@ -41,15 +41,6 @@ void GameManager::Init(){
 }
 
 void GameManager::Render() {
-    /*if(InputManager::GetInstance().MouseDown(SDL_BUTTON(1))){
-        std::cout << "Switching state to end screen" << std::endl;
-        state = 1;
-    }*/
-    /*if(InputManager::GetInstance().MouseDown(SDL_BUTTON(3))){
-        std::cout << "Switching state to end screen" << std::endl;
-        state = 2;
-    }*/
-
     switch(state){
         case 0:
             StartState::GetInstance().Render();
@@ -60,8 +51,8 @@ void GameManager::Render() {
             MainState::GetInstance().Update();
             break;
         case 2:
-            EndState::GetInstance().Render();
             EndState::GetInstance().HandleInputs();
+            EndState::GetInstance().Render();
             break;
         default:
             break;
@@ -90,7 +81,7 @@ void GameManager::Update(){
     if(InputManager::GetInstance().KeyDown(SDL_SCANCODE_ESCAPE) || SDL_HasEvent(SDL_QUIT)){
         GameManager::GetInstance().gameRunning = false;
     }
-    //mainScreen->Update();
+
 }
 
 GameManager::~GameManager() {
@@ -100,7 +91,7 @@ GameManager::~GameManager() {
 GameManager::GameManager(){
     state = 0;
     TTF_Init();
-
+    FontManager::GetInstance().SetFont();
 }
 
 void GameManager::GameLoop() {
@@ -127,5 +118,5 @@ void GameManager::SwitchToNextState() {
     else
         state--;
 
-    // state = (state < 3) ? state++ : state-- ; hør med kjetil
+    //state = (state < 2) ? state++ : state-- ;
 }

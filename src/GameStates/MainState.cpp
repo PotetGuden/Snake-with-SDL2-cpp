@@ -88,9 +88,9 @@ void MainState::Update() {
     InputManager::GetInstance().Update();
     HandleInputs();
 
-    if( score == 100 ) {
+    if(score == 100)
         GoToNextLvl();
-    }
+
 
 
     /*for(auto &fruit : fruits) {
@@ -135,6 +135,7 @@ void MainState::Update() {
         }
     } else{
         AudioManager::GetInstance().PlaySound("gameOver"); // TODO GameOver funksjon
+        scoreManager->AddScore("../scores/scores.txt", score);
         Snake::GetInstance().StopSnake();
         Snake::GetInstance().StartPosition();
         lives = 3;

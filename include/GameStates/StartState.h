@@ -29,6 +29,9 @@ public:
 
 private:
 
+    int mouseXPos;
+    int mouseYPos;
+
     std::unique_ptr<GameObject> snakeText;
     std::unique_ptr<GameObject> snakeBackground;
     std::unique_ptr<GameObject> playGameText;
