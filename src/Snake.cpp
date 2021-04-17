@@ -42,11 +42,6 @@ void Snake::Render() {
     });
 }
 
-Snake::~Snake() {
-    std::cout << "SNake is KILl" << std::endl;
-}
-
-
 Snake::Snake() :
     snakeSpeed(0),
     startPosition(true)

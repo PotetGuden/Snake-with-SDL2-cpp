@@ -23,10 +23,12 @@ public:
 
     void PlaySound(const std::string& soundName);
     void CleanAudio();
+    void MuteOrUnmuteSoundEffects();
 private:
     void SetSounds(const std::string& soundName, const std::string& filePath);
     std::map<std::string, Mix_Chunk*> sounds;
     AudioManager();
+    int volume;
 };
 
 

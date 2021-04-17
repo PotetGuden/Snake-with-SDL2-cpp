@@ -8,12 +8,12 @@
 
 #include <SDL.h>
 #include <vector>
-#include "InputManager.h"
-#include "Snake.h"
-#include "Fruit.h"
 #include <chrono>
 #include <thread>
 
+#include "InputManager.h"
+#include "Snake.h"
+#include "Fruit.h"
 #include "FontManager.h"
 #include "ScoreManager.h"
 #include "GameStates/StartState.h"

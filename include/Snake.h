@@ -30,7 +30,7 @@ public:
         return instance;
     }
 
-    ~Snake();
+    ~Snake() = default;
     Snake(Snake const &) = delete;     // Copy Constructor
     Snake(Snake const &&) = delete;    // Move Constructor
     void operator = (Snake const&) = delete;  // Likhetsoperator

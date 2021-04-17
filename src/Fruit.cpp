@@ -7,16 +7,15 @@
 #include <random>
 #include <iostream>
 
-// TODO Frukt kan treffe frukt, og walls
 
 void Fruit::SetNewPosition() {
     SetNewRandomTexture();
 
     potentialFruitPos.w = BLOCK_SIZE;
     potentialFruitPos.h = BLOCK_SIZE;
-    // x = 23, y = 18 because map size is [25][20] and we take -1 for each side (top/bottom) (left/right)
-    do{
-        int x = GetRandomNumber(23) * BLOCK_SIZE;
+
+    do {
+        int x = GetRandomNumber(23) * BLOCK_SIZE; // x = 23, y = 18 because map size is [25][20] and we take -1 for each side (top/bottom) (left/right)
         int y = GetRandomNumber(18) * BLOCK_SIZE + HEADER_TEXTURE_Y_OFFSET;
         potentialFruitPos.x = x;
         potentialFruitPos.y = y;

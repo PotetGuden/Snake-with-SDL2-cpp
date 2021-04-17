@@ -29,7 +29,7 @@ public: // TODO Sett variabler i cpp filen istedenfor
 
     void Render();
     SDL_Texture* texture;
-    SDL_Rect coords;
+    SDL_Rect coords{};
     double angleTextureFlip = 0;
     SDL_RendererFlip renderFlip = SDL_FLIP_NONE; // Standard
 };

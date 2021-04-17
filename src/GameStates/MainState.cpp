@@ -66,12 +66,13 @@ void MainState::RenderHeaderText() {
     FontManager::GetInstance().RenderFont("SNEEEK", GREEN_COLOR, false, 300, 5, 200, 100);
     FontManager::GetInstance().RenderFont("Highscore:  " + std::to_string(ScoreManager::GetInstance().GetHighScore()), BLACK_COLOR, false,312, 90, 175, 60);
     FontManager::GetInstance().RenderFont("Level: " + std::to_string(currentLvl), WHITE_COLOR, false, 570, 90, 150, 60);
+    FontManager::GetInstance().RenderFont("Mute" , WHITE_COLOR, true, 150, 110, 90, 30);
 
     if(showNextLvlMessage) {
         enableMovement = false;
         bonusScoreText += (bonusScoreText < score) ? 1 : 0;
         FontManager::GetInstance().RenderFont(" Congratulations, you made it to ", BLACK_COLOR,true, 250, 380, 300, 45); // TODO
-        FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + " and your score is now " + std::to_string(bonusScoreText) + " ", BLACK_COLOR, true, 250, 425, 300, 45); // TODO
+        FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + ", your score is now " + std::to_string(bonusScoreText) + " ", BLACK_COLOR, true, 250, 425, 300, 45); // TODO
 
         if(bonusScoreText >= score){
             timer++;
@@ -79,7 +80,6 @@ void MainState::RenderHeaderText() {
                 showNextLvlMessage = false;
                 timer = 0;
                 enableMovement = true;
-                std::cout << "Trykket på N" << std::endl;
             }
         }
     }
@@ -135,6 +135,8 @@ void MainState::HandleInputs() {
             Snake::GetInstance().ChangeDirection(Snake::Direction::NONE, Snake::Direction::NONE);
         } else if(im.KeyDown(SDL_SCANCODE_P)){
             GameManager::GetInstance().SwitchToNextState();
+        } else if(InputManager::GetInstance().KeyDown(SDL_SCANCODE_M)){
+            AudioManager::GetInstance().MuteOrUnmuteSoundEffects();
         }
 
     } else if(!showNextLvlMessage){ // Sjekker først om det er en pause state som kjører

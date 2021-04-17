@@ -6,7 +6,9 @@
 #include "../include/AudioManager.h"
 #include "../include/GameManager.h"
 
-AudioManager::AudioManager() {
+AudioManager::AudioManager() :
+    volume(20) {
+
     if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ){
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
         GameManager::GetInstance().gameRunning = false;
@@ -15,7 +17,7 @@ AudioManager::AudioManager() {
     SetSounds("eatingFruit", "../Audio/eating-fruit.wav");
     SetSounds("snakeEatingSnake", "../Audio/snake-eating-snake.wav");
     SetSounds("gameOver", "../Audio/game-over-sound-effect.wav");
-    Mix_Volume(-1, 20);
+    Mix_Volume(-1, volume);
 }
 
 void AudioManager::SetSounds(const std::string& soundName, const std::string& filePath) {
@@ -23,7 +25,7 @@ void AudioManager::SetSounds(const std::string& soundName, const std::string& fi
     auto sound = Mix_LoadWAV( filePath.c_str() );
 
     if( sound == nullptr ){
-        printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+        std::cout << "Failed to load sound effect!" << std::endl;
         GameManager::GetInstance().gameRunning = false;
     }
     sounds.insert(std::pair<std::string, Mix_Chunk*>(soundName, sound));
@@ -39,6 +41,11 @@ void AudioManager::CleanAudio() {
         Mix_FreeChunk( sound.second );
         sound.second = nullptr;
     }
+}
+
+void AudioManager::MuteOrUnmuteSoundEffects() {
+    volume = (volume == 20) ? 0 : 20;
+    Mix_Volume(-1, volume);
 }
 
 
