@@ -24,8 +24,6 @@ public:
     Fruit(TYPE fruit, int width, int height, int xPosition, int yPosition) : GameObject(xPosition,yPosition, width, height){
         type = fruit;
         UpdateTexture();
-        isFruitEaten = false;
-
     }
 
     void UpdateTexture();
@@ -34,7 +32,8 @@ public:
 
     static int GetRandomNumber(int maxNumber);
 
-    bool isFruitEaten;
+    void SetNewRandomTexture();
+
     TYPE type;
 private:
     SDL_Rect potentialFruitPos;

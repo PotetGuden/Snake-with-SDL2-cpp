@@ -11,7 +11,7 @@ bool ScoreManager::GetScoresFromFile(const std::string& fileName, std::vector<in
     std::ifstream inputFile(fileName.c_str());
 
     if(!inputFile){
-        std::cerr << "Cannot open the File : "<< fileName << std::endl;
+        std::cerr << "Cannot open the File: " << fileName << std::endl;
         return false;
     }
 
@@ -35,11 +35,7 @@ void ScoreManager::AddScore(const std::string& fileName, int currScore) {
 }
 
 void ScoreManager::PrintScores() {
-    bool result = GetScoresFromFile("../scores/scores.txt", scores);
-    if(result){
-        for(int &score : scores)
-            std::cout << score << std::endl;
-    }
+    GetScoresFromFile("../scores/scores.txt", scores);
 }
 
 int ScoreManager::GetHighScore() {
@@ -58,8 +54,4 @@ void ScoreManager::SortScores() {
     }
 
     scoreFile.close();
-}
-
-std::vector<int> ScoreManager::GetScores() {
-    return scores;
 }

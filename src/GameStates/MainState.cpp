@@ -46,7 +46,7 @@ MainState::MainState() :
 }
 
 void MainState::Render() {
-    Map::GetInstance().DrawMap();
+    Map::GetInstance().RenderMap();
     Snake::GetInstance().Render();
 
     for(const auto &fruit : fruits){
@@ -126,7 +126,7 @@ void MainState::Update() {
         //Snake::GetInstance().MoveBodyAndTail();
         Snake::GetInstance().UpdateTexture();
         Snake::GetInstance().Update();
-        //boool  = true;
+
     }
 
     if(lives != 0 && timeLeft > 0){
@@ -150,10 +150,6 @@ void MainState::Update() {
 void MainState::HandleInputs() {
     InputManager &im = InputManager::GetInstance();
 
-    /*if(im.KeyDown(SDL_SCANCODE_ESCAPE) || SDL_HasEvent(SDL_QUIT)){
-        GameManager::GetInstance().gameRunning = false;
-    }*/
-    // Keyboard testing - Trenger en thread for at man ikke kan trykke 2 knapper samtidig ish
     if(enableMovement){
         if(im.KeyDown(SDL_SCANCODE_W)){
             Snake::GetInstance().ChangeDirection(Snake::Direction::UP, Snake::Direction::DOWN);
@@ -165,7 +161,6 @@ void MainState::HandleInputs() {
             Snake::GetInstance().ChangeDirection(Snake::Direction::RIGHT, Snake::Direction::LEFT);
         } else if(im.KeyDown(SDL_SCANCODE_R)){
             Snake::GetInstance().ChangeDirection(Snake::Direction::NONE, Snake::Direction::NONE);
-            Map::GetInstance().MapTest();
         } else if(im.KeyDown(SDL_SCANCODE_P)){
             GameManager::GetInstance().SwitchToNextState();
         } else if(im.KeyDown(SDL_SCANCODE_O)){
@@ -186,15 +181,17 @@ void MainState::HandleInputs() {
 }
 
 void MainState::GoToNextLvl() {
-    showNextLvlMessage = true;
-    GameManager::GetInstance().gameRunning = Map::GetInstance().LoadNextLevel(currentLvl++);
-    Snake::GetInstance().StartPosition();
-    bonusScoreText = score;  // use this to animate the bonus score you get
-    score += timeLeft*5; // bonus points
-    timeLeft = 50;
-    lives = 20;
+    if(Map::GetInstance().LoadNextLevel(currentLvl++)){
+        showNextLvlMessage = true;
+        Snake::GetInstance().StartPosition();
+        bonusScoreText = score;  // use this to animate the bonus score you get
+        score += timeLeft*5; // bonus points
+        timeLeft = 50;
+        lives = 20;
+    } else{
+        GameManager::GetInstance().SwitchToNextState();
+    }
 }
-
 
 void MainState::AddThreeDifferentApples() {
     fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::APPLE,BLOCK_SIZE,BLOCK_SIZE,128,256));
@@ -210,7 +207,7 @@ void MainState::ReduceLives() {
     lives--;
 }
 
-std::vector<std::shared_ptr<Fruit>>& MainState::GetFruitVector() {
+std::vector<std::shared_ptr<Fruit>>& MainState::GetFruitVector(){
     return fruits;
 }
 

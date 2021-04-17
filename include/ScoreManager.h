@@ -17,7 +17,6 @@ public:
     int GetHighScore();
 
     void SortScores();
-    std::vector<int> GetScores();
 private:
     std::vector<int> scores;
 };

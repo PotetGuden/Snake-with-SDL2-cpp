@@ -23,25 +23,17 @@ public:
     Map(Map const &&) = delete;    // Move Constructor
     void operator = (Map const&) = delete;  // Likhetsoperator
 
-
-    void LoadMap(int arr[20][25]);
-    void DrawMap();
+    void RenderMap();
 
     bool CheckForWallCollision(SDL_Rect nextPosition);
-    void LoadMapTest(std::string &filePath);
+    void LoadMapFromFile(std::string &filePath);
     bool LoadNextLevel(int lvl);
-    void AddCurrentWallTilesToVector();
+    void SetCurrentMapTilesToVector();
 
 
-    std::vector<GameObject> GetWallTiles();
+    std::vector<GameObject>& GetWallTiles();
 
 private:
-
-    SDL_Rect src, dest;
-    SDL_Texture* grass;
-
-    SDL_Texture* wall;
-
     std::vector<std::string> mapFilePath = {
             "../maps/lvl1.txt",
             "../maps/lvl2.txt",

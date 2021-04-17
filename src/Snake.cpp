@@ -225,6 +225,7 @@ void Snake::MoveSnakeHead() {
             MoveBodyAndTail();
         }
     }
+    isAbleToChangeDirection = true; // Denne trenger bare å være på slutten av der snake flytter/updater seg
 }
 
 void Snake::StopSnake() {
@@ -244,7 +245,7 @@ void Snake::StartPosition() {
 
 void Snake::Update() {
     prevPosition = *snakeHead;
-    isAbleToChangeDirection = true; // Denne trenger bare å være på slutten av der snake flytter/updater seg
+
 }
 
 std::mutex collisionMutex;
@@ -262,7 +263,6 @@ void Snake::CheckForCollisions() { // TODO DEL OPP
     //Fruit Collision
     for (auto &fruit : MainState::GetInstance().GetFruitVector()) {
         if (SDL_HasIntersection(&fruit->coords, &snakeHead->coords)) {
-            //Mix_PlayChannel( -1, eatFruitSound, 0 );
             AudioManager::GetInstance().PlaySound("eatingFruit");
             switch (fruit->type) {
                 case Fruit::TYPE::APPLE:

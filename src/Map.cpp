@@ -9,32 +9,12 @@
 #include "../include/GameManager.h"
 
 
-// TODO har wall/grass textures 2 ganger.. fixxxx
-
-Map::Map() {
-    grass = TextureManager::GetInstance().LoadTexture("../images/map-obstacle/grass.png");
-    wall = TextureManager::GetInstance().LoadTexture("../images/map-obstacle/wall.png");
-
-    //LoadMap(lvl1);
-    //LoadMap(lvl2);
-    src.x = src.y = 0;
-    src.w = dest.w = BLOCK_SIZE;
-    src.h = dest.h = BLOCK_SIZE;
-    dest.x = dest.y = 0;
+Map::Map(){
 
 }
 
-void Map::LoadMap(int arr[20][25]) {
 
-    for(int row = 0; row < 20; row++){
-        for(int column = 0; column < 25; column++){
-            map[row][column] = arr[row][column];
-        }
-    }
-
-}
-
-void Map::DrawMap() {
+void Map::RenderMap() {
     for(auto& wallObject : wallTiles){
         wallObject.Render();
     }
@@ -57,7 +37,7 @@ bool Map::CheckForWallCollision(SDL_Rect nextPosition) {
             tmp.y = row * BLOCK_SIZE + 160;
 
             tileType = map[row][column];
-            if(tileType == 1){
+            if(tileType == 1){ // wall
                 if(nextPosition.x == tmp.x && nextPosition.y == tmp.y){
                     return true;
                 }
@@ -67,7 +47,7 @@ bool Map::CheckForWallCollision(SDL_Rect nextPosition) {
     return false;
 }
 
-void Map::LoadMapTest(std::string &filePath) {
+void Map::LoadMapFromFile(std::string &filePath) {
     std::ifstream file(filePath);
 
     if (!file.is_open()) {
@@ -86,23 +66,25 @@ bool Map::LoadNextLevel(int lvl) {
     if(lvl > mapFilePath.size()){
         return false;
     }
-    LoadMapTest(mapFilePath[lvl]);
-    AddCurrentWallTilesToVector();
+    LoadMapFromFile(mapFilePath[lvl]);
+    SetCurrentMapTilesToVector();
     return true;
 }
 
-std::vector<GameObject> Map::GetWallTiles() {
+std::vector<GameObject>& Map::GetWallTiles() {
     return wallTiles;
 }
 
-void Map::AddCurrentWallTilesToVector() {
+void Map::SetCurrentMapTilesToVector() {
     if(!wallTiles.empty()){
-        std::cout << "Deleting "<< wallTiles.size() << " wall pieces" << std::endl;
         wallTiles.erase(wallTiles.begin(), wallTiles.end());
     }
     if(!grassTiles.empty()){
         grassTiles.erase(grassTiles.begin(), grassTiles.end());
     }
+
+    SDL_Rect dest;
+    dest.w = dest.h = BLOCK_SIZE;
 
     for(int row = 0; row < 20; row++){
         for(int column = 0; column < 25; column++){
@@ -116,5 +98,4 @@ void Map::AddCurrentWallTilesToVector() {
 
         }
     }
-    std::cout << "Added " << wallTiles.size() << " wall pieces" << std::endl;
 }

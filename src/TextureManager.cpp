@@ -53,8 +53,6 @@ TextureManager::~TextureManager() {
 }
 
 SDL_Texture *TextureManager::GetTexture(const std::string &name) {
-    std::cout << "Trying to get texture: " << allTextures.find(name)->first << std::endl;
-    if(allTextures.find(name)->second == nullptr) std::cout << "texture = nullptr" << allTextures.find(name)->second << std::endl;
     return allTextures.find(name)->second;
 }
 

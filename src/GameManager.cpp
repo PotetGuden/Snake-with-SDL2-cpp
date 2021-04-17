@@ -69,8 +69,6 @@ void GameManager::DestroySDLObjects(){
     std::cout << "Cleaning up the game window."<< std::endl;
 
     AudioManager::GetInstance().CleanAudio();
-
-
     SDL_Quit();
     IMG_Quit();
     TTF_Quit();
@@ -92,12 +90,9 @@ GameManager::~GameManager() {
 }
 
 GameManager::GameManager(){
-
-
     state = 0;
     TTF_Init();
     FontManager::GetInstance().SetFont();
-
 }
 
 void GameManager::GameLoop() {
@@ -123,6 +118,4 @@ void GameManager::SwitchToNextState() {
         state++;
     else
         state--;
-
-    //state = (state < 2) ? state++ : state-- ;
 }

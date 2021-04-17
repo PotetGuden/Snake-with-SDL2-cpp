@@ -18,7 +18,8 @@
 #include <SDL_mixer.h>
 
 
-constexpr int BLOCK_SIZE = 32; // Modern c++ instead of #define
+constexpr int BLOCK_SIZE = 32;
+constexpr int HEADER_TEXTURE_Y_OFFSET = 160;
 
 class MainState : public StateInterface{
 public:
@@ -33,7 +34,6 @@ public:
     MainState(MainState const &&) = delete;    // Move Constructor
     void operator = (MainState const&) = delete;  // Likhetsoperator
 
-
     void Render() override;
     void Update();
 
@@ -43,7 +43,7 @@ public:
 private:
     void GoToNextLvl();
 
-    void HandleInputs();
+    void HandleInputs() override;
 
     void RenderHeaderText();
     std::unique_ptr<GameObject> headerObject;
