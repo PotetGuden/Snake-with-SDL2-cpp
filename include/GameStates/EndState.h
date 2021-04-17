@@ -32,6 +32,7 @@ private:
     std::vector<int> scores;
     int currentScore;
     int mouseXPos, mouseYPos;
+    SDL_Color playAgainColor, exitGameColor;
 };
 
 

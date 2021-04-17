@@ -12,6 +12,8 @@
 #include "TextureManager.h"
 #include "GameObject.h"
 
+// TODO FRUIT ON FRUIT COLLISION
+
 class Fruit : public GameObject {
 
 public:
@@ -36,7 +38,7 @@ public:
 
     TYPE type;
 private:
-    SDL_Rect potentialFruitPos;
+
 
 
 protected:

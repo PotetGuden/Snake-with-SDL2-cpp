@@ -28,16 +28,9 @@ MainState::MainState() :
     timer(0)
     {
         Map::GetInstance().LoadNextLevel(currentLvl++);
-
         AddThreeDifferentApples();
-
-        //scoreManager->PrintScores();
-        //scoreManager->SortScores();
         ScoreManager::GetInstance().PrintScores();
         ScoreManager::GetInstance().SortScores();
-
-        //TTF_Init();
-        //FontManager::GetInstance().SetFont();
 
         headerObject->texture = TextureManager::GetInstance().GetTexture("headerTexture");
 
@@ -66,17 +59,17 @@ void MainState::RenderHeaderText() {
     FontManager::GetInstance().RenderFont("SNEEEK", GREEN_COLOR, false, 300, 5, 200, 100);
     FontManager::GetInstance().RenderFont("Highscore:  " + std::to_string(ScoreManager::GetInstance().GetHighScore()), BLACK_COLOR, false,312, 90, 175, 60);
     FontManager::GetInstance().RenderFont("Level: " + std::to_string(currentLvl), WHITE_COLOR, false, 570, 90, 150, 60);
-    FontManager::GetInstance().RenderFont("Mute" , WHITE_COLOR, true, 150, 110, 90, 30);
+    FontManager::GetInstance().RenderFont("Mute" , WHITE_COLOR, true, 175, 130, 75, 25);
 
     if(showNextLvlMessage) {
         enableMovement = false;
         bonusScoreText += (bonusScoreText < score) ? 1 : 0;
-        FontManager::GetInstance().RenderFont(" Congratulations, you made it to ", BLACK_COLOR,true, 250, 380, 300, 45); // TODO
-        FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + ", your score is now " + std::to_string(bonusScoreText) + " ", BLACK_COLOR, true, 250, 425, 300, 45); // TODO
+        FontManager::GetInstance().RenderFont(" Congratulations, you made it to ", WHITE_COLOR,true, 250, 380, 300, 45); // TODO
+        FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + ", your score is now " + std::to_string(bonusScoreText) + " ", WHITE_COLOR, true, 250, 425, 300, 45); // TODO
 
         if(bonusScoreText >= score){
             timer++;
-            if(timer >= 100 && InputManager::GetInstance().KeyStillDown(SDL_SCANCODE_N)){
+            if(timer >= 100 ){
                 showNextLvlMessage = false;
                 timer = 0;
                 enableMovement = true;
@@ -90,13 +83,13 @@ void MainState::Update() {
     InputManager::GetInstance().Update();
     HandleInputs();
 
-    if(score == 100)
+    if((score >= 250 && score <= 270) || (score > 550 && score < 580))
         GoToNextLvl();
 
-    if(score > 100 && score < 200)
-        frameCounterSpeed = 8;
-    if(score >= 200 )
-        frameCounterSpeed = 7;
+    if( timeLeft == 50 ) frameCounterSpeed = 10;
+    if( timeLeft == 40 ) frameCounterSpeed = 9;
+    if( timeLeft == 30 ) frameCounterSpeed = 8;
+    if( timeLeft == 15 ) frameCounterSpeed = 7;
 
     if(GameManager::GetInstance().frameCounter % frameCounterSpeed == 0) { // finne ny metode?
         Snake::GetInstance().StartWallCollisionThread();
@@ -148,7 +141,6 @@ void MainState::HandleInputs() {
             timeLeft = 50;
             score = 0;
             enableMovement = true;
-            frameCounterSpeed = 8;
         }
     }
 }
@@ -170,7 +162,7 @@ void MainState::GoToNextLvl() {
 }
 
 void MainState::AddThreeDifferentApples() {
-    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::APPLE,BLOCK_SIZE,BLOCK_SIZE,128,256));
+    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::APPLE,BLOCK_SIZE,BLOCK_SIZE,128,448));
     fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::BANANA, BLOCK_SIZE, BLOCK_SIZE, 224, 448));
     fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::WATERMELON, BLOCK_SIZE, BLOCK_SIZE, 384, 480));
 }
@@ -193,7 +185,6 @@ void MainState::RestartGame() {
     lives = 3;
     timeLeft = 50;
     score = 0;
-    frameCounterSpeed = 8;
     currentLvl = 0;
     Map::GetInstance().LoadNextLevel(currentLvl++);
 }

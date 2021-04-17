@@ -11,6 +11,7 @@
 void Fruit::SetNewPosition() {
     SetNewRandomTexture();
 
+    SDL_Rect potentialFruitPos;
     potentialFruitPos.w = BLOCK_SIZE;
     potentialFruitPos.h = BLOCK_SIZE;
 
