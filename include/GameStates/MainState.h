@@ -39,6 +39,7 @@ public:
 
     void AddScore(int number);
     void ReduceLives();
+    void RestartGame();
     std::vector<std::shared_ptr<Fruit>> &GetFruitVector();
 private:
     void GoToNextLvl();
@@ -51,8 +52,8 @@ private:
     bool enableMovement;
     int frameCounterSpeed;
     int score;
-    int timeLeft;
-    int lives;
+    Uint16 timeLeft;
+    unsigned short lives;
     bool showNextLvlMessage;
     int timer;
     int bonusScoreText;
@@ -62,7 +63,7 @@ private:
     std::future<void> dummyVariable;
 
 protected:
-    std::unique_ptr<ScoreManager> scoreManager;
+    //std::unique_ptr<ScoreManager> scoreManager;
     std::vector<std::shared_ptr<Fruit>> fruits;
 
     void AddThreeDifferentApples();

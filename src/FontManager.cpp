@@ -11,7 +11,7 @@ void FontManager::RenderFont(const std::string& text, SDL_Color textColor, bool 
 
     //SDL_Color textColor = { 255, 255, 255 ,255};
     if(isShaded){
-        textSurface = TTF_RenderText_Shaded( gFont, text.c_str(), textColor, SDL_Color{220,220,220,220} );
+        textSurface = TTF_RenderText_Shaded( gFont, text.c_str(), textColor, SDL_Color{95,130,95,220} );
     } else{
         textSurface = TTF_RenderText_Solid( gFont, text.c_str(), textColor );
     }

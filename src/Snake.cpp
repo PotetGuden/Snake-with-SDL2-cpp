@@ -50,7 +50,12 @@ Snake::~Snake() {
 Snake::Snake() :
     snakeSpeed(0),
     startPosition(true)
+    //headsNextMove()
     {
+    headsNextMove.x = 0;
+    headsNextMove.y = 0;
+    headsNextMove.w = 0;
+    headsNextMove.h = 0;
 
     // Start position Head
     snakeHeadStart.coords = SetSnakePartCoords(BLOCK_SIZE * 5, BLOCK_SIZE * 4 + 160); // 160 offset
@@ -93,8 +98,6 @@ SDL_Rect Snake::SetSnakePartCoords(int x, int y) { // kanskje legg inn SDL_Rect 
 }
 
 void Snake::UpdateTexture() {
-    //auto lol = TextureManager::GetInstance().allTextures.find("headTextureUp");
-
     // Head Texture
     switch(snakeHead->partDirection){
         case Direction::UP:
@@ -190,7 +193,7 @@ SDL_Rect Snake::HeadsNextMove() {
     return headsNextMove;
 }
 
-void Snake::ChangeDirection(const Direction potentialDir, const Direction oppositeDir) {
+void Snake::ChangeDirection(Direction potentialDir, Direction oppositeDir) {
     if(snakeHead->partDirection != oppositeDir && isAbleToChangeDirection){
         snakeHead->partDirection = potentialDir;
         startPosition = false;
@@ -245,12 +248,11 @@ void Snake::StartPosition() {
 
 void Snake::Update() {
     prevPosition = *snakeHead;
-
 }
 
 std::mutex collisionMutex;
 void Snake::CheckForCollisions() { // TODO DEL OPP
-    std::this_thread::sleep_for(std::chrono::milliseconds(5) );
+    std::this_thread::sleep_for(std::chrono::milliseconds(5));
     //std::lock_guard<std::mutex> lock(collisionMutex); //lock_guard unlocker mutex i sin destructor, dvs hver gang denne funksjonen er ferdig
     // Snake Collision
     for (const auto &bodyPart: snakeBodyVector) {
@@ -283,12 +285,12 @@ void Snake::CheckForCollisions() { // TODO DEL OPP
     }
 }
 
-bool Snake::CheckNewFruitCollisionSnake(SDL_Rect* potentialPos) const {
-    if(SDL_HasIntersection(potentialPos, &Snake::GetInstance().snakeHead->coords))
+bool Snake::CheckNewFruitCollisionSnake(SDL_Rect potentialPos) const {
+    if(SDL_HasIntersection(&potentialPos, &snakeHead->coords))
         return true;
 
     for(auto &snakePart : snakeBodyVector){
-        if(SDL_HasIntersection(potentialPos, &snakePart->coords)){
+        if(SDL_HasIntersection(&potentialPos, &snakePart->coords)){
             return true;
         }
     }

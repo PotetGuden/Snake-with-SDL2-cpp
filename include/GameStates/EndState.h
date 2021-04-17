@@ -26,12 +26,12 @@ public:
     void Render() override;
     void HandleInputs() override;
 
+    void UpdateCurrentScore(int score);
 private:
     std::unique_ptr<GameObject> endBackground;
-    std::unique_ptr<GameObject> playerScore;
-    std::unique_ptr<GameObject> highScore;
-    std::unique_ptr<ScoreManager> scoreManager;
     std::vector<int> scores;
+    int currentScore;
+    int mouseXPos, mouseYPos;
 };
 
 

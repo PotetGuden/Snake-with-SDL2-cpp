@@ -15,6 +15,7 @@ AudioManager::AudioManager() {
     SetSounds("eatingFruit", "../Audio/eating-fruit.wav");
     SetSounds("snakeEatingSnake", "../Audio/snake-eating-snake.wav");
     SetSounds("gameOver", "../Audio/game-over-sound-effect.wav");
+    Mix_Volume(-1, 20);
 }
 
 void AudioManager::SetSounds(const std::string& soundName, const std::string& filePath) {

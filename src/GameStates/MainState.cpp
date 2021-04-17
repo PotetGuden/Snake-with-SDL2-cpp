@@ -17,7 +17,7 @@ constexpr SDL_Color GREEN_COLOR = {0, 255, 0, 255};
 
 MainState::MainState() :
     currentLvl(0),
-    scoreManager(std::make_unique<ScoreManager>()),
+    //scoreManager(std::make_unique<ScoreManager>()),
     enableMovement(true),
     frameCounterSpeed(10),
     headerObject(std::make_unique<GameObject>(0,0,800,160)),
@@ -31,8 +31,10 @@ MainState::MainState() :
 
         AddThreeDifferentApples();
 
-        scoreManager->PrintScores();
-        scoreManager->SortScores();
+        //scoreManager->PrintScores();
+        //scoreManager->SortScores();
+        ScoreManager::GetInstance().PrintScores();
+        ScoreManager::GetInstance().SortScores();
 
         //TTF_Init();
         //FontManager::GetInstance().SetFont();
@@ -62,14 +64,14 @@ void MainState::RenderHeaderText() {
     FontManager::GetInstance().RenderFont("Time left: " + std::to_string(timeLeft), WHITE_COLOR, false, 570, 10, 150, 60);
     FontManager::GetInstance().RenderFont("Lives: " + std::to_string(lives), BLACK_COLOR, false,10, 90, 100, 60);
     FontManager::GetInstance().RenderFont("SNEEEK", GREEN_COLOR, false, 300, 5, 200, 100);
-    FontManager::GetInstance().RenderFont("Highscore:  " + std::to_string(scoreManager->GetHighScore()), BLACK_COLOR, false,312, 90, 175, 60);
+    FontManager::GetInstance().RenderFont("Highscore:  " + std::to_string(ScoreManager::GetInstance().GetHighScore()), BLACK_COLOR, false,312, 90, 175, 60);
     FontManager::GetInstance().RenderFont("Level: " + std::to_string(currentLvl), WHITE_COLOR, false, 570, 90, 150, 60);
 
     if(showNextLvlMessage) {
         enableMovement = false;
         bonusScoreText += (bonusScoreText < score) ? 1 : 0;
         FontManager::GetInstance().RenderFont(" Congratulations, you made it to ", BLACK_COLOR,true, 250, 380, 300, 45); // TODO
-        FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + " and you score is now " + std::to_string(bonusScoreText) + " ", BLACK_COLOR, true, 250, 425, 300, 45); // TODO
+        FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + " and your score is now " + std::to_string(bonusScoreText) + " ", BLACK_COLOR, true, 250, 425, 300, 45); // TODO
 
         if(bonusScoreText >= score){
             timer++;
@@ -91,30 +93,6 @@ void MainState::Update() {
     if(score == 100)
         GoToNextLvl();
 
-
-
-    /*for(auto &fruit : fruits) {
-        if (FruitEaten(fruit)) {
-            if(fruit->type == Fruit::TYPE::APPLE){
-                Snake::GetInstance().Grow(1);
-                score += 10;
-            } else if(fruit->type == Fruit::TYPE::BANANA){
-                score += 20;
-                Snake::GetInstance().Grow(2);
-            } else if(fruit->type == Fruit::TYPE::WATERMELON){
-                score += 30;
-                Snake::GetInstance().Grow(3);
-            }
-            fruit->SetNewPosition();
-            std::cout << "Fruit eaten" << std::endl;
-        }
-    }*/
-
-    //if(timeLeft == 45) frameCounterSpeed = 4;
-    //if(timeLeft == 40) frameCounterSpeed = 3;
-    //if(timeLeft == 35) frameCounterSpeed = 2;
-    //if(timeLeft == 30) frameCounterSpeed = 1;
-
     if(score > 100 && score < 200)
         frameCounterSpeed = 8;
     if(score >= 200 )
@@ -123,10 +101,8 @@ void MainState::Update() {
     if(GameManager::GetInstance().frameCounter % frameCounterSpeed == 0) { // finne ny metode?
         Snake::GetInstance().StartWallCollisionThread();
         Snake::GetInstance().MoveSnakeHead();
-        //Snake::GetInstance().MoveBodyAndTail();
         Snake::GetInstance().UpdateTexture();
         Snake::GetInstance().Update();
-
     }
 
     if(lives != 0 && timeLeft > 0){
@@ -135,13 +111,9 @@ void MainState::Update() {
         }
     } else{
         AudioManager::GetInstance().PlaySound("gameOver"); // TODO GameOver funksjon
-        scoreManager->AddScore("../scores/scores.txt", score);
+        ScoreManager::GetInstance().AddScore("../scores/scores.txt", score);
+        EndState::GetInstance().UpdateCurrentScore(score);
         Snake::GetInstance().StopSnake();
-        Snake::GetInstance().StartPosition();
-        lives = 3;
-        timeLeft = 50;
-        score = 0;
-        frameCounterSpeed = 8;
         //enableMovement = false;
         GameManager::GetInstance().SwitchToNextState();
     }
@@ -163,14 +135,13 @@ void MainState::HandleInputs() {
             Snake::GetInstance().ChangeDirection(Snake::Direction::NONE, Snake::Direction::NONE);
         } else if(im.KeyDown(SDL_SCANCODE_P)){
             GameManager::GetInstance().SwitchToNextState();
-        } else if(im.KeyDown(SDL_SCANCODE_O)){
-            AudioManager::GetInstance().PlaySound("crashSound");
         }
+
     } else if(!showNextLvlMessage){ // Sjekker først om det er en pause state som kjører
         if(im.KeyDown(SDL_SCANCODE_T)){  // Reset
             Snake::GetInstance().StartPosition();
-            scoreManager->AddScore("../scores/scores.txt", score);
-            scoreManager->SortScores();
+            ScoreManager::GetInstance().AddScore("../scores/scores.txt", score);
+            //ScoreManager::GetInstance().SortScores();
             lives = 20;
             timeLeft = 50;
             score = 0;
@@ -182,12 +153,15 @@ void MainState::HandleInputs() {
 
 void MainState::GoToNextLvl() {
     if(Map::GetInstance().LoadNextLevel(currentLvl++)){
+        for(auto& fruit : fruits){
+            fruit->SetNewPosition();
+        }
         showNextLvlMessage = true;
         Snake::GetInstance().StartPosition();
         bonusScoreText = score;  // use this to animate the bonus score you get
         score += timeLeft*5; // bonus points
         timeLeft = 50;
-        lives = 20;
+        lives = 3;
     } else{
         GameManager::GetInstance().SwitchToNextState();
     }
@@ -209,6 +183,17 @@ void MainState::ReduceLives() {
 
 std::vector<std::shared_ptr<Fruit>>& MainState::GetFruitVector(){
     return fruits;
+}
+
+void MainState::RestartGame() {
+    GameManager::GetInstance().SwitchToNextState();
+    Snake::GetInstance().StartPosition();
+    lives = 3;
+    timeLeft = 50;
+    score = 0;
+    frameCounterSpeed = 8;
+    currentLvl = 0;
+    Map::GetInstance().LoadNextLevel(currentLvl++);
 }
 
 

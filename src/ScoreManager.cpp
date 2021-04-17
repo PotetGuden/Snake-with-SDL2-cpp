@@ -7,6 +7,8 @@
 #include "../include/ScoreManager.h"
 
 bool ScoreManager::GetScoresFromFile(const std::string& fileName, std::vector<int> &scoreVector) {
+    if(!scoreVector.empty())
+        scoreVector.erase(scoreVector.begin(), scoreVector.end());
 
     std::ifstream inputFile(fileName.c_str());
 
@@ -32,6 +34,7 @@ void ScoreManager::AddScore(const std::string& fileName, int currScore) {
         scoreFile.close();
     }
     scores.emplace_back(currScore);
+    SortScores();
 }
 
 void ScoreManager::PrintScores() {

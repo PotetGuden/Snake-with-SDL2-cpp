@@ -5,7 +5,7 @@
 #ifndef SNAKE_GAMEOBJECT_H
 #define SNAKE_GAMEOBJECT_H
 
-
+// TODO SLETTER JEG MAP TEXTURES NOEN GANG?
 #include <SDL.h>
 
 class GameObject {
@@ -17,12 +17,12 @@ public: // TODO Sett variabler i cpp filen istedenfor
         coords.w = w;
         coords.h = h;
     }
-    GameObject(int x, int y, int w, int h, SDL_Texture* texture){ // TEST
+    GameObject(int x, int y, int w, int h, SDL_Texture* pTexture){ // TEST
         coords.x = x;
         coords.y = y;
         coords.w = w;
         coords.h = h;
-        this->texture = texture;
+        this->texture = pTexture;
     }
 
     ~GameObject();

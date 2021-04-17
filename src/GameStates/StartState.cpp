@@ -35,11 +35,7 @@ void StartState::Render() {
     snakeText->Render();
     playGameText->Render();
 
-
-
     FontManager::GetInstance().RenderFont("PLAY GAME  ", BLACK_COLOR, false,230, 500, 365, 70);
-    //FontManager::GetInstance().RenderFont("PLAY GAME  ", BLACK_COLOR, false,312, 500, 350, 70);
-
 }
 
 void StartState::HandleInputs() {

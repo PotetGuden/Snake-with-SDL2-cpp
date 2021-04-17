@@ -21,7 +21,7 @@ void Fruit::SetNewPosition() {
         potentialFruitPos.x = x;
         potentialFruitPos.y = y;
     }
-    while(Map::GetInstance().CheckForWallCollision(potentialFruitPos) || Snake::GetInstance().CheckNewFruitCollisionSnake(&potentialFruitPos));
+    while(Map::GetInstance().CheckForWallCollision(potentialFruitPos) || Snake::GetInstance().CheckNewFruitCollisionSnake(potentialFruitPos));
 
     coords.x = potentialFruitPos.x;
     coords.y = potentialFruitPos.y;

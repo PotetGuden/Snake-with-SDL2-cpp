@@ -11,11 +11,11 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Render() {
-    if(angleTextureFlip > 0){
+    //if(angleTextureFlip > 0){
         SDL_RenderCopyEx(GameManager::renderer ,texture, nullptr, &coords, angleTextureFlip,nullptr, renderFlip);
-    }else{
-        SDL_RenderCopy(GameManager::renderer ,texture, nullptr, &coords);
-    }
+    //}else{
+     //   SDL_RenderCopy(GameManager::renderer ,texture, nullptr, &coords);
+    //}
 
 }
 
