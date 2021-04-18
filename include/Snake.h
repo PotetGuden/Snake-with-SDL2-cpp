@@ -68,6 +68,8 @@ private:
     SDL_Rect headsNextMove{};
     std::future<bool> isNextTileWall; // TODO LEGG DENNE SAMMEN MED DEN ANDRE COLLISION
     bool isAbleToChangeDirection; // Siden handle inputs kjører kjappere enn vi flytter snake head, så trenger vi å "locke" input når vi først har endret direction
+
+    std::future<void> dummyVariable;
 };
 
 

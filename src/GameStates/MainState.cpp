@@ -10,7 +10,6 @@
 
 MainState::MainState() :
     currentLvl(0),
-    //scoreManager(std::make_unique<ScoreManager>()),
     enableMovement(true),
     frameCounterSpeed(10),
     headerObject(std::make_unique<GameObject>(0,0,800,160)),
@@ -27,10 +26,10 @@ MainState::MainState() :
 
         headerObject->texture = TextureManager::GetInstance().GetTexture("headerTexture");
 
-        dummyVariable = std::async(std::launch::async, []() {
+        /*dummyVariable = std::async(std::launch::async, []() {
             while (GameManager::GetInstance().gameRunning)
                 Snake::GetInstance().CheckForCollisions();
-        });
+        });*/
 }
 
 void MainState::Render() {
@@ -77,32 +76,22 @@ void MainState::Update() {
     InputManager::GetInstance().Update();
     HandleInputs();
 
-    if((score >= 250 && score <= 270) || (score > 550 && score < 580))
-        GoToNextLvl();
-
+    if((score >= 250 && score <= 270) || (score > 550 && score < 580)) GoToNextLvl();
     if( timeLeft == 50 ) frameCounterSpeed = 10;
     if( timeLeft == 40 ) frameCounterSpeed = 9;
     if( timeLeft == 30 ) frameCounterSpeed = 8;
     if( timeLeft == 15 ) frameCounterSpeed = 7;
 
-    if(GameManager::GetInstance().frameCounter % frameCounterSpeed == 0) { // finne ny metode?
-        Snake::GetInstance().StartWallCollisionThread();
-        Snake::GetInstance().MoveSnakeHead();
-        Snake::GetInstance().UpdateTexture();
+    if(GameManager::GetInstance().frameCounter % frameCounterSpeed == 0) { // Speed at which snake moves.
         Snake::GetInstance().Update();
     }
 
-    if(lives != 0 && timeLeft > 0){
+    if(lives == 0 || timeLeft == 0){
+       GameOver();
+    } else{
         if((GameManager::GetInstance().frameCounter % 60) == 0){ // TODO Se nærmere på denne
             timeLeft--;
         }
-    } else{
-        AudioManager::GetInstance().PlaySound("gameOver"); // TODO GameOver funksjon
-        ScoreManager::GetInstance().AddScore("../scores/scores.txt", score);
-        EndState::GetInstance().UpdateCurrentScore(score);
-        Snake::GetInstance().StopSnake();
-        //enableMovement = false;
-        GameManager::GetInstance().SwitchToNextState();
     }
 }
 
@@ -179,6 +168,14 @@ void MainState::RestartGame() {
     score = 0;
     currentLvl = 0;
     Map::GetInstance().LoadNextLevel(currentLvl++);
+}
+
+void MainState::GameOver() const {
+    AudioManager::GetInstance().PlaySound("gameOver");
+    ScoreManager::GetInstance().AddScore("../scores/scores.txt", score);
+    EndState::GetInstance().UpdateCurrentScore(score);
+    Snake::GetInstance().StopSnake();
+    GameManager::GetInstance().SwitchToNextState();
 }
 
 

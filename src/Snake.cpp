@@ -47,6 +47,12 @@ Snake::Snake() :
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>());
 
     StartPosition();
+
+    dummyVariable = std::async(std::launch::async, [this]() {
+        while (GameManager::GetInstance().gameRunning)
+            CheckForCollisions();
+    });
+
 }
 
 void Snake::Grow(int xTimes) {
@@ -185,7 +191,7 @@ void Snake::MoveSnakeHead() {
             MoveBodyAndTail();
         }
     }
-    isAbleToChangeDirection = true; // Denne trenger bare å være på slutten av der snake flytter/updater seg
+    isAbleToChangeDirection = true;
 }
 
 void Snake::StopSnake() {
@@ -201,6 +207,9 @@ void Snake::StartPosition() {
 }
 
 void Snake::Update() {
+    StartWallCollisionThread();
+    MoveSnakeHead();
+    UpdateTexture();
     prevPosition = *snakeHead;
 }
 
