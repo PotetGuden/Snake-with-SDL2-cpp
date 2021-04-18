@@ -10,7 +10,7 @@ GameObject::~GameObject() {
     //SDL_DestroyTexture(texture);
 }
 
-void GameObject::Render() {
+void GameObject::Render() const {
     //if(angleTextureFlip > 0){
         SDL_RenderCopyEx(GameManager::renderer ,texture, nullptr, &coords, angleTextureFlip,nullptr, renderFlip);
     //}else{

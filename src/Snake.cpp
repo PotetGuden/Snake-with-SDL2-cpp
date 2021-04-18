@@ -272,19 +272,21 @@ void Snake::CheckForCollisions() { // TODO DEL OPP
     }
 }
 
-bool Snake::CheckNewFruitCollisionSnake(SDL_Rect potentialPos) const {
+bool Snake::CheckNewFruitCollisionSnake(SDL_Rect& potentialPos) const {
     if(SDL_HasIntersection(&potentialPos, &snakeHead->coords))
         return true;
 
-    for(auto &snakePart : snakeBodyVector){
+    /*for(auto &snakePart : snakeBodyVector){
         if(SDL_HasIntersection(&potentialPos, &snakePart->coords)){
             return true;
         }
-    }
-    return false;
+    }*/
+    //return false;
+    return std::ranges::any_of(snakeBodyVector.begin(), snakeBodyVector.end(), [&potentialPos](auto &snakePart){
+        return SDL_HasIntersection(&potentialPos, &snakePart->coords); });
 }
 
-void Snake::StartWallCollisionThread() {
+void Snake::StartWallCollisionThread() { // TODO VENT PÅ KJETIL SITT SVAR
     isNextTileWall = std::async(std::launch::async,[this](){
         UpdateHeadsNextMove();
         /*for (auto &wall : Map::GetInstance().GetWallTiles()) {
@@ -293,8 +295,8 @@ void Snake::StartWallCollisionThread() {
                 return true;
             }
         }*/
-
-        return std::any_of(Map::GetInstance().GetWallTiles().begin(), Map::GetInstance().GetWallTiles().end(), [this](auto &wallTile){
+        //std::vector<GameObject> walltiles = Map::GetInstance().GetWallTiles();
+        return std::ranges::any_of(Map::GetInstance().GetWallTiles().begin(), Map::GetInstance().GetWallTiles().end(), [this](auto &wallTile){
             if (SDL_HasIntersection(&headsNextMove, &wallTile.coords)) {
                 snakeHead->partDirection = prevPosition.partDirection;
                 return true;
@@ -302,7 +304,6 @@ void Snake::StartWallCollisionThread() {
             return false;
         });
 
-        //return result;
         //return false;
     });
 }

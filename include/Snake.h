@@ -13,6 +13,7 @@
 #include "GameObject.h"
 #include <future>
 #include <SDL_mixer.h>
+#include <iostream>
 
 
 class Snake {
@@ -30,7 +31,7 @@ public:
         return instance;
     }
 
-    ~Snake() = default;
+    ~Snake() { std::cout << "DESTROYING SNAKE" << std::endl; };
     Snake(Snake const &) = delete;     // Copy Constructor
     Snake(Snake const &&) = delete;    // Move Constructor
     void operator = (Snake const&) = delete;  // Likhetsoperator
@@ -49,7 +50,7 @@ public:
 
     void UpdateHeadsNextMove();
     Snake();
-    bool CheckNewFruitCollisionSnake(SDL_Rect potentialPos) const;
+    bool CheckNewFruitCollisionSnake(SDL_Rect& potentialPos) const;
     void CheckForCollisions();
     void StartWallCollisionThread();
 private:

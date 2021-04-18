@@ -27,7 +27,7 @@ public: // TODO Sett variabler i cpp filen istedenfor
 
     ~GameObject();
 
-    void Render();
+    void Render() const;
     SDL_Texture* texture;
     SDL_Rect coords{};
     double angleTextureFlip = 0;

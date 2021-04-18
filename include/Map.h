@@ -8,7 +8,7 @@
 #include <SDL.h>
 #include <vector>
 #include "GameObject.h"
-
+#include <iostream>
 
 class Map {
 public:
@@ -19,7 +19,7 @@ public:
         static Map instance;
         return instance;
     }
-    Map(Map const &) = delete;     // Copy Constructor
+    Map(Map const &) = delete;   // Copy Constructor
     Map(Map const &&) = delete;    // Move Constructor
     void operator = (Map const&) = delete;  // Likhetsoperator
 
@@ -29,7 +29,7 @@ public:
 
     bool CheckForWallCollision(SDL_Rect nextPosition);
 
-    void RenderMap();
+    void RenderMap() const ;
 
     std::vector<GameObject>& GetWallTiles();
 

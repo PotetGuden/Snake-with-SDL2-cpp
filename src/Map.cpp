@@ -14,7 +14,7 @@ Map::Map(){
 }
 
 
-void Map::RenderMap() {
+void Map::RenderMap() const {
     for(auto& wallObject : wallTiles){
         wallObject.Render();
     }
