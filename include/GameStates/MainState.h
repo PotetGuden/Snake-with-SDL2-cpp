@@ -63,6 +63,7 @@ private:
 
     std::vector<std::shared_ptr<Fruit>> fruits;
 
+    int timerForNextLvLMessage;
     void AddThreeDifferentFruits();
 };
 

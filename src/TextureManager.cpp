@@ -83,3 +83,9 @@ bool TextureManager::TestFunction() {
     return true;
 }
 
+/*std::map<std::string, SDL_Texture> TextureManager::GetClassTextures(std::string className) {
+
+
+    return std::map<std::string, SDL_Texture>();
+}*/
+

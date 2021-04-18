@@ -7,10 +7,7 @@
 #include <future>
 #include "../include/Snake.h"
 #include "../include/GameManager.h"
-#include "../include/AudioManager.h"
 
-
-// TODO Fjerne NONE Direction?
 
 void Snake::MoveBodyAndTail() {
     if(snakeSpeed != 0) {
@@ -45,27 +42,11 @@ Snake::Snake() :
         startPosition(true),
         isAbleToChangeDirection(true)
 {
+    // Push one part for body and one for tail
+    snakeBodyVector.emplace_back(std::make_shared<SnakePart>());
+    snakeBodyVector.emplace_back(std::make_shared<SnakePart>());
 
-    // Start position Head
-    snakeHeadStart.coords = SetSnakePartCoords(BLOCK_SIZE * 5, BLOCK_SIZE * 4 + 160); // 160 offset
-    snakeHeadStart.texture = TextureManager::GetInstance().GetTexture("headTextureUp");
-    snakeHeadStart.partDirection = Direction::RIGHT;
-    snakeHeadStart.angleTextureFlip = 0;
-    *snakeHead = snakeHeadStart;
-    // Start Position Body
-    snakeBodyStart.coords = SetSnakePartCoords(BLOCK_SIZE * 4, BLOCK_SIZE * 4 + 160);
-    snakeBodyStart.texture = TextureManager::GetInstance().GetTexture("bodyTextureUpDown");
-    snakeBodyStart.angleTextureFlip = 90;
-    snakeBodyStart.partDirection = Direction::RIGHT;
-    // Start Position Tail
-    snakeTailStart.coords = SetSnakePartCoords(BLOCK_SIZE * 3, BLOCK_SIZE * 4 + 160);
-    snakeTailStart.texture = TextureManager::GetInstance().GetTexture("tailTextureRight");
-    snakeTailStart.partDirection = snakeBodyStart.partDirection;
-    snakeHeadStart.angleTextureFlip = 0;
-
-    snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeBodyStart));
-    snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeTailStart));
-
+    StartPosition();
 }
 
 void Snake::Grow(int xTimes) {
@@ -75,15 +56,6 @@ void Snake::Grow(int xTimes) {
         newPart = *snakeBodyVector.back();
         snakeBodyVector.emplace_back(std::make_shared<SnakePart>(newPart));
     }
-}
-
-SDL_Rect Snake::SetSnakePartCoords(int x, int y) { // vurder å gjør det manuelt
-    SDL_Rect tmpCoords;
-    tmpCoords.x = x;
-    tmpCoords.y = y;
-    tmpCoords.w = BLOCK_SIZE;
-    tmpCoords.h = BLOCK_SIZE;
-    return tmpCoords;
 }
 
 void Snake::UpdateTexture() {
@@ -225,17 +197,14 @@ void Snake::StartPosition() {
     if(snakeBodyVector.size() > 2){
         snakeBodyVector.erase(snakeBodyVector.begin() + 2, snakeBodyVector.end());
     }
-
-    *snakeHead = snakeHeadStart;
-    *snakeBodyVector[0] = snakeBodyStart;
-    *snakeBodyVector[1] = snakeTailStart;
+    InitializeSnakePartsStartPosition();
 }
 
 void Snake::Update() {
     prevPosition = *snakeHead;
 }
 
-std::mutex collisionMutex;
+//std::mutex collisionMutex;
 void Snake::CheckForCollisions() { // TODO DEL OPP
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
     //std::lock_guard<std::mutex> lock(collisionMutex); //lock_guard unlocker mutex i sin destructor, dvs hver gang denne funksjonen er ferdig
@@ -305,4 +274,32 @@ void Snake::StartWallCollisionThread() { // TODO VENT PÅ KJETIL SITT SVAR
 
         //return false;
     });
+}
+
+void Snake::InitializeSnakePartsStartPosition() {
+    // Snake Head
+    snakeHead->coords.x = BLOCK_SIZE * 5;
+    snakeHead->coords.y = BLOCK_SIZE * 5 + HEADER_TEXTURE_Y_OFFSET;
+    snakeHead->coords.w = BLOCK_SIZE;
+    snakeHead->coords.h = BLOCK_SIZE;
+    snakeHead->angleTextureFlip = 0;
+    snakeHead->texture = TextureManager::GetInstance().GetTexture("headTextureUp");
+    snakeHead->partDirection = Direction::RIGHT;
+    // Snake Middle Part
+    snakeBodyVector[0]->coords.x = BLOCK_SIZE * 4;
+    snakeBodyVector[0]->coords.y = BLOCK_SIZE * 5 + HEADER_TEXTURE_Y_OFFSET;
+    snakeBodyVector[0]->coords.w = BLOCK_SIZE;
+    snakeBodyVector[0]->coords.h = BLOCK_SIZE;
+    snakeBodyVector[0]->texture = TextureManager::GetInstance().GetTexture("bodyTextureUpDown");
+    snakeBodyVector[0]->angleTextureFlip = 90;
+    snakeBodyVector[0]->partDirection = Direction::RIGHT;
+    // Snake Tail
+    snakeBodyVector[1]->coords.x = BLOCK_SIZE * 3;
+    snakeBodyVector[1]->coords.y = BLOCK_SIZE * 5 + HEADER_TEXTURE_Y_OFFSET;
+    snakeBodyVector[1]->coords.w = BLOCK_SIZE;
+    snakeBodyVector[1]->coords.h = BLOCK_SIZE;
+    snakeBodyVector[1]->texture = TextureManager::GetInstance().GetTexture("tailTextureRight");
+    snakeBodyVector[1]->angleTextureFlip = 0;
+    snakeBodyVector[1]->partDirection = Direction::RIGHT;
+
 }

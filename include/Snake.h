@@ -19,7 +19,7 @@
 class Snake {
 public:
     enum class Direction {
-        UP, DOWN, LEFT, RIGHT // Fjern None
+        UP, DOWN, LEFT, RIGHT
     };
 
     struct SnakePart : public GameObject {
@@ -56,13 +56,12 @@ public:
     void StartWallCollisionThread();
 private:
     // Storing copy of these here so we can use them for start position, initializing them in constructor
-    SnakePart snakeHeadStart{},snakeBodyStart{},snakeTailStart{};
     SnakePart prevPosition{};
 
     std::shared_ptr<SnakePart> snakeHead = std::make_shared<SnakePart>();
     std::vector<std::shared_ptr<SnakePart>> snakeBodyVector;
 
-    SDL_Rect SetSnakePartCoords(int x, int y);
+    void InitializeSnakePartsStartPosition();
 
     bool startPosition;
     int snakeSpeed;

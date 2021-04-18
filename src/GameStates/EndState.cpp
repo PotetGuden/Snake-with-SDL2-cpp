@@ -8,17 +8,12 @@
 #include "../../include/InputManager.h"
 #include "../../include/GameManager.h"
 
-/*constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0};
-constexpr SDL_Color WHITE_COLOR = {255, 255, 255, 255};
-constexpr SDL_Color GREEN_COLOR = {0, 255, 0, 255};
-constexpr SDL_Color RED_COLOR = {255, 0, 0};*/
 
 void EndState::Render() {
     endBackground->Render();
     FontManager::GetInstance().RenderFont("GAME OVER", RED_COLOR, false,320, 90, 150, 60);
     FontManager::GetInstance().RenderFont("YOUR SCORE IS: " + std::to_string(currentScore), WHITE_COLOR, false,280, 220, 240, 60);
     FontManager::GetInstance().RenderFont(" High Scores ", WHITE_COLOR, true,300, 300, 200, 60);
-    //FontManager::GetInstance().RenderFont("SNEEEK", GREEN_COLOR2, true, 300, 5, 200, 100);
 
     if(scores.size() < 5){
         for(int i = 0; i < scores.size(); i++){

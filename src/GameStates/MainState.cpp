@@ -17,7 +17,8 @@ MainState::MainState() :
     score(0),
     timeLeft(50),
     lives(3),
-    showNextLvlMessage(false)
+    showNextLvlMessage(false),
+    timerForNextLvLMessage(0)
     {
         Map::GetInstance().LoadNextLevel(currentLvl++);
         AddThreeDifferentFruits();
@@ -59,12 +60,13 @@ void MainState::RenderHeaderText() {
         FontManager::GetInstance().RenderFont(" Congratulations, you made it to ", WHITE_COLOR,true, 250, 380, 300, 45); // TODO
         FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + ", your score is now " + std::to_string(bonusScoreText) + " ", WHITE_COLOR, true, 250, 425, 300, 45); // TODO
 
-        int timer = 0;
+
         if(bonusScoreText >= score){
-            timer++;
-            if(timer >= 100 ){
+            timerForNextLvLMessage++;
+            if(timerForNextLvLMessage >= 100 ){
                 showNextLvlMessage = false;
                 enableMovement = true;
+                timerForNextLvLMessage = 0;
             }
         }
     }

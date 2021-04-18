@@ -13,10 +13,10 @@ AudioManager::AudioManager() :
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
         GameManager::GetInstance().gameRunning = false;
     }
-    SetSounds("crashSound", "../Audio/crash-to-wall.wav");
-    SetSounds("eatingFruit", "../Audio/eating-fruit.wav");
-    SetSounds("snakeEatingSnake", "../Audio/snake-eating-snake.wav");
-    SetSounds("gameOver", "../Audio/game-over-sound-effect.wav");
+    SetSounds("crashSound", "../audio/crash-to-wall.wav");
+    SetSounds("eatingFruit", "../audio/eating-fruit.wav");
+    SetSounds("snakeEatingSnake", "../audio/snake-eating-snake.wav");
+    SetSounds("gameOver", "../audio/game-over-sound-effect.wav");
     Mix_Volume(-1, volume);
 }
 
