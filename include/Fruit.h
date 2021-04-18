@@ -32,9 +32,11 @@ public:
 
     void SetNewPosition();
 
-    static int GetRandomNumber(int maxNumber); // static?
+    int GetRandomNumber(int maxNumber); // static?
 
     void SetNewRandomTexture();
+
+    bool CheckFruitOnFruitCollision(SDL_Rect& potentialPosition);
 
     TYPE type;
 

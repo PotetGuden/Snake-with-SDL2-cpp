@@ -21,7 +21,9 @@ void Fruit::SetNewPosition() {
         potentialFruitPos.x = x;
         potentialFruitPos.y = y;
     }
-    while(Map::GetInstance().CheckForWallCollision(potentialFruitPos) || Snake::GetInstance().CheckNewFruitCollisionSnake(potentialFruitPos));
+    while(Map::GetInstance().CheckForWallCollision(potentialFruitPos) ||
+          Snake::GetInstance().CheckNewFruitCollisionSnake(potentialFruitPos) ||
+          CheckFruitOnFruitCollision(potentialFruitPos));
 
     coords.x = potentialFruitPos.x;
     coords.y = potentialFruitPos.y;
@@ -71,4 +73,13 @@ void Fruit::SetNewRandomTexture() {
 
 Fruit::~Fruit() {
     std::cout << "Fruit DESTROYED" << std::endl;
+}
+
+bool Fruit::CheckFruitOnFruitCollision(SDL_Rect& potentialPosition) {
+    for(auto& fruit : MainState::GetInstance().GetFruitVector()){
+        if(SDL_HasIntersection(&fruit->coords, &potentialPosition)){
+            return true;
+        }
+    }
+    return false;
 }

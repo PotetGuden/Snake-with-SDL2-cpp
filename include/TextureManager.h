@@ -31,9 +31,8 @@ public:
 
     bool TestFunction();
 
-    std::map<std::string, SDL_Texture*> allTextures; // flytt til private
 private:
-
+    std::map<std::string, SDL_Texture*> allTextures; // flytt til private
     TextureManager() = default;
 };
 

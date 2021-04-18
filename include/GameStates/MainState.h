@@ -7,7 +7,7 @@
 
 
 #include <memory>
-#include "../StateInterface.h"
+#include "StateInterface.h"
 #include "../GameObject.h"
 #include "../ScoreManager.h"
 #include "../Fruit.h"
@@ -40,14 +40,14 @@ public:
     void AddScore(int number);
     void ReduceLives();
     void RestartGame();
-    std::vector<std::shared_ptr<Fruit>> &GetFruitVector();
+    std::vector<std::shared_ptr<Fruit>>& GetFruitVector();
 private:
     void GoToNextLvl();
 
     void HandleInputs() override;
 
     void RenderHeaderText();
-    std::unique_ptr<GameObject> headerObject;
+    std::unique_ptr<GameObject> headerObject; // probably nææt
     int currentLvl;
     bool enableMovement;
     int frameCounterSpeed;
@@ -55,18 +55,15 @@ private:
     Uint16 timeLeft;
     unsigned short lives;
     bool showNextLvlMessage;
-    int timer;
     int bonusScoreText;
 
     // Må lagre denne futuren selvom vi ikke bruker den, sånn at lifetimen til futuren vil vare
     // så lenge MainState gjør, og at main thread ikke venter på at denne skal bli "ferdig"
     std::future<void> dummyVariable;
 
-protected:
-    //std::unique_ptr<ScoreManager> scoreManager;
     std::vector<std::shared_ptr<Fruit>> fruits;
 
-    void AddThreeDifferentApples();
+    void AddThreeDifferentFruits();
 };
 
 

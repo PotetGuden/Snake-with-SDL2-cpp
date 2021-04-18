@@ -7,7 +7,7 @@
 #include "../include/GameManager.h"
 
 AudioManager::AudioManager() :
-    volume(20) {
+    volume(10) {
 
     if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ){
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
@@ -44,7 +44,7 @@ void AudioManager::CleanAudio() {
 }
 
 void AudioManager::MuteOrUnmuteSoundEffects() {
-    volume = (volume == 20) ? 0 : 20;
+    volume = (volume == 10) ? 0 : 10;
     Mix_Volume(-1, volume);
 }
 

@@ -8,7 +8,7 @@
 
 #include <memory>
 #include "../GameObject.h"
-#include "../StateInterface.h"
+#include "StateInterface.h"
 #include "../FontManager.h"
 #include "../ScoreManager.h"
 

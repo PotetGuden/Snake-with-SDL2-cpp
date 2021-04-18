@@ -42,30 +42,29 @@ void Snake::Render() {
 
 Snake::Snake() :
         snakeSpeed(0),
-        startPosition(true)
-//headsNextMove()
+        startPosition(true),
+        isAbleToChangeDirection(true)
 {
 
     // Start position Head
     snakeHeadStart.coords = SetSnakePartCoords(BLOCK_SIZE * 5, BLOCK_SIZE * 4 + 160); // 160 offset
-    snakeHeadStart.texture = TextureManager::GetInstance().allTextures.find("headTextureUp")->second;
+    snakeHeadStart.texture = TextureManager::GetInstance().GetTexture("headTextureUp");
     snakeHeadStart.partDirection = Direction::RIGHT;
     snakeHeadStart.angleTextureFlip = 0;
     *snakeHead = snakeHeadStart;
     // Start Position Body
     snakeBodyStart.coords = SetSnakePartCoords(BLOCK_SIZE * 4, BLOCK_SIZE * 4 + 160);
-    snakeBodyStart.texture = TextureManager::GetInstance().allTextures.find("bodyTextureUpDown")->second;
+    snakeBodyStart.texture = TextureManager::GetInstance().GetTexture("bodyTextureUpDown");
     snakeBodyStart.angleTextureFlip = 90;
     snakeBodyStart.partDirection = Direction::RIGHT;
     // Start Position Tail
     snakeTailStart.coords = SetSnakePartCoords(BLOCK_SIZE * 3, BLOCK_SIZE * 4 + 160);
-    snakeTailStart.texture = TextureManager::GetInstance().allTextures.find("tailTextureRight")->second;
+    snakeTailStart.texture = TextureManager::GetInstance().GetTexture("tailTextureRight");
     snakeTailStart.partDirection = snakeBodyStart.partDirection;
     snakeHeadStart.angleTextureFlip = 0;
 
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeBodyStart));
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeTailStart));
-
 
 }
 
@@ -78,7 +77,7 @@ void Snake::Grow(int xTimes) {
     }
 }
 
-SDL_Rect Snake::SetSnakePartCoords(int x, int y) {
+SDL_Rect Snake::SetSnakePartCoords(int x, int y) { // vurder å gjør det manuelt
     SDL_Rect tmpCoords;
     tmpCoords.x = x;
     tmpCoords.y = y;
@@ -106,7 +105,6 @@ void Snake::UpdateTexture() {
             snakeHead->angleTextureFlip = 0;
             snakeHead->renderFlip = SDL_FLIP_NONE;
             break;
-
     }
 
     // Body Texture
@@ -116,32 +114,32 @@ void Snake::UpdateTexture() {
             snakeBodyVector[i]->texture = snakeBodyVector.back()->texture;
         } else if(snakeBodyVector[i]->partDirection == Direction::UP && prevPosition.partDirection == Direction::RIGHT ||
                   snakeBodyVector[i]->partDirection == Direction::LEFT && prevPosition.partDirection == Direction::DOWN){
-            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureRightDownUpLeft")->second;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().GetTexture("bodyTextureRightDownUpLeft");
             snakeBodyVector[i]->angleTextureFlip = 270;
             snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::UP && prevPosition.partDirection == Direction::LEFT ||
                   snakeBodyVector[i]->partDirection == Direction::RIGHT && prevPosition.partDirection == Direction::DOWN){
-            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureRightDownUpLeft")->second;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().GetTexture("bodyTextureRightDownUpLeft");
             snakeBodyVector[i]->angleTextureFlip = 0;
             snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::DOWN && prevPosition.partDirection == Direction::RIGHT ||
                   snakeBodyVector[i]->partDirection == Direction::LEFT && prevPosition.partDirection == Direction::UP){
-            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureRightDownUpLeft")->second;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().GetTexture("bodyTextureRightDownUpLeft");
             snakeBodyVector[i]->angleTextureFlip = 180;
             snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::DOWN && prevPosition.partDirection == Direction::LEFT ||
                   snakeBodyVector[i]->partDirection == Direction::RIGHT && prevPosition.partDirection == Direction::UP){
-            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureRightDownUpLeft")->second;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().GetTexture("bodyTextureRightDownUpLeft");
             snakeBodyVector[i]->angleTextureFlip = 90;
             snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::RIGHT && prevPosition.partDirection == Direction::RIGHT ||
                   snakeBodyVector[i]->partDirection == Direction::LEFT && prevPosition.partDirection == Direction::LEFT){
-            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureUpDown")->second;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().GetTexture("bodyTextureUpDown");
             snakeBodyVector[i]->angleTextureFlip = 90;
             snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         } else if(snakeBodyVector[i]->partDirection == Direction::UP && prevPosition.partDirection == Direction::UP ||
                   snakeBodyVector[i]->partDirection == Direction::DOWN && prevPosition.partDirection == Direction::DOWN){
-            snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureUpDown")->second;
+            snakeBodyVector[i]->texture = TextureManager::GetInstance().GetTexture("bodyTextureUpDown");
             snakeBodyVector[i]->angleTextureFlip = 0;
             snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
         }
@@ -288,6 +286,7 @@ bool Snake::CheckNewFruitCollisionSnake(SDL_Rect& potentialPos) const {
 
 void Snake::StartWallCollisionThread() { // TODO VENT PÅ KJETIL SITT SVAR
     isNextTileWall = std::async(std::launch::async,[this](){
+
         UpdateHeadsNextMove();
         /*for (auto &wall : Map::GetInstance().GetWallTiles()) {
             if (SDL_HasIntersection(&headsNextMove, &wall.coords)) {

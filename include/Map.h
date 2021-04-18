@@ -12,7 +12,7 @@
 
 class Map {
 public:
-    Map();
+    Map() = default;
     ~Map();
 
     static Map &GetInstance(){
@@ -27,7 +27,7 @@ public:
     void ReadMapFromFileIntoVector(std::string &filePath);
     void DeleteVectorContentIfNotEmpty();
 
-    bool CheckForWallCollision(SDL_Rect nextPosition);
+    bool CheckForWallCollision(SDL_Rect& nextPosition);
 
     void RenderMap() const ;
 

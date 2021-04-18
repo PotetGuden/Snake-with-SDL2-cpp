@@ -7,7 +7,7 @@
 
 
 #include <SDL.h>
-#include "../StateInterface.h"
+#include "StateInterface.h"
 #include "../GameObject.h"
 
 class StartState : public StateInterface{

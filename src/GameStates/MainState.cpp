@@ -6,14 +6,7 @@
 #include <future>
 #include "../../include/GameStates/MainState.h"
 #include "../../include/GameManager.h"
-#include <SDL_mixer.h>
-#include "../../include/AudioManager.h"
 
-/*constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0};
-constexpr SDL_Color WHITE_COLOR = {255, 255, 255, 255};
-constexpr SDL_Color GREEN_COLOR = {0, 255, 0, 255};*/
-
-// TODO lage en Player class som inneholde score/liv/timeleft osv
 
 MainState::MainState() :
     currentLvl(0),
@@ -24,11 +17,10 @@ MainState::MainState() :
     score(0),
     timeLeft(50),
     lives(3),
-    showNextLvlMessage(false),
-    timer(0)
+    showNextLvlMessage(false)
     {
         Map::GetInstance().LoadNextLevel(currentLvl++);
-        AddThreeDifferentApples();
+        AddThreeDifferentFruits();
         ScoreManager::GetInstance().PrintScores();
         ScoreManager::GetInstance().SortScores();
 
@@ -67,11 +59,11 @@ void MainState::RenderHeaderText() {
         FontManager::GetInstance().RenderFont(" Congratulations, you made it to ", WHITE_COLOR,true, 250, 380, 300, 45); // TODO
         FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + ", your score is now " + std::to_string(bonusScoreText) + " ", WHITE_COLOR, true, 250, 425, 300, 45); // TODO
 
+        int timer = 0;
         if(bonusScoreText >= score){
             timer++;
             if(timer >= 100 ){
                 showNextLvlMessage = false;
-                timer = 0;
                 enableMovement = true;
             }
         }
@@ -159,10 +151,10 @@ void MainState::GoToNextLvl() {
     }
 }
 
-void MainState::AddThreeDifferentApples() {
-    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::APPLE,BLOCK_SIZE,BLOCK_SIZE,128,448));
-    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::BANANA, BLOCK_SIZE, BLOCK_SIZE, 224, 448));
-    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::WATERMELON, BLOCK_SIZE, BLOCK_SIZE, 384, 480));
+void MainState::AddThreeDifferentFruits() {
+    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::APPLE,BLOCK_SIZE,BLOCK_SIZE,BLOCK_SIZE * 5,BLOCK_SIZE * 7 + 160));
+    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::BANANA, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE * 10, BLOCK_SIZE * 7 + 160));
+    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::WATERMELON, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE * 15, BLOCK_SIZE * 7 + 160));
 }
 
 void MainState::AddScore(const int number) {

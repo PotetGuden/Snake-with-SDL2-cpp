@@ -31,7 +31,9 @@ public:
         return instance;
     }
 
-    ~Snake() { std::cout << "DESTROYING SNAKE" << std::endl; };
+    Snake();
+    ~Snake() = default;
+
     Snake(Snake const &) = delete;     // Copy Constructor
     Snake(Snake const &&) = delete;    // Move Constructor
     void operator = (Snake const&) = delete;  // Likhetsoperator
@@ -39,24 +41,23 @@ public:
     void ChangeDirection(Direction potentialDir, Direction oppositeDir);
     void MoveSnakeHead();
     void MoveBodyAndTail();
+    void UpdateTexture();
 
     void Update();
     void Render();
-    void UpdateTexture();
 
     void Grow(int xTimes);
     void StopSnake();
-    void StartPosition();
 
+    void StartPosition();
     void UpdateHeadsNextMove();
-    Snake();
     bool CheckNewFruitCollisionSnake(SDL_Rect& potentialPos) const;
     void CheckForCollisions();
     void StartWallCollisionThread();
 private:
     // Storing copy of these here so we can use them for start position, initializing them in constructor
     SnakePart snakeHeadStart{},snakeBodyStart{},snakeTailStart{};
-    SnakePart prevPosition{}; // Kunne kanskje vært weak_ptr
+    SnakePart prevPosition{};
 
     std::shared_ptr<SnakePart> snakeHead = std::make_shared<SnakePart>();
     std::vector<std::shared_ptr<SnakePart>> snakeBodyVector;
@@ -67,7 +68,7 @@ private:
     int snakeSpeed;
     SDL_Rect headsNextMove{};
     std::future<bool> isNextTileWall; // TODO LEGG DENNE SAMMEN MED DEN ANDRE COLLISION
-    bool isAbleToChangeDirection = true; // Siden handle inputs kjører kjappere enn vi flytter snake head, så trenger vi å "locke" input når vi først har endret direction
+    bool isAbleToChangeDirection; // Siden handle inputs kjører kjappere enn vi flytter snake head, så trenger vi å "locke" input når vi først har endret direction
 };
 
 

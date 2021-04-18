@@ -6,7 +6,7 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "../include/GameManager.h"
-#include "../include/AudioManager.h"
+
 
 // .reset() shared_ptr
 
@@ -43,7 +43,7 @@ void GameManager::Init(){
 
 }
 
-void GameManager::Render() {
+void GameManager::Render() const {
     switch(state){
         case 0:
             StartState::GetInstance().Render();

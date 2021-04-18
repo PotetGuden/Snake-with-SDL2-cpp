@@ -19,6 +19,7 @@
 #include "GameStates/StartState.h"
 #include "GameStates/MainState.h"
 #include "GameStates/EndState.h"
+#include "AudioManager.h"
 
 //#define BLOCK_SIZE 32  // width and height of each tile, wall, fruit and snake part
 //constexpr int BLOCK_SIZE = 32; // Modern c++ instead of #define
@@ -56,7 +57,7 @@ private:
     ~GameManager();
 
     void Update();
-    void Render();
+    void Render() const;
     void DestroySDLObjects();
 
     SDL_Window *window;

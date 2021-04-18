@@ -9,11 +9,6 @@
 #include "../include/GameManager.h"
 
 
-Map::Map(){
-
-}
-
-
 void Map::RenderMap() const {
     for(auto& wallObject : wallTiles){
         wallObject.Render();
@@ -27,7 +22,7 @@ Map::~Map() {
     std::cout << "DESTROYING MAP" << std::endl;
 }
 
-bool Map::CheckForWallCollision(SDL_Rect nextPosition) {
+bool Map::CheckForWallCollision(SDL_Rect& nextPosition) {
     for(auto &wallTile : wallTiles){
         if(nextPosition.x == wallTile.coords.x && nextPosition.y == wallTile.coords.y){
             return true;
