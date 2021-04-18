@@ -15,14 +15,14 @@
 void Snake::MoveBodyAndTail() {
     if(snakeSpeed != 0) {
         for(auto &snakePart : snakeBodyVector){
-                SnakePart currPosition{};
-                currPosition.partDirection = snakePart->partDirection;
-                currPosition.coords = snakePart->coords;
+            SnakePart currPosition{};
+            currPosition.partDirection = snakePart->partDirection;
+            currPosition.coords = snakePart->coords;
 
-                snakePart->partDirection = prevPosition.partDirection;
-                snakePart->coords = prevPosition.coords;
+            snakePart->partDirection = prevPosition.partDirection;
+            snakePart->coords = prevPosition.coords;
 
-                prevPosition = currPosition;
+            prevPosition = currPosition;
         }
 
         // Jeg bruker snakeBodyVector.size()-2 fordi jeg vil ha nest siste element i vectoren, sånn at tail alltid følger den
@@ -41,14 +41,10 @@ void Snake::Render() {
 }
 
 Snake::Snake() :
-    snakeSpeed(0),
-    startPosition(true)
-    //headsNextMove()
-    {
-    headsNextMove.x = 0;
-    headsNextMove.y = 0;
-    headsNextMove.w = 0;
-    headsNextMove.h = 0;
+        snakeSpeed(0),
+        startPosition(true)
+//headsNextMove()
+{
 
     // Start position Head
     snakeHeadStart.coords = SetSnakePartCoords(BLOCK_SIZE * 5, BLOCK_SIZE * 4 + 160); // 160 offset
@@ -82,7 +78,7 @@ void Snake::Grow(int xTimes) {
     }
 }
 
-SDL_Rect Snake::SetSnakePartCoords(int x, int y) { // kanskje legg inn SDL_Rect tmpCoords her
+SDL_Rect Snake::SetSnakePartCoords(int x, int y) {
     SDL_Rect tmpCoords;
     tmpCoords.x = x;
     tmpCoords.y = y;
@@ -119,7 +115,7 @@ void Snake::UpdateTexture() {
         if(SDL_HasIntersection(&snakeBodyVector[i]->coords, &snakeBodyVector.back()->coords)){ // When the snake grows, multiple bodyparts overlaps, this just ensures that it then has a tail texture
             snakeBodyVector[i]->texture = snakeBodyVector.back()->texture;
         } else if(snakeBodyVector[i]->partDirection == Direction::UP && prevPosition.partDirection == Direction::RIGHT ||
-           snakeBodyVector[i]->partDirection == Direction::LEFT && prevPosition.partDirection == Direction::DOWN){
+                  snakeBodyVector[i]->partDirection == Direction::LEFT && prevPosition.partDirection == Direction::DOWN){
             snakeBodyVector[i]->texture = TextureManager::GetInstance().allTextures.find("bodyTextureRightDownUpLeft")->second;
             snakeBodyVector[i]->angleTextureFlip = 270;
             snakeBodyVector[i]->renderFlip = SDL_FLIP_NONE;
@@ -167,7 +163,7 @@ void Snake::UpdateTexture() {
     }
 }
 
-SDL_Rect Snake::HeadsNextMove() {
+void Snake::UpdateHeadsNextMove() {
     headsNextMove.w = BLOCK_SIZE;
     headsNextMove.h = BLOCK_SIZE;
     if (snakeHead->partDirection == Direction::UP) {
@@ -183,7 +179,7 @@ SDL_Rect Snake::HeadsNextMove() {
         headsNextMove.x = snakeHead->coords.x + BLOCK_SIZE;
         headsNextMove.y = snakeHead->coords.y;
     }
-    return headsNextMove;
+    //return headsNextMove;
 }
 
 void Snake::ChangeDirection(Direction potentialDir, Direction oppositeDir) {
@@ -290,13 +286,23 @@ bool Snake::CheckNewFruitCollisionSnake(SDL_Rect potentialPos) const {
 
 void Snake::StartWallCollisionThread() {
     isNextTileWall = std::async(std::launch::async,[this](){
-        headsNextMove = HeadsNextMove();
-        for (auto &wall : Map::GetInstance().GetWallTiles()) {
+        UpdateHeadsNextMove();
+        /*for (auto &wall : Map::GetInstance().GetWallTiles()) {
             if (SDL_HasIntersection(&headsNextMove, &wall.coords)) {
                 snakeHead->partDirection = prevPosition.partDirection;
                 return true;
             }
-        }
-        return false;
+        }*/
+
+        return std::any_of(Map::GetInstance().GetWallTiles().begin(), Map::GetInstance().GetWallTiles().end(), [this](auto &wallTile){
+            if (SDL_HasIntersection(&headsNextMove, &wallTile.coords)) {
+                snakeHead->partDirection = prevPosition.partDirection;
+                return true;
+            }
+            return false;
+        });
+
+        //return result;
+        //return false;
     });
 }

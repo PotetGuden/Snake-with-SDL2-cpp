@@ -22,7 +22,7 @@ public:
     };
 
     struct SnakePart : public GameObject {
-        Direction partDirection;
+        Direction partDirection{};
     };
 
     static Snake &GetInstance(){
@@ -47,7 +47,7 @@ public:
     void StopSnake();
     void StartPosition();
 
-    SDL_Rect HeadsNextMove();
+    void UpdateHeadsNextMove();
     Snake();
     bool CheckNewFruitCollisionSnake(SDL_Rect potentialPos) const;
     void CheckForCollisions();

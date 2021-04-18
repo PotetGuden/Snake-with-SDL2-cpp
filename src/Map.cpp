@@ -24,7 +24,7 @@ void Map::RenderMap() {
 }
 
 Map::~Map() {
-
+    std::cout << "DESTROYING MAP" << std::endl;
 }
 
 bool Map::CheckForWallCollision(SDL_Rect nextPosition) {
@@ -44,7 +44,7 @@ bool Map::LoadNextLevel(int lvl) {
     return true;
 }
 
-std::vector<GameObject> Map::GetWallTiles() {
+std::vector<GameObject>& Map::GetWallTiles() {
     return wallTiles;
 }
 

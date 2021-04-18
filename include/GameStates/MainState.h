@@ -18,7 +18,7 @@
 #include <SDL_mixer.h>
 
 
-constexpr int BLOCK_SIZE = 32;
+constexpr int BLOCK_SIZE = 32; // Width and Height of each tile within the snakemap
 constexpr int HEADER_TEXTURE_Y_OFFSET = 160;
 
 class MainState : public StateInterface{

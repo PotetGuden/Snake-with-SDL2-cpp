@@ -68,3 +68,7 @@ void Fruit::SetNewRandomTexture() {
     }
     UpdateTexture();
 }
+
+Fruit::~Fruit() {
+    std::cout << "Fruit DESTROYED" << std::endl;
+}

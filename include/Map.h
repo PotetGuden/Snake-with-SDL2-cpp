@@ -31,7 +31,7 @@ public:
 
     void RenderMap();
 
-    std::vector<GameObject> GetWallTiles();
+    std::vector<GameObject>& GetWallTiles();
 
 private:
     std::vector<std::string> mapFilePath = {

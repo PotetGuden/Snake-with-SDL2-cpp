@@ -32,11 +32,13 @@ public:
 
     void SetNewPosition();
 
-    static int GetRandomNumber(int maxNumber);
+    static int GetRandomNumber(int maxNumber); // static?
 
     void SetNewRandomTexture();
 
     TYPE type;
+
+    ~Fruit();
 private:
 
 
