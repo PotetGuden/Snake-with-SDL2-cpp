@@ -28,54 +28,52 @@ Map::~Map() {
 }
 
 bool Map::CheckForWallCollision(SDL_Rect nextPosition) {
-    SDL_Rect tmp;
-    tmp.w = BLOCK_SIZE;
-    tmp.h = BLOCK_SIZE;
-    for(int row = 0; row < 20; row++){
-        for(int column = 0; column < 25; column++){
-            tmp.x = column * BLOCK_SIZE;
-            tmp.y = row * BLOCK_SIZE + 160;
-
-            tileType = map[row][column];
-            if(tileType == 1){ // wall
-                if(nextPosition.x == tmp.x && nextPosition.y == tmp.y){
-                    return true;
-                }
-            }
+    for(auto &wallTile : wallTiles){
+        if(nextPosition.x == wallTile.coords.x && nextPosition.y == wallTile.coords.y){
+            return true;
         }
     }
     return false;
 }
 
-void Map::LoadMapFromFile(std::string &filePath) {
+bool Map::LoadNextLevel(int lvl) {
+    if(lvl > mapFilePath.size()){
+        return false;
+    }
+    ReadMapFromFileIntoVector(mapFilePath[lvl]);
+    return true;
+}
+
+std::vector<GameObject> Map::GetWallTiles() {
+    return wallTiles;
+}
+
+void Map::ReadMapFromFileIntoVector(std::string &filePath) {
+    DeleteVectorContentIfNotEmpty();
     std::ifstream file(filePath);
 
     if (!file.is_open()) {
         std::cout << "Unable to open map" << std::endl;
     }
+    SDL_Rect dest;
+    dest.w = dest.h = BLOCK_SIZE;
 
+    int convertFileContentToInt;
     for(int row = 0; row < 20; row++){
         for(int column = 0; column < 25; column++){
-            file >> map[row][column];
+            dest.x = column * BLOCK_SIZE;
+            dest.y = row * BLOCK_SIZE + 160;
+            file >> convertFileContentToInt;
+            if(convertFileContentToInt == 0){
+                grassTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("grassTexture"));
+            } else if(convertFileContentToInt == 1){
+                wallTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("wallTexture"));
+            }
         }
     }
 }
 
-bool Map::LoadNextLevel(int lvl) {
-    std::cout << "load map" << std::endl;
-    if(lvl > mapFilePath.size()){
-        return false;
-    }
-    LoadMapFromFile(mapFilePath[lvl]);
-    SetCurrentMapTilesToVector();
-    return true;
-}
-
-std::vector<GameObject>& Map::GetWallTiles() {
-    return wallTiles;
-}
-
-void Map::SetCurrentMapTilesToVector() {
+void Map::DeleteVectorContentIfNotEmpty() {
     if(!wallTiles.empty()){
         wallTiles.erase(wallTiles.begin(), wallTiles.end());
     }
@@ -83,19 +81,4 @@ void Map::SetCurrentMapTilesToVector() {
         grassTiles.erase(grassTiles.begin(), grassTiles.end());
     }
 
-    SDL_Rect dest;
-    dest.w = dest.h = BLOCK_SIZE;
-
-    for(int row = 0; row < 20; row++){
-        for(int column = 0; column < 25; column++){
-            dest.x = column * BLOCK_SIZE;
-            dest.y = row * BLOCK_SIZE + 160;
-            if(map[row][column] == 1){
-                wallTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("wallTexture"));
-            } else if(map[row][column] == 0){
-                grassTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("grassTexture"));
-            }
-
-        }
-    }
 }

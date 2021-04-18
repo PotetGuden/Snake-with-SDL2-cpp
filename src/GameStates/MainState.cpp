@@ -9,9 +9,9 @@
 #include <SDL_mixer.h>
 #include "../../include/AudioManager.h"
 
-constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0};
+/*constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0};
 constexpr SDL_Color WHITE_COLOR = {255, 255, 255, 255};
-constexpr SDL_Color GREEN_COLOR = {0, 255, 0, 255};
+constexpr SDL_Color GREEN_COLOR = {0, 255, 0, 255};*/
 
 // TODO lage en Player class som inneholde score/liv/timeleft osv
 
@@ -124,8 +124,6 @@ void MainState::HandleInputs() {
             Snake::GetInstance().ChangeDirection(Snake::Direction::LEFT, Snake::Direction::RIGHT);
         } else if(im.KeyDown(SDL_SCANCODE_D)){
             Snake::GetInstance().ChangeDirection(Snake::Direction::RIGHT, Snake::Direction::LEFT);
-        } else if(im.KeyDown(SDL_SCANCODE_R)){
-            Snake::GetInstance().ChangeDirection(Snake::Direction::NONE, Snake::Direction::NONE);
         } else if(im.KeyDown(SDL_SCANCODE_P)){
             GameManager::GetInstance().SwitchToNextState();
         } else if(InputManager::GetInstance().KeyDown(SDL_SCANCODE_M)){

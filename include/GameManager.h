@@ -25,7 +25,10 @@
 constexpr int BLOCK_WIDTH = 32; // Modern c++ instead of #define
 constexpr int BLOCK_HEIGHT = 32; // Modern c++ instead of #define
 constexpr int HEADER_Y_OFFSET = 160; // Modern c++ instead of #define
-
+constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0}; // Plasser disse i stateinterface?
+constexpr SDL_Color WHITE_COLOR = {255, 255, 255, 255};
+constexpr SDL_Color GREEN_COLOR = {0, 255, 0, 255};
+constexpr SDL_Color RED_COLOR = {255, 0, 0};
 
 class GameManager {
 public:

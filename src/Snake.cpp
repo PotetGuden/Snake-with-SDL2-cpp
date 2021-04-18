@@ -13,7 +13,7 @@
 // TODO Fjerne NONE Direction?
 
 void Snake::MoveBodyAndTail() {
-    if(snakeSpeed != 0 && snakeHead->partDirection != Direction::NONE) {
+    if(snakeSpeed != 0) {
         for(auto &snakePart : snakeBodyVector){
                 SnakePart currPosition{};
                 currPosition.partDirection = snakePart->partDirection;
@@ -26,9 +26,7 @@ void Snake::MoveBodyAndTail() {
         }
 
         // Jeg bruker snakeBodyVector.size()-2 fordi jeg vil ha nest siste element i vectoren, sånn at tail alltid følger den
-        if(snakeBodyVector[snakeBodyVector.size() - 2]->partDirection != Direction::NONE) {
-            snakeBodyVector.back()->partDirection = snakeBodyVector[snakeBodyVector.size() - 2]->partDirection;
-        }
+        snakeBodyVector.back()->partDirection = snakeBodyVector[snakeBodyVector.size() - 2]->partDirection;
     }
 }
 
@@ -72,6 +70,7 @@ Snake::Snake() :
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeBodyStart));
     snakeBodyVector.emplace_back(std::make_shared<SnakePart>(snakeTailStart));
 
+
 }
 
 void Snake::Grow(int xTimes) {
@@ -111,8 +110,7 @@ void Snake::UpdateTexture() {
             snakeHead->angleTextureFlip = 0;
             snakeHead->renderFlip = SDL_FLIP_NONE;
             break;
-        case Direction::NONE:
-            break;
+
     }
 
     // Body Texture
@@ -192,8 +190,8 @@ void Snake::ChangeDirection(Direction potentialDir, Direction oppositeDir) {
     if(snakeHead->partDirection != oppositeDir && isAbleToChangeDirection){
         snakeHead->partDirection = potentialDir;
         startPosition = false;
-        snakeSpeed = 32;
         isAbleToChangeDirection = false;
+        snakeSpeed = 32;
     }
 }
 
@@ -203,7 +201,7 @@ void Snake::MoveSnakeHead() {
         MainState::GetInstance().ReduceLives();
         AudioManager::GetInstance().PlaySound("crashSound");
     } else{
-        if(snakeSpeed != 0 && !startPosition){
+        if(snakeSpeed != 0 && !startPosition){ // snakeSpeed != 0???
             switch (snakeHead->partDirection) {
                 case Direction::UP:
                     snakeHead->coords.y -= snakeSpeed;
@@ -216,8 +214,6 @@ void Snake::MoveSnakeHead() {
                     break;
                 case Direction::RIGHT:
                     snakeHead->coords.x += snakeSpeed;
-                    break;
-                case Direction::NONE:
                     break;
             }
             MoveBodyAndTail();
@@ -296,7 +292,7 @@ void Snake::StartWallCollisionThread() {
     isNextTileWall = std::async(std::launch::async,[this](){
         headsNextMove = HeadsNextMove();
         for (auto &wall : Map::GetInstance().GetWallTiles()) {
-            if (SDL_HasIntersection(&headsNextMove, &wall.coords) && snakeHead->partDirection != Direction::NONE) {
+            if (SDL_HasIntersection(&headsNextMove, &wall.coords)) {
                 snakeHead->partDirection = prevPosition.partDirection;
                 return true;
             }
