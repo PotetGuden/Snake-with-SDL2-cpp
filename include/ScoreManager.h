@@ -16,18 +16,23 @@ public:
         return instance;
     }
     ScoreManager(ScoreManager const &) = delete;     // Copy Constructor
+
     ScoreManager(ScoreManager const &&) = delete;    // Move Constructor
+
     void operator = (ScoreManager const&) = delete;  // Likhetsoperator
 
-
     bool GetScoresFromFile(const std::string& fileName, std::vector<int> &scoreVector);
+
     void AddScore(const std::string& fileName, int currScore);
+
     void LoadScores();
+
     int GetHighScore();
 
     void SortScores();
 private:
     ScoreManager() = default;
+
     std::vector<int> scores;
 };
 

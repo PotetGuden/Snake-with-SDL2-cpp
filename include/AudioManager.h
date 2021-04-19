@@ -17,17 +17,26 @@ public:
     }
 
     ~AudioManager() = default;
+
     AudioManager(AudioManager const &) = delete;     // Copy Constructor
+
     AudioManager(AudioManager const &&) = delete;    // Move Constructor
+
     void operator = (AudioManager const&) = delete;  // Likhetsoperator
 
     void PlaySound(const std::string& soundName);
+
     void CleanAudio();
+
     void MuteOrUnmuteSoundEffects();
+
 private:
     void SetSounds(const std::string& soundName, const std::string& filePath);
+
     std::map<std::string, Mix_Chunk*> sounds;
+
     AudioManager();
+
     int volume;
 };
 

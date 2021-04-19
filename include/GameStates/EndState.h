@@ -20,18 +20,26 @@ public:
         return instance;
     }
     EndState(EndState const &) = delete;     // Copy Constructor
+
     EndState(EndState const &&) = delete;    // Move Constructor
+
     void operator = (EndState const&) = delete;  // Likhetsoperator
 
     void Render() override;
+
     void HandleInputs() override;
 
     void UpdateCurrentScore(int score);
+
 private:
     std::unique_ptr<GameObject> endBackground;
+
     std::vector<int> scores;
+
     int currentScore{};
+
     int mouseXPos{}, mouseYPos{};
+
     SDL_Color playAgainColor{}, exitGameColor{};
 };
 

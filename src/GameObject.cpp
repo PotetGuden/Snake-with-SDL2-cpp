@@ -5,7 +5,6 @@
 #include "../include/GameObject.h"
 #include "../include/GameManager.h"
 
-// TODO Loop igjennom gameobjects og destroy textures?
 GameObject::~GameObject() {
 
 }

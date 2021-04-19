@@ -28,13 +28,13 @@ void TextureManager::LoadTextures(const std::string& textureName,const std::stri
 
 TextureManager::~TextureManager() {
     /*for(auto& texture : allTextures){
-        std::cout << "Navn for: " << key << " Texture for: " << value << std::endl;
-        SDL_DestroyTexture(value);
-        value = nullptr;
+        //std::cout << "Navn for: " << key << " Texture for: " << value << std::endl;
+        SDL_DestroyTexture(texture.second);
+        texture.second = nullptr;
     }*/
-    std::ranges::for_each(allTextures.begin(), allTextures.end(), [](auto& element){
-        SDL_DestroyTexture(element.second);
-        element.second = nullptr; // Just to be sure ref https://gamedev.stackexchange.com/questions/110891/do-i-need-to-delete-a-texture-after-calling-sdl-destroytexture second answer.
+    std::ranges::for_each(allTextures.begin(), allTextures.end(), [](auto& texture){
+        SDL_DestroyTexture(texture.second);
+        texture.second = nullptr; // Just to be sure ref https://gamedev.stackexchange.com/questions/110891/do-i-need-to-delete-a-texture-after-calling-sdl-destroytexture second answer.
     });
 }
 

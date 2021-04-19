@@ -10,12 +10,14 @@
 class GameObject {
 public: // TODO Sett variabler i cpp filen istedenfor
     GameObject() = default;
+
     GameObject(int x, int y, int w, int h){
         coords.x = x;
         coords.y = y;
         coords.w = w;
         coords.h = h;
     }
+
     GameObject(int x, int y, int w, int h, SDL_Texture* pTexture){ // TEST
         coords.x = x;
         coords.y = y;
@@ -27,9 +29,13 @@ public: // TODO Sett variabler i cpp filen istedenfor
     ~GameObject();
 
     void Render() const;
+
     SDL_Texture* texture = nullptr;
+
     SDL_Rect coords{};
+
     double angleTextureFlip = 0;
+
     SDL_RendererFlip renderFlip = SDL_FLIP_NONE; // Standard
 };
 

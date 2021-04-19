@@ -20,11 +20,15 @@ public:
         return instance;
     }
     Map(Map const &) = delete;   // Copy Constructor
+
     Map(Map const &&) = delete;    // Move Constructor
+
     void operator = (Map const&) = delete;  // Likhetsoperator
 
     bool LoadNextLevel(int lvl);
+
     bool CheckForWallCollision(SDL_Rect& nextPosition) const;
+
     void RenderMap() const;
 
 private:
@@ -40,6 +44,7 @@ private:
     };
 
     std::vector<GameObject> wallTiles;
+
     std::vector<GameObject> grassTiles;
 };
 

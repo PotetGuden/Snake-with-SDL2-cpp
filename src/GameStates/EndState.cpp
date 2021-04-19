@@ -36,7 +36,8 @@ EndState::EndState(){
 
 void EndState::HandleInputs() {
     SDL_GetMouseState( &mouseXPos, &mouseYPos );
-    // Play Again button
+
+    // Play Again Button Hover/Click
     if(mouseXPos > 195 && mouseXPos < 195+200 && mouseYPos > 700 && mouseYPos < 700+60){
         playAgainColor = GREEN_COLOR;
         if(InputManager::GetInstance().MouseDown(SDL_BUTTON(1)))
@@ -44,7 +45,7 @@ void EndState::HandleInputs() {
     } else{
         playAgainColor = WHITE_COLOR;
     }
-    // Exit Game button
+    // Exit Game Button Hover/Click
     if(mouseXPos > 405 && mouseXPos < 405+200 && mouseYPos > 700 && mouseYPos < 700+60){
         exitGameColor = RED_COLOR;
         if(InputManager::GetInstance().MouseDown(SDL_BUTTON(1)))

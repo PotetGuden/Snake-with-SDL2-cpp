@@ -20,16 +20,21 @@ public:
         return instance;
     }
     FontManager(FontManager const &) = delete;     // Copy Constructor
+
     FontManager(FontManager const &&) = delete;    // Move Constructor
+
     void operator = (FontManager const&) = delete;  // Likhetsoperator
 
     ~FontManager();
+
     void RenderFont(const std::string& text, SDL_Color textColor, bool isShaded, int x, int y, int w, int h);
+
     void SetFont();
+
 private:
 
-
     TTF_Font* font = TTF_OpenFont("../fonts/Roboto-Regular.ttf", 50 );
+
     FontManager() = default;
 
     SDL_Rect position{};

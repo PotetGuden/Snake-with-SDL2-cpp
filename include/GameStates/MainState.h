@@ -30,17 +30,25 @@ public:
     }
 
     MainState(MainState const &) = delete;     // Copy Constructor
+
     MainState(MainState const &&) = delete;    // Move Constructor
+
     void operator = (MainState const&) = delete;  // Likhetsoperator
 
     void Render() override;
+
     void Update();
 
     void AddScore(int number);
+
     void ReduceLives();
+
     void RestartGame();
+
     std::vector<std::shared_ptr<Fruit>>& GetFruitVector();
+
 private:
+
     void GoToNextLvl();
 
     void HandleInputs() override;

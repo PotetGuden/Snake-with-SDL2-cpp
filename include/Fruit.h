@@ -36,9 +36,10 @@ public:
     ~Fruit();
 
 private:
-
     int GetRandomNumber(int maxNumber);
+
     void SetNewRandomTexture();
+
     void UpdateTexture();
 
 };

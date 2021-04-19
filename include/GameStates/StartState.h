@@ -19,23 +19,30 @@ public:
         return instance;
     }
 
-    //~MainState();
     StartState(StartState const &) = delete;     // Copy Constructor
+
     StartState(StartState const &&) = delete;    // Move Constructor
+
     void operator = (StartState const&) = delete;  // Likhetsoperator
 
     void HandleInputs() override;
+
     void Render() override;
 
 private:
 
-    int mouseXPos;
-    int mouseYPos;
+    int mouseXPos{};
+
+    int mouseYPos{};
 
     std::unique_ptr<GameObject> snakeText;
+
     std::unique_ptr<GameObject> snakeBackground;
+
     std::unique_ptr<GameObject> playGameText;
-    SDL_Color ruleTextColor;
+
+    SDL_Color ruleTextColor{};
+
     bool showRules;
 };
 

@@ -34,16 +34,21 @@ public:
         static GameManager instance;
         return instance;
     }
+
     GameManager(GameManager const &) = delete;     // Copy Constructor
+
     GameManager(GameManager const &&) = delete;    // Move Constructor
+
     void operator = (GameManager const&) = delete;  // Likhetsoperator
 
     void Init();
+
     void GameLoop();
 
     static SDL_Renderer *renderer;
 
     bool gameRunning;
+
     int frameCounter;
 
     void SwitchToNextState();
@@ -53,11 +58,16 @@ private:
     ~GameManager();
 
     void Update();
+
     void Render() const;
+
     void DestroySDLObjects();
 
     SDL_Window *window;
+
     int state;
+
     std::chrono::time_point<std::chrono::high_resolution_clock> currentTimeFrame;
 };
+
 #endif //SNAKE_GAMEMANAGER_H

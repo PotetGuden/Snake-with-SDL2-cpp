@@ -47,8 +47,8 @@ void AudioManager::CleanAudio() {
         Mix_FreeChunk(it->second);
         it->second = nullptr; // Just to be sure
     }
-    /*std::ranges::for_each(sounds.begin(), sounds.end(), [](auto& element){
-        Mix_FreeChunk(element.second);
+    /*std::ranges::for_each(sounds.begin(), sounds.end(), [](auto& sound){
+        Mix_FreeChunk(sound.second);
     });*/
 }
 

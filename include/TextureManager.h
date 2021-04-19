@@ -30,7 +30,7 @@ public:
     void ReadTexturesFromFile();
 
 private:
-    std::map<std::string, SDL_Texture*> allTextures; // flytt til private
+    std::map<std::string, SDL_Texture*> allTextures;
     TextureManager() = default;
 };
 

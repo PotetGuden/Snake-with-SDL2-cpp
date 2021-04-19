@@ -17,7 +17,8 @@ MainState::MainState() :
     timeLeft(50),
     lives(3),
     showNextLvlMessage(false),
-    timerForNextLvLMessage(0)
+    timerForNextLvLMessage(0),
+    animateBonusScoreText(0)
     {
         Map::GetInstance().LoadNextLevel(currentLvl++);
         AddThreeDifferentFruits();
