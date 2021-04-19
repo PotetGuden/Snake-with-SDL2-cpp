@@ -27,15 +27,11 @@ void FontManager::RenderFont(const std::string& text, SDL_Color textColor, bool 
         std::cout << "Far ikke lastet bilde" << std::endl;
     }
     SDL_FreeSurface( textSurface );
-
-    SDL_DestroyTexture(mTexture); //VIKTIG
-
-    //return mTexture;
+    SDL_DestroyTexture(mTexture);
 }
 
 FontManager::~FontManager() {
     std::cout << "Destructing Font Manager" << std::endl;
-    //SDL_DestroyTexture(mTexture); //  usikker
 }
 
 void FontManager::SetFont() {

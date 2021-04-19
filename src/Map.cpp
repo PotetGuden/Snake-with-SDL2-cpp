@@ -6,7 +6,6 @@
 #include <fstream>
 #include <algorithm>
 #include <ranges>
-#include <numeric>
 #include "../include/Map.h"
 #include "../include/TextureManager.h"
 #include "../include/GameManager.h"
@@ -22,8 +21,8 @@ void Map::RenderMap() const {
 }
 
 Map::~Map() {
-    std::ranges::for_each(wallTiles.begin(), wallTiles.end(), [](auto& wallTile){ SDL_DestroyTexture(wallTile.texture); });
-    std::ranges::for_each(grassTiles.begin(), grassTiles.end(), [](auto& grassTile){ SDL_DestroyTexture(grassTile.texture); });
+    //std::ranges::for_each(wallTiles.begin(), wallTiles.end(), [](auto& wallTile){ SDL_DestroyTexture(wallTile.texture); });
+    //std::ranges::for_each(grassTiles.begin(), grassTiles.end(), [](auto& grassTile){ SDL_DestroyTexture(grassTile.texture); });
 }
 
 bool Map::CheckForWallCollision(SDL_Rect& nextPosition) const {

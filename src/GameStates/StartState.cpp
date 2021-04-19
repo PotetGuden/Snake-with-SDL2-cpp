@@ -8,10 +8,16 @@
 #include "../../include/GameManager.h"
 //constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0};
 
-StartState::StartState() {
-    snakeText = std::make_unique<GameObject>(208,304,384,192);
-    snakeBackground = std::make_unique<GameObject>(0,0,800,800);
-    playGameText = std::make_unique<GameObject>(208,500,384,80);
+StartState::StartState() :
+    snakeText(std::make_unique<GameObject>(208,304,384,192,TextureManager::GetInstance().GetTexture("SnakeTextStartScreen"))),
+    snakeBackground(std::make_unique<GameObject>(0,0,800,800, TextureManager::GetInstance().GetTexture("SnakeBackgroundStart"))),
+    playGameText(std::make_unique<GameObject>(208,500,384,80, TextureManager::GetInstance().GetTexture("PlayGameTextBackground"))),
+    showRules(false)
+
+{
+    //snakeText = std::make_unique<GameObject>(208,304,384,192);
+    //snakeBackground = std::make_unique<GameObject>(0,0,800,800);
+    //playGameText = std::make_unique<GameObject>(208,500,384,80);
 
     //std::string yolo = "PlayGameBackground";
     //std::string yolo2 = "../images/game-states/start/PlayGameText.png";
@@ -20,9 +26,9 @@ StartState::StartState() {
     //TextureManager::GetInstance().LoadTextures("SnakeTextStartScreen", "../images/game-states/start/SnakeTextStartScreen.png");
     //TextureManager::GetInstance().LoadTextures("SnakeBackgroundStart", "../images/game-states/start/SnakeStartBackground.png");
 
-    snakeText->texture = TextureManager::GetInstance().GetTexture("SnakeTextStartScreen"); // SnakeBackgroundStart
-    snakeBackground->texture = TextureManager::GetInstance().GetTexture("SnakeBackgroundStart");
-    playGameText->texture = TextureManager::GetInstance().GetTexture("PlayGameTextBackground");
+    //snakeText->texture = TextureManager::GetInstance().GetTexture("SnakeTextStartScreen"); // SnakeBackgroundStart
+    //snakeBackground->texture = TextureManager::GetInstance().GetTexture("SnakeBackgroundStart");
+    //playGameText->texture = TextureManager::GetInstance().GetTexture("PlayGameTextBackground");
 
     /*snakeText->texture = TextureManager::GetInstance().allTextures.find("SnakeTextStartScreen")->second;
     snakeBackground->texture = TextureManager::GetInstance().allTextures.find("SnakeBackgroundStart")->second;

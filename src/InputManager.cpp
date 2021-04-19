@@ -38,10 +38,6 @@ bool InputManager::MouseStillUp(int iButton) const {
     return (mouseButtons == oldMouseButtons) && (mouseButtons != iButton);
 }
 
-InputManager::~InputManager() {
-
-}
-
 void InputManager::Update() {
     memcpy(oldKeys.get(),keys,numKeys);
 

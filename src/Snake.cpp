@@ -256,7 +256,11 @@ bool Snake::CheckNewFruitCollisionSnake(SDL_Rect& potentialPos) const {
 void Snake::StartWallCollisionThread() {
     isNextTileWall = std::async(std::launch::async,[this](){
         UpdateHeadsNextMove();
-        return Map::GetInstance().CheckForWallCollision(headsNextMove);
+        if(Map::GetInstance().CheckForWallCollision(headsNextMove)){
+            snakeHead->partDirection = prevPosition.partDirection;
+            return true;
+        }
+        return false;
     });
 }
 

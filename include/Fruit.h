@@ -29,7 +29,7 @@ public:
 
     void SetNewPosition();
 
-    bool CheckFruitOnFruitCollision(SDL_Rect& potentialPosition);
+    bool CheckFruitOnFruitCollision(SDL_Rect& potentialPosition) const;
 
     TYPE type;
 

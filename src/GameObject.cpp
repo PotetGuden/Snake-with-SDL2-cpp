@@ -7,16 +7,11 @@
 
 // TODO Loop igjennom gameobjects og destroy textures?
 GameObject::~GameObject() {
-    //SDL_DestroyTexture(texture);
+
 }
 
 void GameObject::Render() const {
-    //if(angleTextureFlip > 0){
-        SDL_RenderCopyEx(GameManager::renderer ,texture, nullptr, &coords, angleTextureFlip,nullptr, renderFlip);
-    //}else{
-     //   SDL_RenderCopy(GameManager::renderer ,texture, nullptr, &coords);
-    //}
-
+    SDL_RenderCopyEx(GameManager::renderer ,texture, nullptr, &coords, angleTextureFlip,nullptr, renderFlip);
 }
 
 

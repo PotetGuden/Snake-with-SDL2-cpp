@@ -32,7 +32,7 @@ public:
     bool MouseUp(int iButton) const;
     bool MouseStillUp(int iButton) const;
 
-    virtual ~InputManager();
+    ~InputManager() = default;
 
 private:
     InputManager();

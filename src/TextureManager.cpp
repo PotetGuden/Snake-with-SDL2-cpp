@@ -5,6 +5,7 @@
 #include <iostream>
 #include <SDL_image.h>
 #include <fstream>
+#include <algorithm>
 
 #include "../include/TextureManager.h"
 #include "../include/GameManager.h"
@@ -26,9 +27,15 @@ void TextureManager::LoadTextures(const std::string& textureName,const std::stri
 }
 
 TextureManager::~TextureManager() {
-    for(auto &texture : allTextures){
-        SDL_DestroyTexture(texture.second);
-    }
+    /*for(auto& texture : allTextures){
+        std::cout << "Navn for: " << key << " Texture for: " << value << std::endl;
+        SDL_DestroyTexture(value);
+        value = nullptr;
+    }*/
+    std::ranges::for_each(allTextures.begin(), allTextures.end(), [](auto& element){
+        SDL_DestroyTexture(element.second);
+        element.second = nullptr; // Just to be sure ref https://gamedev.stackexchange.com/questions/110891/do-i-need-to-delete-a-texture-after-calling-sdl-destroytexture second answer.
+    });
 }
 
 SDL_Texture *TextureManager::GetTexture(const std::string &name) {

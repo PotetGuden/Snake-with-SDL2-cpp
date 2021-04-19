@@ -88,15 +88,19 @@ GameManager::~GameManager() {
     DestroySDLObjects();
 }
 
-GameManager::GameManager(){
-    state = 0;
+GameManager::GameManager() :
+    gameRunning(true),
+    state(0),
+    frameCounter(0),
+    window(nullptr)
+    {
     TTF_Init();
     FontManager::GetInstance().SetFont();
 }
 
 void GameManager::GameLoop() {
     currentTimeFrame = std::chrono::high_resolution_clock::now(); // static?
-    frameCounter = 0;
+    //frameCounter = 0;
 
     using namespace std::chrono_literals;
     while(gameRunning){

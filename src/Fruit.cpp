@@ -5,6 +5,7 @@
 #include "../include/Fruit.h"
 #include "../include/GameManager.h"
 #include <random>
+#include <algorithm>
 #include <iostream>
 
 
@@ -49,8 +50,6 @@ void Fruit::UpdateTexture() {
         case TYPE::WATERMELON:
             texture = TextureManager::GetInstance().GetTexture("watermelonTexture");
             break;
-        default:
-            break;
     }
 }
 
@@ -76,11 +75,8 @@ Fruit::~Fruit() {
     std::cout << "Fruit DESTROYED" << std::endl;
 }
 
-bool Fruit::CheckFruitOnFruitCollision(SDL_Rect& potentialPosition) {
-    for(auto& fruit : MainState::GetInstance().GetFruitVector()){
-        if(SDL_HasIntersection(&fruit->coords, &potentialPosition)){
-            return true;
-        }
-    }
-    return false;
+bool Fruit::CheckFruitOnFruitCollision(SDL_Rect& potentialPosition) const {
+    return std::ranges::any_of(MainState::GetInstance().GetFruitVector().begin(), MainState::GetInstance().GetFruitVector().end(), [&potentialPosition](const auto& fruit){
+        return SDL_HasIntersection(&fruit->coords, &potentialPosition);
+    });
 }

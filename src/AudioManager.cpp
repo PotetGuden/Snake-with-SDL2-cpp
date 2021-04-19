@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <algorithm>
 #include "../include/AudioManager.h"
 #include "../include/GameManager.h"
 
@@ -36,11 +37,19 @@ void AudioManager::PlaySound(const std::string& soundName) {
 }
 
 void AudioManager::CleanAudio() {
-    for(auto& sound : sounds){
+    /*for(auto& sound : sounds){
         std::cout << "Freeing " << sound.first << std::endl;
         Mix_FreeChunk( sound.second );
         sound.second = nullptr;
+    }*/
+
+    for ( auto it = sounds.begin(); it != sounds.end(); ++it  ){
+        Mix_FreeChunk(it->second);
+        it->second = nullptr; // Just to be sure
     }
+    /*std::ranges::for_each(sounds.begin(), sounds.end(), [](auto& element){
+        Mix_FreeChunk(element.second);
+    });*/
 }
 
 void AudioManager::MuteOrUnmuteSoundEffects() {

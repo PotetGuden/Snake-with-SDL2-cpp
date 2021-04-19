@@ -30,9 +30,9 @@ public:
 private:
     std::unique_ptr<GameObject> endBackground;
     std::vector<int> scores;
-    int currentScore;
-    int mouseXPos, mouseYPos;
-    SDL_Color playAgainColor, exitGameColor;
+    int currentScore{};
+    int mouseXPos{}, mouseYPos{};
+    SDL_Color playAgainColor{}, exitGameColor{};
 };
 
 
