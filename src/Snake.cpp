@@ -2,7 +2,6 @@
 // Created by Joste on 10.03.2021.
 //
 
-#include <iostream>
 #include <algorithm>
 #include <future>
 #include "../include/Snake.h"
@@ -10,9 +9,9 @@
 
 
 void Snake::MoveBodyAndTail() {
-    if(snakeSpeed != 0) {
+    //if(snakeSpeed != 0) {
+        SnakePart currPosition{};
         for(auto &snakePart : snakeBodyVector){
-            SnakePart currPosition{};
             currPosition.partDirection = snakePart->partDirection;
             currPosition.coords = snakePart->coords;
 
@@ -24,15 +23,12 @@ void Snake::MoveBodyAndTail() {
 
         // Jeg bruker snakeBodyVector.size()-2 fordi jeg vil ha nest siste element i vectoren, sånn at tail alltid følger den
         snakeBodyVector.back()->partDirection = snakeBodyVector[snakeBodyVector.size() - 2]->partDirection;
-    }
+    //}
 }
 
 void Snake::Render() {
-    //for(auto &snakePart : snakeBodyVector){
-    //    SDL_RenderCopy(GameManager::renderer,snakePart.texture, nullptr, &snakePart.coords);
-    //}
     snakeHead->Render();
-    std::for_each(snakeBodyVector.begin(),snakeBodyVector.end(),[](auto &snakePart){
+    std::ranges::for_each(snakeBodyVector.begin(),snakeBodyVector.end(),[](auto &snakePart){
         snakePart->Render();
     });
 }
@@ -52,6 +48,7 @@ Snake::Snake() :
         while (GameManager::GetInstance().gameRunning)
             CheckForCollisions();
     });
+
 
 }
 
@@ -155,7 +152,6 @@ void Snake::UpdateHeadsNextMove() {
         headsNextMove.x = snakeHead->coords.x + BLOCK_SIZE;
         headsNextMove.y = snakeHead->coords.y;
     }
-    //return headsNextMove;
 }
 
 void Snake::ChangeDirection(Direction potentialDir, Direction oppositeDir) {
@@ -173,7 +169,7 @@ void Snake::MoveSnakeHead() {
         MainState::GetInstance().ReduceLives();
         AudioManager::GetInstance().PlaySound("crashSound");
     } else{
-        if(snakeSpeed != 0 && !startPosition){ // snakeSpeed != 0???
+        if(snakeSpeed != 0 &&  !startPosition){
             switch (snakeHead->partDirection) {
                 case Direction::UP:
                     snakeHead->coords.y -= snakeSpeed;
@@ -214,9 +210,9 @@ void Snake::Update() {
 }
 
 //std::mutex collisionMutex;
-void Snake::CheckForCollisions() { // TODO DEL OPP
+void Snake::CheckForCollisions() {
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    //std::lock_guard<std::mutex> lock(collisionMutex); //lock_guard unlocker mutex i sin destructor, dvs hver gang denne funksjonen er ferdig
+    //std::lock_guard<std::mutex> lock(collisionMutex);
     // Snake Collision
     for (const auto &bodyPart: snakeBodyVector) {
         if (SDL_HasIntersection(&snakeHead->coords, &bodyPart->coords)) {
@@ -225,7 +221,7 @@ void Snake::CheckForCollisions() { // TODO DEL OPP
             StartPosition();
         }
     }
-    //Fruit Collision
+    //Fruit Collision  TODO ranges??
     for (auto &fruit : MainState::GetInstance().GetFruitVector()) {
         if (SDL_HasIntersection(&fruit->coords, &snakeHead->coords)) {
             AudioManager::GetInstance().PlaySound("eatingFruit");
@@ -252,63 +248,42 @@ bool Snake::CheckNewFruitCollisionSnake(SDL_Rect& potentialPos) const {
     if(SDL_HasIntersection(&potentialPos, &snakeHead->coords))
         return true;
 
-    /*for(auto &snakePart : snakeBodyVector){
-        if(SDL_HasIntersection(&potentialPos, &snakePart->coords)){
-            return true;
-        }
-    }*/
-    //return false;
     return std::ranges::any_of(snakeBodyVector.begin(), snakeBodyVector.end(), [&potentialPos](auto &snakePart){
-        return SDL_HasIntersection(&potentialPos, &snakePart->coords); });
+        return SDL_HasIntersection(&potentialPos, &snakePart->coords);
+    });
 }
 
-void Snake::StartWallCollisionThread() { // TODO VENT PÅ KJETIL SITT SVAR
+void Snake::StartWallCollisionThread() {
     isNextTileWall = std::async(std::launch::async,[this](){
-
         UpdateHeadsNextMove();
-        /*for (auto &wall : Map::GetInstance().GetWallTiles()) {
-            if (SDL_HasIntersection(&headsNextMove, &wall.coords)) {
-                snakeHead->partDirection = prevPosition.partDirection;
-                return true;
-            }
-        }*/
-        //std::vector<GameObject> walltiles = Map::GetInstance().GetWallTiles();
-        return std::ranges::any_of(Map::GetInstance().GetWallTiles().begin(), Map::GetInstance().GetWallTiles().end(), [this](auto &wallTile){
-            if (SDL_HasIntersection(&headsNextMove, &wallTile.coords)) {
-                snakeHead->partDirection = prevPosition.partDirection;
-                return true;
-            }
-            return false;
-        });
-
-        //return false;
+        return Map::GetInstance().CheckForWallCollision(headsNextMove);
     });
 }
 
 void Snake::InitializeSnakePartsStartPosition() {
     // Snake Head
-    snakeHead->coords.x = BLOCK_SIZE * 5;
-    snakeHead->coords.y = BLOCK_SIZE * 5 + HEADER_TEXTURE_Y_OFFSET;
-    snakeHead->coords.w = BLOCK_SIZE;
-    snakeHead->coords.h = BLOCK_SIZE;
+    snakeHead->coords = { BLOCK_SIZE * 4, (BLOCK_SIZE * 5) + HEADER_TEXTURE_Y_OFFSET, BLOCK_SIZE, BLOCK_SIZE};
     snakeHead->angleTextureFlip = 0;
     snakeHead->texture = TextureManager::GetInstance().GetTexture("headTextureUp");
     snakeHead->partDirection = Direction::RIGHT;
     // Snake Middle Part
-    snakeBodyVector[0]->coords.x = BLOCK_SIZE * 4;
-    snakeBodyVector[0]->coords.y = BLOCK_SIZE * 5 + HEADER_TEXTURE_Y_OFFSET;
-    snakeBodyVector[0]->coords.w = BLOCK_SIZE;
-    snakeBodyVector[0]->coords.h = BLOCK_SIZE;
+    snakeBodyVector[0]->coords = { BLOCK_SIZE * 3, (BLOCK_SIZE * 5) + HEADER_TEXTURE_Y_OFFSET, BLOCK_SIZE, BLOCK_SIZE};
     snakeBodyVector[0]->texture = TextureManager::GetInstance().GetTexture("bodyTextureUpDown");
-    snakeBodyVector[0]->angleTextureFlip = 90;
+    snakeBodyVector[0]->angleTextureFlip = 90.0;
     snakeBodyVector[0]->partDirection = Direction::RIGHT;
     // Snake Tail
-    snakeBodyVector[1]->coords.x = BLOCK_SIZE * 3;
-    snakeBodyVector[1]->coords.y = BLOCK_SIZE * 5 + HEADER_TEXTURE_Y_OFFSET;
-    snakeBodyVector[1]->coords.w = BLOCK_SIZE;
-    snakeBodyVector[1]->coords.h = BLOCK_SIZE;
+    snakeBodyVector[1]->coords = { BLOCK_SIZE * 2, (BLOCK_SIZE * 5) + HEADER_TEXTURE_Y_OFFSET, BLOCK_SIZE, BLOCK_SIZE};
     snakeBodyVector[1]->texture = TextureManager::GetInstance().GetTexture("tailTextureRight");
     snakeBodyVector[1]->angleTextureFlip = 0;
     snakeBodyVector[1]->partDirection = Direction::RIGHT;
 
 }
+
+
+/*return std::ranges::any_of(Map::GetInstance().GetWallTiles().begin(), Map::GetInstance().GetWallTiles().end(), [this](auto &wallTile){
+            if (SDL_HasIntersection(&headsNextMove, &wallTile.coords)) {
+                snakeHead->partDirection = prevPosition.partDirection;
+                return true;
+            }
+            return false;
+        });*/

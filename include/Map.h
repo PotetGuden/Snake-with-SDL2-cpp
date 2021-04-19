@@ -24,24 +24,20 @@ public:
     void operator = (Map const&) = delete;  // Likhetsoperator
 
     bool LoadNextLevel(int lvl);
-    void ReadMapFromFileIntoVector(std::string &filePath);
-    void DeleteVectorContentIfNotEmpty();
-
-    bool CheckForWallCollision(SDL_Rect& nextPosition);
-
-    void RenderMap() const ;
-
-    std::vector<GameObject>& GetWallTiles();
+    bool CheckForWallCollision(SDL_Rect& nextPosition) const;
+    void RenderMap() const;
 
 private:
+
+    void ReadMapFromFileIntoVector(std::string &filePath);
+
+    void DeleteVectorContentIfNotEmpty();
+
     std::vector<std::string> mapFilePath = {
             "../maps/lvl1.txt",
             "../maps/lvl2.txt",
             "../maps/lvl3.txt"
     };
-
-    //int map[20][25];  // Each block is 32px * 32px / 20*32 = 640, 25*32 = 800 / Which is the window size snake is moving in
-    //int tileType;
 
     std::vector<GameObject> wallTiles;
     std::vector<GameObject> grassTiles;

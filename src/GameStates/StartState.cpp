@@ -51,6 +51,7 @@ void StartState::Render() {
 }
 
 void StartState::HandleInputs() {
+
     SDL_GetMouseState( &mouseXPos, &mouseYPos );
     // Play Game button
     if(mouseXPos > 208 && mouseXPos < 208+384 && mouseYPos > 500 && mouseYPos < 500+80){

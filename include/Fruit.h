@@ -12,7 +12,6 @@
 #include "TextureManager.h"
 #include "GameObject.h"
 
-// TODO FRUIT ON FRUIT COLLISION
 
 class Fruit : public GameObject {
 
@@ -28,24 +27,20 @@ public:
         UpdateTexture();
     }
 
-    void UpdateTexture();
-
     void SetNewPosition();
-
-    int GetRandomNumber(int maxNumber); // static?
-
-    void SetNewRandomTexture();
 
     bool CheckFruitOnFruitCollision(SDL_Rect& potentialPosition);
 
     TYPE type;
 
     ~Fruit();
+
 private:
 
+    int GetRandomNumber(int maxNumber);
+    void SetNewRandomTexture();
+    void UpdateTexture();
 
-
-protected:
 };
 
 

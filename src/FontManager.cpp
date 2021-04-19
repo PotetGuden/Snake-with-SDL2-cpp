@@ -9,14 +9,13 @@
 void FontManager::RenderFont(const std::string& text, SDL_Color textColor, bool isShaded, int x, int y, int w, int h) {
     SDL_Surface* textSurface;
 
-    //SDL_Color textColor = { 255, 255, 255 ,255};
     if(isShaded){
-        textSurface = TTF_RenderText_Shaded( gFont, text.c_str(), textColor, SDL_Color{10,10,10} );
+        textSurface = TTF_RenderText_Shaded(font, text.c_str(), textColor, SDL_Color{10, 10, 10} );
     } else{
-        textSurface = TTF_RenderText_Solid( gFont, text.c_str(), textColor );
+        textSurface = TTF_RenderText_Solid(font, text.c_str(), textColor );
     }
 
-    if(gFont == nullptr) std::cout << "sikkert gFont som kodder" << std::endl;
+    if(font == nullptr) std::cout << "sikkert font som kodder" << std::endl;
 
     SDL_Texture* mTexture = SDL_CreateTextureFromSurface( GameManager::renderer, textSurface );
 
@@ -40,7 +39,6 @@ FontManager::~FontManager() {
 }
 
 void FontManager::SetFont() {
-    gFont = TTF_OpenFont( "../fonts/Roboto-Regular.ttf", 50 );
-
+    font = TTF_OpenFont("../fonts/Roboto-Regular.ttf", 50 );
 }
 

@@ -12,8 +12,7 @@
 
 SDL_Renderer *GameManager::renderer = nullptr;
 
-// TODO const etter funksjonsnavn?
-// TODO sette alle funksjoner/variabler som private om mulig (bare de som ikke blir kalt fra andre klasser)
+
 // TODO sette variabler med function() : variabelNavn(name)
 // TODO pass by value i funksjoner "&"
 // TODO FIKS FRUIT ON FRUIT??
@@ -39,7 +38,7 @@ void GameManager::Init(){
         gameRunning = false;
     }
 
-    TextureManager::GetInstance().TestFunction();
+    TextureManager::GetInstance().ReadTexturesFromFile();
 
 }
 

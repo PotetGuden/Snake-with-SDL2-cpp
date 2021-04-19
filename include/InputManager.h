@@ -46,6 +46,6 @@ protected:
     int mouseY;
 
     Uint8 mouseButtons;
-    Uint8 oldMouseButtons; // Mouse button pressed last UpdateTexture
+    Uint8 oldMouseButtons;
 };
 #endif //SNAKE_INPUTMANAGER_H

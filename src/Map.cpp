@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+#include <ranges>
+#include <numeric>
 #include "../include/Map.h"
 #include "../include/TextureManager.h"
 #include "../include/GameManager.h"
@@ -19,16 +22,14 @@ void Map::RenderMap() const {
 }
 
 Map::~Map() {
-    std::cout << "DESTROYING MAP" << std::endl;
+    std::ranges::for_each(wallTiles.begin(), wallTiles.end(), [](auto& wallTile){ SDL_DestroyTexture(wallTile.texture); });
+    std::ranges::for_each(grassTiles.begin(), grassTiles.end(), [](auto& grassTile){ SDL_DestroyTexture(grassTile.texture); });
 }
 
-bool Map::CheckForWallCollision(SDL_Rect& nextPosition) {
-    for(auto &wallTile : wallTiles){
-        if(nextPosition.x == wallTile.coords.x && nextPosition.y == wallTile.coords.y){
-            return true;
-        }
-    }
-    return false;
+bool Map::CheckForWallCollision(SDL_Rect& nextPosition) const {
+    return std::ranges::any_of(wallTiles.begin(), wallTiles.end(), [&nextPosition](auto& wallTile){
+        return SDL_HasIntersection(&nextPosition, &wallTile.coords);
+    });
 }
 
 bool Map::LoadNextLevel(int lvl) {
@@ -37,10 +38,6 @@ bool Map::LoadNextLevel(int lvl) {
     }
     ReadMapFromFileIntoVector(mapFilePath[lvl]);
     return true;
-}
-
-std::vector<GameObject>& Map::GetWallTiles() {
-    return wallTiles;
 }
 
 void Map::ReadMapFromFileIntoVector(std::string &filePath) {
@@ -54,8 +51,8 @@ void Map::ReadMapFromFileIntoVector(std::string &filePath) {
     dest.w = dest.h = BLOCK_SIZE;
 
     int convertFileContentToInt;
-    for(int row = 0; row < 20; row++){
-        for(int column = 0; column < 25; column++){
+    for(auto row = 0; row < 20; row++){
+        for(auto column = 0; column < 25; column++){
             dest.x = column * BLOCK_SIZE;
             dest.y = row * BLOCK_SIZE + 160;
             file >> convertFileContentToInt;

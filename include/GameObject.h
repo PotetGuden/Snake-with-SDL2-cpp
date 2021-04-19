@@ -5,7 +5,6 @@
 #ifndef SNAKE_GAMEOBJECT_H
 #define SNAKE_GAMEOBJECT_H
 
-// TODO SLETTER JEG MAP TEXTURES NOEN GANG?
 #include <SDL.h>
 
 class GameObject {
@@ -28,7 +27,7 @@ public: // TODO Sett variabler i cpp filen istedenfor
     ~GameObject();
 
     void Render() const;
-    SDL_Texture* texture;
+    SDL_Texture* texture = nullptr;
     SDL_Rect coords{};
     double angleTextureFlip = 0;
     SDL_RendererFlip renderFlip = SDL_FLIP_NONE; // Standard

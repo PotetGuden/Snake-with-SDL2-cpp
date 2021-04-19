@@ -22,7 +22,7 @@ public:
 
     bool GetScoresFromFile(const std::string& fileName, std::vector<int> &scoreVector);
     void AddScore(const std::string& fileName, int currScore);
-    void PrintScores(); // Trenger ikke denne
+    void LoadScores();
     int GetHighScore();
 
     void SortScores();

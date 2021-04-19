@@ -20,6 +20,7 @@ void Fruit::SetNewPosition() {
         int y = GetRandomNumber(18) * BLOCK_SIZE + HEADER_TEXTURE_Y_OFFSET;
         potentialFruitPos.x = x;
         potentialFruitPos.y = y;
+        std::cout << "Started while loop" << std::endl;
     }
     while(Map::GetInstance().CheckForWallCollision(potentialFruitPos) ||
           Snake::GetInstance().CheckNewFruitCollisionSnake(potentialFruitPos) ||

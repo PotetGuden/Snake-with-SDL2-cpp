@@ -30,10 +30,8 @@ void EndState::Render() {
 }
 
 EndState::EndState(){
-
     endBackground = std::make_unique<GameObject>(0,0,800,800,TextureManager::GetInstance().GetTexture("endScreenTexture"));
     ScoreManager::GetInstance().GetScoresFromFile("../scores/scores.txt", scores);
-
 }
 
 void EndState::HandleInputs() {

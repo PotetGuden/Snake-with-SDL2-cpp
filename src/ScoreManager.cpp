@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include "../include/ScoreManager.h"
+#include "../include/GameManager.h"
 
 bool ScoreManager::GetScoresFromFile(const std::string& fileName, std::vector<int> &scoreVector) {
     if(!scoreVector.empty())
@@ -37,8 +38,10 @@ void ScoreManager::AddScore(const std::string& fileName, int currScore) {
     SortScores();
 }
 
-void ScoreManager::PrintScores() {
-    GetScoresFromFile("../scores/scores.txt", scores);
+void ScoreManager::LoadScores() {
+    if(!GetScoresFromFile("../scores/scores.txt", scores)){
+        GameManager::GetInstance().gameRunning = false;
+    };
 }
 
 int ScoreManager::GetHighScore() {

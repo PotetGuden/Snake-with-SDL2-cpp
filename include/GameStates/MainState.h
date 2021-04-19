@@ -29,7 +29,6 @@ public:
         return instance;
     }
 
-    //~MainState();
     MainState(MainState const &) = delete;     // Copy Constructor
     MainState(MainState const &&) = delete;    // Move Constructor
     void operator = (MainState const&) = delete;  // Likhetsoperator
@@ -47,15 +46,18 @@ private:
     void HandleInputs() override;
 
     void RenderHeaderText();
+    
+    void RenderNextLvlMessage();
+
     std::unique_ptr<GameObject> headerObject; // probably nææt
-    int currentLvl;
     bool enableMovement;
-    int frameCounterSpeed;
+    int currentLvl;
     int score;
-    Uint16 timeLeft;
-    unsigned short lives;
+    int animateBonusScoreText;
+    int frameCounterSpeed;
+    int timeLeft;
+    int lives;
     bool showNextLvlMessage;
-    int bonusScoreText;
 
     // Må lagre denne futuren selvom vi ikke bruker den, sånn at lifetimen til futuren vil vare
     // så lenge MainState gjør, og at main thread ikke venter på at denne skal bli "ferdig"

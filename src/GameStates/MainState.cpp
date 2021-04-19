@@ -21,7 +21,7 @@ MainState::MainState() :
     {
         Map::GetInstance().LoadNextLevel(currentLvl++);
         AddThreeDifferentFruits();
-        ScoreManager::GetInstance().PrintScores();
+        ScoreManager::GetInstance().LoadScores();
         ScoreManager::GetInstance().SortScores();
 
         headerObject->texture = TextureManager::GetInstance().GetTexture("headerTexture");
@@ -44,7 +44,6 @@ void MainState::Render() {
 }
 
 void MainState::RenderHeaderText() {
-    SDL_Color textColor = { 255, 255, 255 ,255};
     FontManager::GetInstance().RenderFont("Score: " + std::to_string(score), BLACK_COLOR, false, 10, 10, 150, 60);
     FontManager::GetInstance().RenderFont("Time left: " + std::to_string(timeLeft), WHITE_COLOR, false, 570, 10, 150, 60);
     FontManager::GetInstance().RenderFont("Lives: " + std::to_string(lives), BLACK_COLOR, false,10, 90, 100, 60);
@@ -53,23 +52,27 @@ void MainState::RenderHeaderText() {
     FontManager::GetInstance().RenderFont("Level: " + std::to_string(currentLvl), WHITE_COLOR, false, 570, 90, 150, 60);
     FontManager::GetInstance().RenderFont("Mute" , WHITE_COLOR, true, 175, 130, 75, 25);
 
-    if(showNextLvlMessage) {
-        enableMovement = false;
-        bonusScoreText += (bonusScoreText < score) ? 1 : 0;
-        FontManager::GetInstance().RenderFont(" Congratulations, you made it to ", WHITE_COLOR,true, 250, 380, 300, 45); // TODO
-        FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + ", your score is now " + std::to_string(bonusScoreText) + " ", WHITE_COLOR, true, 250, 425, 300, 45); // TODO
+    if(showNextLvlMessage)
+        RenderNextLvlMessage();
 
+}
 
-        if(bonusScoreText >= score){
-            timerForNextLvLMessage++;
-            if(timerForNextLvLMessage >= 100 ){
-                showNextLvlMessage = false;
-                enableMovement = true;
-                timerForNextLvLMessage = 0;
-            }
+void MainState::RenderNextLvlMessage() {
+    enableMovement = false;
+    animateBonusScoreText += (animateBonusScoreText < score) ? 1 : 0;
+    FontManager::GetInstance().RenderFont(" Congratulations, you made it to ", WHITE_COLOR,true, 250, 380, 300, 45);
+    FontManager::GetInstance().RenderFont(" level " + std::to_string(currentLvl) + ", your score is now " + std::to_string(animateBonusScoreText) + " ", WHITE_COLOR, true, 250, 425, 300, 45);
+
+    if(animateBonusScoreText >= score){ // Making a short delay after bonus score animation is done
+        timerForNextLvLMessage++;
+        if(timerForNextLvLMessage >= 100 ){
+            showNextLvlMessage = false;
+            enableMovement = true;
+            timerForNextLvLMessage = 0;
         }
     }
 }
+
 
 void MainState::Update() {
 
@@ -94,6 +97,7 @@ void MainState::Update() {
         }
     }
 }
+
 
 void MainState::HandleInputs() {
     InputManager &im = InputManager::GetInstance();
@@ -133,7 +137,7 @@ void MainState::GoToNextLvl() {
         }
         showNextLvlMessage = true;
         Snake::GetInstance().StartPosition();
-        bonusScoreText = score;  // use this to animate the bonus score you get
+        animateBonusScoreText = score;  // use this to animate the bonus score you get
         score += timeLeft*5; // bonus points
         timeLeft = 50;
         lives = 3;
@@ -143,9 +147,9 @@ void MainState::GoToNextLvl() {
 }
 
 void MainState::AddThreeDifferentFruits() {
-    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::APPLE,BLOCK_SIZE,BLOCK_SIZE,BLOCK_SIZE * 5,BLOCK_SIZE * 7 + 160));
-    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::BANANA, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE * 10, BLOCK_SIZE * 7 + 160));
-    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::WATERMELON, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE * 15, BLOCK_SIZE * 7 + 160));
+    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::APPLE,BLOCK_SIZE,BLOCK_SIZE,BLOCK_SIZE * 6,BLOCK_SIZE * 9 + 160));
+    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::BANANA, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE * 11, BLOCK_SIZE * 9 + 160));
+    fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::WATERMELON, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE * 16, BLOCK_SIZE * 9 + 160));
 }
 
 void MainState::AddScore(const int number) {
@@ -177,6 +181,7 @@ void MainState::GameOver() const {
     Snake::GetInstance().StopSnake();
     GameManager::GetInstance().SwitchToNextState();
 }
+
 
 
 

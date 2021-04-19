@@ -29,7 +29,7 @@ public:
 private:
 
 
-    TTF_Font* gFont = TTF_OpenFont( "../fonts/Roboto-Regular.ttf", 50 );
+    TTF_Font* font = TTF_OpenFont("../fonts/Roboto-Regular.ttf", 50 );
     FontManager() = default;
 
     SDL_Rect position{};
