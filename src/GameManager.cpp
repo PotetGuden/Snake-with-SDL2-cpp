@@ -25,6 +25,8 @@ void GameManager::Init(){
         gameRunning = false;
     }
     TextureManager::GetInstance().ReadTexturesFromFile();
+    TTF_Init();
+    FontManager::GetInstance().SetFont();
 }
 
 void GameManager::Render() const {
@@ -78,8 +80,7 @@ GameManager::GameManager() :
     window(nullptr),
     renderer(nullptr)
     {
-    TTF_Init();
-    FontManager::GetInstance().SetFont();
+
 }
 
 void GameManager::GameLoop() {

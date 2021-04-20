@@ -18,20 +18,24 @@ public:
         return instance;
     }
 
+    TextureManager() = default;
+
     ~TextureManager();
-    TextureManager(TextureManager const &) = delete;     // Copy Constructor
-    TextureManager(TextureManager const &&) = delete;    // Move Constructor
-    void operator = (TextureManager const&) = delete;  // Likhetsoperator
 
+    TextureManager(TextureManager const &) = delete;
 
-    void LoadTextures(const std::string& textureName,const std::string& fileName);
+    TextureManager(TextureManager const &&) = delete;
+
+    void operator = (TextureManager const&) = delete;
+
     SDL_Texture* GetTexture(const std::string& name);
 
     void ReadTexturesFromFile();
 
 private:
+    void LoadTextures(const std::string& textureName, const std::string& fileName);
+
     std::map<std::string, SDL_Texture*> allTextures;
-    TextureManager() = default;
 };
 
 #endif //SNAKE_TEXTUREMANAGER_H

@@ -19,11 +19,11 @@ public:
         return instance;
     }
 
-    StartState(StartState const &) = delete;     // Copy Constructor
+    StartState(StartState const &) = delete;
 
-    StartState(StartState const &&) = delete;    // Move Constructor
+    StartState(StartState const &&) = delete;
 
-    void operator = (StartState const&) = delete;  // Likhetsoperator
+    void operator = (StartState const&) = delete;
 
     void HandleInputs() override;
 

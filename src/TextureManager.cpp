@@ -35,6 +35,12 @@ TextureManager::~TextureManager() {
         SDL_DestroyTexture(texture.second);
         texture.second = nullptr; // Just to be sure ref https://gamedev.stackexchange.com/questions/110891/do-i-need-to-delete-a-texture-after-calling-sdl-destroytexture second answer.
     });
+
+    for(const auto& name : allTextures){
+        if(name.second == nullptr){
+            std::cout << "Name: " << name.first << " texture == nullptr" << std::endl;
+        }
+    }
 }
 
 SDL_Texture *TextureManager::GetTexture(const std::string &name) {
@@ -47,7 +53,6 @@ void TextureManager::ReadTexturesFromFile() {
     if (file.is_open()){
         std::string line;
         while(getline(file, line)){
-            //line.erase(std::remove_if(line.begin(), line.end(), isspace), line.end());
             if( line.empty() || line[0] == '#' )
                 continue;
 
@@ -60,5 +65,7 @@ void TextureManager::ReadTexturesFromFile() {
     }
     else
         std::cout << "Couldn't open file." << std::endl;
+
+
 }
 
