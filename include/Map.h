@@ -39,9 +39,9 @@ private:
     void DeleteVectorContentIfNotEmpty();
 
     std::vector<std::string> mapFilePath = {
-            "../res/maps/lvl1.txt",
-            "../res/maps/lvl2.txt",
-            "../res/maps/lvl3.txt"
+            "../res/maps/lvl1.cfg",
+            "../res/maps/lvl2.cfg",
+            "../res/maps/lvl3.cfg"
     };
 
     std::vector<std::shared_ptr<GameObject>> wallTiles;

@@ -39,8 +39,6 @@ private:
 
     SDL_Rect position{};
 
-    //SDL_QueryTexture(labelTexture, nullptr, nullptr, &position.w, &position.h);   // Henter inn w/h fra texture/image vi har lagd
-    // SDL_Surface* surface = TTF_RenderText_Blended(fm->GetFont(font), text.c_str(), textColour);
 };
 
 

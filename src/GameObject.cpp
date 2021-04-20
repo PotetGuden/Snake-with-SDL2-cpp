@@ -10,5 +10,5 @@ void GameObject::Render() const {
     SDL_RenderCopyEx(GameManager::GetInstance().renderer ,texture, nullptr, &coords, angleTextureFlip,nullptr, renderFlip);
 }
 
-
-
+GameObject::~GameObject() {
+}

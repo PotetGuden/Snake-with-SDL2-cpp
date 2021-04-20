@@ -47,6 +47,8 @@ void AudioManager::CleanAudio() {
         iter->second = nullptr;
         ++iter;
     }
+
+    // Just in case, since the SDL_Texture* is a part of a std::map
 }
 
 void AudioManager::MuteOrUnmuteSoundEffects() {

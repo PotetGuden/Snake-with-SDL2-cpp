@@ -26,6 +26,7 @@ void GameManager::Init(){
     }
     TextureManager::GetInstance().ReadTexturesFromFile();
     TTF_Init();
+
     FontManager::GetInstance().SetFont();
 }
 
@@ -80,7 +81,6 @@ GameManager::GameManager() :
     window(nullptr),
     renderer(nullptr)
     {
-
 }
 
 void GameManager::GameLoop() {
@@ -94,6 +94,7 @@ void GameManager::GameLoop() {
         if((20ms - deltaTimeMs) > std::chrono::duration<float, std::milli>(0)){
             std::this_thread::sleep_for(20ms - deltaTimeMs);
         }
+
         Render();
         Update();
         frameCounter++;

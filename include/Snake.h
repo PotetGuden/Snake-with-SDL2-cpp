@@ -86,7 +86,8 @@ private:
 
     bool isAbleToChangeDirection;
 
-    std::future<void> dummyVariable;  // Is running, just not getting the value.
+    // Må lagre denne futuren selvom vi ikke bruker den, sånn at lifetimen til futuren vil vare så lenge Snake gjør
+    std::future<void> dummyVariable;  // Denne kjører, bruker bare ikke valuen til noe.
 };
 
 

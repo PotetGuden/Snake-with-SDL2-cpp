@@ -20,27 +20,17 @@ void TextureManager::LoadTextures(const std::string& textureName,const std::stri
         SDL_DestroyRenderer(GameManager::GetInstance().renderer);
         SDL_Quit();
     }
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::GetInstance().renderer, surface); // Legg til feilsjekk
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::GetInstance().renderer, surface);
     SDL_FreeSurface(surface);
 
-    allTextures.insert(std::pair<const std::string&, SDL_Texture*>(textureName, texture));
+    allTextures.insert(std::pair<std::string, SDL_Texture*>(textureName, texture));
 }
 
 TextureManager::~TextureManager() {
-    /*for(auto& texture : allTextures){
-        SDL_DestroyTexture(texture.second);
-        texture.second = nullptr;
-    }*/
     std::ranges::for_each(allTextures.begin(), allTextures.end(), [](auto& texture){
         SDL_DestroyTexture(texture.second);
-        texture.second = nullptr; // Just to be sure ref https://gamedev.stackexchange.com/questions/110891/do-i-need-to-delete-a-texture-after-calling-sdl-destroytexture second answer.
+        texture.second = nullptr;  // Just in case, since the SDL_Texture* is a part of a std::map
     });
-
-    for(const auto& name : allTextures){
-        if(name.second == nullptr){
-            std::cout << "Name: " << name.first << " texture == nullptr" << std::endl;
-        }
-    }
 }
 
 SDL_Texture *TextureManager::GetTexture(const std::string &name) {

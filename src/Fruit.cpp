@@ -69,10 +69,6 @@ void Fruit::SetNewRandomTexture() {
     UpdateTexture();
 }
 
-Fruit::~Fruit() {
-
-}
-
 bool Fruit::CheckFruitOnFruitCollision(SDL_Rect& potentialPosition) const {
     return std::ranges::any_of(MainState::GetInstance().GetFruitVector().begin(), MainState::GetInstance().GetFruitVector().end(), [&potentialPosition](const auto& fruit){
         return SDL_HasIntersection(&fruit->coords, &potentialPosition);

@@ -68,10 +68,6 @@ private:
     int lives;
     bool showNextLvlMessage;
 
-    // Må lagre denne futuren selvom vi ikke bruker den, sånn at lifetimen til futuren vil vare
-    // så lenge MainState gjør, og at main thread ikke venter på at denne skal bli "ferdig"
-    //std::future<void> dummyVariable;
-
     std::vector<std::shared_ptr<Fruit>> fruits;
     void GameOver() const;
     int timerForNextLvLMessage;

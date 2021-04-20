@@ -48,7 +48,7 @@ void Map::ReadMapFromFileIntoVector(std::string &filePath) {
     for(auto row = 0; row < 20; row++){
         for(auto column = 0; column < 25; column++){
             dest.x = column * BLOCK_SIZE;
-            dest.y = row * BLOCK_SIZE + 160;
+            dest.y = row * BLOCK_SIZE + HEADER_TEXTURE_Y_OFFSET;
             file >> convertFileContentToInt;
             if(convertFileContentToInt == 0){
                 grassTiles.emplace_back(std::make_shared<GameObject>(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("grassTexture")));

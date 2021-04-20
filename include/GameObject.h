@@ -25,6 +25,7 @@ public:
         coords.h = h;
         this->texture = texture;
     }
+    ~GameObject();
 
     void Render() const;
 

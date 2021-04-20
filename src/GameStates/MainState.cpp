@@ -12,7 +12,7 @@ MainState::MainState() :
         currentLvl(0),
         enableMovement(true),
         xTimesSlowerThenFPS(13),
-        headerObject(std::make_unique<GameObject>(0,0,800,160,TextureManager::GetInstance().GetTexture("headerTexture"))),
+        headerObject(std::make_unique<GameObject>(0,0,800,HEADER_TEXTURE_Y_OFFSET,TextureManager::GetInstance().GetTexture("headerTexture"))),
         score(0),
         timeLeft(50),
         lives(3),

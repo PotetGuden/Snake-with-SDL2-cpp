@@ -214,7 +214,7 @@ void Snake::CheckForCollisions() {
             StartPosition();
         }
     }
-    //Fruit Collision  TODO ranges??
+    //Fruit Collision
     for (auto &fruit : MainState::GetInstance().GetFruitVector()) {
         if (SDL_HasIntersection(&fruit->coords, &snakeHead->coords)) {
             AudioManager::GetInstance().PlaySound("eatingFruit");

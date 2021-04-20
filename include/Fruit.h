@@ -33,7 +33,7 @@ public:
 
     TYPE type;
 
-    ~Fruit();
+    ~Fruit() = default;
 
 private:
     int GetRandomNumber(int maxNumber);

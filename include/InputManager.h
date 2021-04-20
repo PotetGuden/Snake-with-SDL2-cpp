@@ -14,7 +14,7 @@ public:
         static InputManager instance;
         return instance;
     }
-    // Sikrer at man ikke kan lage kopier ( aka singleton )
+
     InputManager(InputManager const &) = delete;     // Copy Constructor
 
     InputManager(InputManager const &&) = delete;    // Move Constructor
