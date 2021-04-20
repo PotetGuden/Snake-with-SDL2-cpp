@@ -13,21 +13,17 @@ void GameManager::Init(){
         std::cout << "Gamehandler Initialised!" << std::endl;
 
         window = SDL_CreateWindow(
-                "Snake",                      //    window title
-                SDL_WINDOWPOS_UNDEFINED,                //    initial x position
-                SDL_WINDOWPOS_UNDEFINED,                //    initial y position
-                800,                                    //    width, in pixels
-                800,                                    //    height, in pixels
-                SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL  //    flags
-
+                "Snake",
+                SDL_WINDOWPOS_UNDEFINED,
+                SDL_WINDOWPOS_UNDEFINED,
+                800,
+                800,
+                SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL
         );
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-        gameRunning = true;
     }else{
         gameRunning = false;
     }
-
-
     TextureManager::GetInstance().ReadTexturesFromFile();
 }
 
@@ -69,7 +65,6 @@ void GameManager::Update(){
     if(InputManager::GetInstance().KeyDown(SDL_SCANCODE_ESCAPE) || SDL_HasEvent(SDL_QUIT)){
         gameRunning = false;
     }
-
 }
 
 GameManager::~GameManager() {
@@ -85,12 +80,10 @@ GameManager::GameManager() :
     {
     TTF_Init();
     FontManager::GetInstance().SetFont();
-    // TextureManager::GetInstance().ReadTexturesFromFile();
 }
 
 void GameManager::GameLoop() {
     currentTimeFrame = std::chrono::high_resolution_clock::now(); // static?
-    //frameCounter = 0;
 
     using namespace std::chrono_literals;
     while(gameRunning){

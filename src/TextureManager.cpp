@@ -28,7 +28,6 @@ void TextureManager::LoadTextures(const std::string& textureName,const std::stri
 
 TextureManager::~TextureManager() {
     /*for(auto& texture : allTextures){
-        //std::cout << "Navn for: " << key << " Texture for: " << value << std::endl;
         SDL_DestroyTexture(texture.second);
         texture.second = nullptr;
     }*/

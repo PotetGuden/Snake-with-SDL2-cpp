@@ -3,10 +3,9 @@
 //
 
 #include <memory>
-#include <iostream>
+
 #include "../../include/GameStates/StartState.h"
 #include "../../include/GameManager.h"
-//constexpr SDL_Color BLACK_COLOR = {0, 0, 0, 0};
 
 StartState::StartState() :
     snakeText(std::make_unique<GameObject>(208,304,384,192,TextureManager::GetInstance().GetTexture("SnakeTextStartScreen"))),

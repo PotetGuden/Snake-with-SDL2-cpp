@@ -32,7 +32,7 @@ public:
     bool KeyStillUp(int iKeyIndex) const;
 
     //Mouse
-    bool MouseDown(int iButton);
+    bool MouseDown(int iButton) const;
 
     bool MouseStillDown(int iButton) const;
 
@@ -53,7 +53,7 @@ private:
     int numKeys;
 
 protected:
-    // Mouse positions
+
     int mouseX;
 
     int mouseY;

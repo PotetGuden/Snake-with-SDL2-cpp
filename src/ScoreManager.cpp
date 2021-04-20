@@ -18,7 +18,7 @@ bool ScoreManager::GetScoresFromFile(const std::string& fileName, std::vector<in
         return false;
     }
 
-    int score;
+    int score = 0;
     while (inputFile >> score){
         scoreVector.emplace_back(score);
     }

@@ -22,7 +22,7 @@ bool InputManager::KeyStillUp(int iKeyIndex) const {
     return oldKeys[iKeyIndex] == keys[iKeyIndex]; // return !oldKeys[iKeyIndex] && !keys[iKeyIndex];
 }
 
-bool InputManager::MouseDown(int iButton) {
+bool InputManager::MouseDown(int iButton) const {
     return (oldMouseButtons != mouseButtons) && (iButton == mouseButtons);
 }
 
@@ -39,7 +39,7 @@ bool InputManager::MouseStillUp(int iButton) const {
 }
 
 void InputManager::Update() {
-    memcpy(oldKeys.get(),keys,numKeys);
+    memcpy(oldKeys.get(), keys, static_cast<size_t>(numKeys));
 
     SDL_PumpEvents();
 
@@ -49,8 +49,8 @@ void InputManager::Update() {
 
 InputManager::InputManager() {
     keys = SDL_GetKeyboardState(&numKeys);
-    oldKeys = std::make_unique<Uint8[]>(numKeys);    //oldKeys = new Uint8[numKeys];
-    memcpy(oldKeys.get(),keys,numKeys);
+    oldKeys = std::make_unique<Uint8[]>(static_cast<size_t>(numKeys));    //oldKeys = new Uint8[numKeys];
+    memcpy(oldKeys.get(), keys, static_cast<size_t>(numKeys));
 
     std::cout << "Constructing InputManager " << std::endl;
 }

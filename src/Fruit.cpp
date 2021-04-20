@@ -6,7 +6,6 @@
 #include "../include/GameManager.h"
 #include <random>
 #include <algorithm>
-#include <iostream>
 
 
 void Fruit::SetNewPosition() {
@@ -71,7 +70,7 @@ void Fruit::SetNewRandomTexture() {
 }
 
 Fruit::~Fruit() {
-    std::cout << "Fruit DESTROYED" << std::endl;
+
 }
 
 bool Fruit::CheckFruitOnFruitCollision(SDL_Rect& potentialPosition) const {

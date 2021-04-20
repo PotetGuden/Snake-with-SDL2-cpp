@@ -37,10 +37,15 @@ void AudioManager::PlaySound(const std::string& soundName) {
 }
 
 void AudioManager::CleanAudio() {
-    for(auto& sound : sounds){
-        std::cout << "Freeing " << sound.first << std::endl;
+    /*for(auto& sound : sounds){
         Mix_FreeChunk( sound.second );
         sound.second = nullptr;
+    }*/
+    auto iter = sounds.begin();
+    while (iter != sounds.end()) {
+        Mix_FreeChunk( iter->second );
+        iter->second = nullptr;
+        ++iter;
     }
 }
 

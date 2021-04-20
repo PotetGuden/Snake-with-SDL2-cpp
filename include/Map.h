@@ -14,7 +14,7 @@
 class Map {
 public:
     Map() = default;
-    ~Map();
+    ~Map() = default;
 
     static Map &GetInstance(){
         static Map instance;
