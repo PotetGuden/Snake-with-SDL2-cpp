@@ -29,9 +29,10 @@ void EndState::Render() {
 
 }
 
-EndState::EndState(){
-    endBackground = std::make_unique<GameObject>(0,0,800,800,TextureManager::GetInstance().GetTexture("endScreenTexture"));
-    ScoreManager::GetInstance().GetScoresFromFile("../scores/scores.txt", scores);
+EndState::EndState() :
+    endBackground(std::make_unique<GameObject>(0,0,800,800,TextureManager::GetInstance().GetTexture("endScreenTexture")))
+    {
+    ScoreManager::GetInstance().GetScoresFromFile("../res/scores/scores.txt", scores);
 }
 
 void EndState::HandleInputs() {
@@ -57,8 +58,8 @@ void EndState::HandleInputs() {
 
 void EndState::UpdateCurrentScore(int score) {
     currentScore = score;
-    //ScoreManager::GetInstance().SortScores();
-    ScoreManager::GetInstance().GetScoresFromFile("../scores/scores.txt", scores);
+
+    ScoreManager::GetInstance().GetScoresFromFile("../res/scores/scores.txt", scores);
 }
 
 

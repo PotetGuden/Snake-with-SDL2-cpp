@@ -9,28 +9,21 @@
 
 
 MainState::MainState() :
-    currentLvl(0),
-    enableMovement(true),
-    frameCounterSpeed(10),
-    headerObject(std::make_unique<GameObject>(0,0,800,160)),
-    score(0),
-    timeLeft(50),
-    lives(3),
-    showNextLvlMessage(false),
-    timerForNextLvLMessage(0),
-    animateBonusScoreText(0)
+        currentLvl(0),
+        enableMovement(true),
+        xTimesSlowerThenFPS(13),
+        headerObject(std::make_unique<GameObject>(0,0,800,160,TextureManager::GetInstance().GetTexture("headerTexture"))),
+        score(0),
+        timeLeft(50),
+        lives(3),
+        showNextLvlMessage(false),
+        timerForNextLvLMessage(0),
+        animateBonusScoreText(0)
     {
         Map::GetInstance().LoadNextLevel(currentLvl++);
         AddThreeDifferentFruits();
         ScoreManager::GetInstance().LoadScores();
         ScoreManager::GetInstance().SortScores();
-
-        headerObject->texture = TextureManager::GetInstance().GetTexture("headerTexture");
-
-        /*dummyVariable = std::async(std::launch::async, []() {
-            while (GameManager::GetInstance().gameRunning)
-                Snake::GetInstance().CheckForCollisions();
-        });*/
 }
 
 void MainState::Render() {
@@ -42,9 +35,12 @@ void MainState::Render() {
     }
     headerObject->Render();
     RenderHeaderText();
+
+    if(showNextLvlMessage)
+        RenderNextLvlMessage();
 }
 
-void MainState::RenderHeaderText() {
+void MainState::RenderHeaderText() const {
     FontManager::GetInstance().RenderFont("Score: " + std::to_string(score), BLACK_COLOR, false, 10, 10, 150, 60);
     FontManager::GetInstance().RenderFont("Time left: " + std::to_string(timeLeft), WHITE_COLOR, false, 570, 10, 150, 60);
     FontManager::GetInstance().RenderFont("Lives: " + std::to_string(lives), BLACK_COLOR, false,10, 90, 100, 60);
@@ -52,9 +48,6 @@ void MainState::RenderHeaderText() {
     FontManager::GetInstance().RenderFont("Highscore:  " + std::to_string(ScoreManager::GetInstance().GetHighScore()), BLACK_COLOR, false,312, 90, 175, 60);
     FontManager::GetInstance().RenderFont("Level: " + std::to_string(currentLvl), WHITE_COLOR, false, 570, 90, 150, 60);
     FontManager::GetInstance().RenderFont("Mute" , WHITE_COLOR, true, 175, 130, 75, 25);
-
-    if(showNextLvlMessage)
-        RenderNextLvlMessage();
 
 }
 
@@ -80,25 +73,23 @@ void MainState::Update() {
     InputManager::GetInstance().Update();
     HandleInputs();
 
-    if((score >= 250 && score <= 270) || (score > 550 && score < 580)) GoToNextLvl();
-    if( timeLeft == 50 ) frameCounterSpeed = 10;
-    if( timeLeft == 40 ) frameCounterSpeed = 9;
-    if( timeLeft == 30 ) frameCounterSpeed = 8;
-    if( timeLeft == 15 ) frameCounterSpeed = 7;
+    if((score >= 250 && score <= 270) || (score > 550 && score < 580))
+        GoToNextLvl();
 
-    if(GameManager::GetInstance().frameCounter % frameCounterSpeed == 0) { // Speed at which snake moves.
+    DecreaseSpeedOverTime();
+
+    if(GameManager::GetInstance().frameCounter % xTimesSlowerThenFPS == 0) // Speed at which snake moves.
         Snake::GetInstance().Update();
-    }
+
 
     if(lives == 0 || timeLeft == 0){
        GameOver();
     } else{
-        if((GameManager::GetInstance().frameCounter % 60) == 0){ // TODO Se nærmere på denne
+        if((GameManager::GetInstance().frameCounter % 60) == 0){
             timeLeft--;
         }
     }
 }
-
 
 void MainState::HandleInputs() {
     InputManager &im = InputManager::GetInstance();
@@ -114,19 +105,8 @@ void MainState::HandleInputs() {
             Snake::GetInstance().ChangeDirection(Snake::Direction::RIGHT, Snake::Direction::LEFT);
         } else if(im.KeyDown(SDL_SCANCODE_P)){
             GameManager::GetInstance().SwitchToNextState();
-        } else if(InputManager::GetInstance().KeyDown(SDL_SCANCODE_M)){
+        } else if(im.KeyDown(SDL_SCANCODE_M)){
             AudioManager::GetInstance().MuteOrUnmuteSoundEffects();
-        }
-
-    } else if(!showNextLvlMessage){ // Sjekker først om det er en pause state som kjører
-        if(im.KeyDown(SDL_SCANCODE_T)){  // Reset
-            Snake::GetInstance().StartPosition();
-            ScoreManager::GetInstance().AddScore("../scores/scores.txt", score);
-            //ScoreManager::GetInstance().SortScores();
-            lives = 20;
-            timeLeft = 50;
-            score = 0;
-            enableMovement = true;
         }
     }
 }
@@ -139,7 +119,7 @@ void MainState::GoToNextLvl() {
         showNextLvlMessage = true;
         Snake::GetInstance().StartPosition();
         animateBonusScoreText = score;  // use this to animate the bonus score you get
-        score += timeLeft*5; // bonus points
+        score += timeLeft*5;
         timeLeft = 50;
         lives = 3;
     } else{
@@ -153,7 +133,7 @@ void MainState::AddThreeDifferentFruits() {
     fruits.emplace_back(std::make_shared<Fruit>(Fruit::TYPE::WATERMELON, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE * 16, BLOCK_SIZE * 9 + 160));
 }
 
-void MainState::AddScore(const int number) {
+void MainState::AddScore(const int& number) {
     score += number;
 }
 
@@ -173,14 +153,24 @@ void MainState::RestartGame() {
     score = 0;
     currentLvl = 0;
     Map::GetInstance().LoadNextLevel(currentLvl++);
+    for(auto& fruit : fruits){
+        fruit->SetNewPosition();
+    }
 }
 
 void MainState::GameOver() const {
     AudioManager::GetInstance().PlaySound("gameOver");
-    ScoreManager::GetInstance().AddScore("../scores/scores.txt", score);
+    ScoreManager::GetInstance().AddScore("../res/scores/scores.txt", score);
     EndState::GetInstance().UpdateCurrentScore(score);
     Snake::GetInstance().StopSnake();
     GameManager::GetInstance().SwitchToNextState();
+}
+
+void MainState::DecreaseSpeedOverTime() {
+    if( timeLeft == 50 ) xTimesSlowerThenFPS = 11;
+    if( timeLeft == 40 ) xTimesSlowerThenFPS = 9;
+    if( timeLeft == 30 ) xTimesSlowerThenFPS = 8;
+    if( timeLeft == 15 ) xTimesSlowerThenFPS = 7;
 }
 
 

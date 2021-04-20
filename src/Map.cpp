@@ -13,10 +13,10 @@
 
 void Map::RenderMap() const {
     for(auto& wallObject : wallTiles){
-        wallObject.Render();
+        wallObject->Render();
     }
     for(auto& grassObject : grassTiles){
-        grassObject.Render();
+        grassObject->Render();
     }
 }
 
@@ -27,7 +27,7 @@ Map::~Map() {
 
 bool Map::CheckForWallCollision(SDL_Rect& nextPosition) const {
     return std::ranges::any_of(wallTiles.begin(), wallTiles.end(), [&nextPosition](auto& wallTile){
-        return SDL_HasIntersection(&nextPosition, &wallTile.coords);
+        return SDL_HasIntersection(&nextPosition, &wallTile->coords);
     });
 }
 
@@ -56,9 +56,9 @@ void Map::ReadMapFromFileIntoVector(std::string &filePath) {
             dest.y = row * BLOCK_SIZE + 160;
             file >> convertFileContentToInt;
             if(convertFileContentToInt == 0){
-                grassTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("grassTexture"));
+                grassTiles.emplace_back(std::make_shared<GameObject>(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("grassTexture")));
             } else if(convertFileContentToInt == 1){
-                wallTiles.emplace_back(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("wallTexture"));
+                wallTiles.emplace_back(std::make_shared<GameObject>(dest.x,dest.y,dest.w,dest.h,TextureManager::GetInstance().GetTexture("wallTexture")));
             }
         }
     }

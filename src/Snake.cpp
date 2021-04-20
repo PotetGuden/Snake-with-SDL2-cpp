@@ -9,7 +9,6 @@
 
 
 void Snake::MoveBodyAndTail() {
-    //if(snakeSpeed != 0) {
         SnakePart currPosition{};
         for(auto &snakePart : snakeBodyVector){
             currPosition.partDirection = snakePart->partDirection;
@@ -23,7 +22,6 @@ void Snake::MoveBodyAndTail() {
 
         // Jeg bruker snakeBodyVector.size()-2 fordi jeg vil ha nest siste element i vectoren, sånn at tail alltid følger den
         snakeBodyVector.back()->partDirection = snakeBodyVector[snakeBodyVector.size() - 2]->partDirection;
-    //}
 }
 
 void Snake::Render() {

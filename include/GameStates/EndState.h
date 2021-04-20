@@ -43,5 +43,4 @@ private:
     SDL_Color playAgainColor{}, exitGameColor{};
 };
 
-
 #endif //SNAKE_ENDSTATE_H

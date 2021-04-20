@@ -10,7 +10,7 @@
 
 // .reset() shared_ptr
 
-SDL_Renderer *GameManager::renderer = nullptr;
+//SDL_Renderer *GameManager::renderer = nullptr;
 
 
 // TODO sette variabler med function() : variabelNavn(name)
@@ -66,7 +66,6 @@ void GameManager::Render() const {
 
 void GameManager::DestroySDLObjects(){
     std::cout << "Cleaning up the game window."<< std::endl;
-
     AudioManager::GetInstance().CleanAudio();
     SDL_Quit();
     IMG_Quit();
@@ -79,7 +78,7 @@ void GameManager::DestroySDLObjects(){
 void GameManager::Update(){
     InputManager::GetInstance().Update();
     if(InputManager::GetInstance().KeyDown(SDL_SCANCODE_ESCAPE) || SDL_HasEvent(SDL_QUIT)){
-        GameManager::GetInstance().gameRunning = false;
+        gameRunning = false;
     }
 
 }
@@ -92,7 +91,8 @@ GameManager::GameManager() :
     gameRunning(true),
     state(0),
     frameCounter(0),
-    window(nullptr)
+    window(nullptr),
+    renderer(nullptr)
     {
     TTF_Init();
     FontManager::GetInstance().SetFont();

@@ -17,10 +17,10 @@ void TextureManager::LoadTextures(const std::string& textureName,const std::stri
 
     if(surface == nullptr){
         std::cerr << "Failed to load image: " << SDL_GetError() << std::endl;
-        SDL_DestroyRenderer(GameManager::renderer);
+        SDL_DestroyRenderer(GameManager::GetInstance().renderer);
         SDL_Quit();
     }
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::renderer, surface); // Legg til feilsjekk
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(GameManager::GetInstance().renderer, surface); // Legg til feilsjekk
     SDL_FreeSurface(surface);
 
     allTextures.insert(std::pair<const std::string&, SDL_Texture*>(textureName, texture));
@@ -43,7 +43,7 @@ SDL_Texture *TextureManager::GetTexture(const std::string &name) {
 }
 
 void TextureManager::ReadTexturesFromFile() {
-    std::ifstream file ("../Textures/textures.txt");
+    std::ifstream file ("../res/textures/textures.txt");
 
     if (file.is_open()){
         std::string line;

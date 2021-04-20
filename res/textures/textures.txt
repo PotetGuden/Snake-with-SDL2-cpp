@@ -1,0 +1,26 @@
+# Snake textures
+headTextureUp=../res/images/snake/SnakeHeadRight.png
+bodyTextureUpDown=../res/images/snake/SnakeBodyUpDown.png
+bodyTextureRightDownUpLeft=../res/images/snake/SnakeBodyRightDownUpLeft.png
+tailTextureRight=../res/images/snake/SnakeTailRight.png
+
+# Fruit textures
+appleTexture=../res/images/fruits/AppleFruit.png
+bananaTexture=../res/images/fruits/Banana.png
+watermelonTexture=../res/images/fruits/Watermelon.png
+
+# Wall/Grass texture
+grassTexture=../res/images/map-obstacle/grass.png
+wallTexture=../res/images/map-obstacle/wall.png
+
+# Images Start Screen
+PlayGameTextBackground=../res/images/game-states/start/PlayGameText.png
+PlayGameTextBackgroundHover=../res/images/game-states/start/PlayGameHover.png
+SnakeTextStartScreen=../res/images/game-states/start/SnakeTextStartScreen.png
+SnakeBackgroundStart=../res/images/game-states/start/SnakeStartBackground.png
+
+# Images Main Screen
+headerTexture=../res/images/game-states/main/header.png
+
+# Images End Screen
+endScreenTexture=../res/images/game-states/end/EndScreen.png

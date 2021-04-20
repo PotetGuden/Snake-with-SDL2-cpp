@@ -9,6 +9,7 @@
 #include <vector>
 #include "GameObject.h"
 #include <iostream>
+#include <memory>
 
 class Map {
 public:
@@ -38,14 +39,14 @@ private:
     void DeleteVectorContentIfNotEmpty();
 
     std::vector<std::string> mapFilePath = {
-            "../maps/lvl1.txt",
-            "../maps/lvl2.txt",
-            "../maps/lvl3.txt"
+            "../res/maps/lvl1.txt",
+            "../res/maps/lvl2.txt",
+            "../res/maps/lvl3.txt"
     };
 
-    std::vector<GameObject> wallTiles;
+    std::vector<std::shared_ptr<GameObject>> wallTiles;
 
-    std::vector<GameObject> grassTiles;
+    std::vector<std::shared_ptr<GameObject>> grassTiles;
 };
 
 

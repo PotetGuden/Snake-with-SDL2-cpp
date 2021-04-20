@@ -45,7 +45,7 @@ public:
 
     void GameLoop();
 
-    static SDL_Renderer *renderer;
+    SDL_Renderer *renderer;
 
     bool gameRunning;
 

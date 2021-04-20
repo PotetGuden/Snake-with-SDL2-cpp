@@ -14,10 +14,10 @@ AudioManager::AudioManager() :
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
         GameManager::GetInstance().gameRunning = false;
     }
-    SetSounds("crashSound", "../audio/crash-to-wall.wav");
-    SetSounds("eatingFruit", "../audio/eating-fruit.wav");
-    SetSounds("snakeEatingSnake", "../audio/snake-eating-snake.wav");
-    SetSounds("gameOver", "../audio/game-over-sound-effect.wav");
+    SetSounds("crashSound", "../res/audio/crash-to-wall.wav");
+    SetSounds("eatingFruit", "../res/audio/eating-fruit.wav");
+    SetSounds("snakeEatingSnake", "../res/audio/snake-eating-snake.wav");
+    SetSounds("gameOver", "../res/audio/game-over-sound-effect.wav");
     Mix_Volume(-1, volume);
 }
 
@@ -37,19 +37,11 @@ void AudioManager::PlaySound(const std::string& soundName) {
 }
 
 void AudioManager::CleanAudio() {
-    /*for(auto& sound : sounds){
+    for(auto& sound : sounds){
         std::cout << "Freeing " << sound.first << std::endl;
         Mix_FreeChunk( sound.second );
         sound.second = nullptr;
-    }*/
-
-    for ( auto it = sounds.begin(); it != sounds.end(); ++it  ){
-        Mix_FreeChunk(it->second);
-        it->second = nullptr; // Just to be sure
     }
-    /*std::ranges::for_each(sounds.begin(), sounds.end(), [](auto& sound){
-        Mix_FreeChunk(sound.second);
-    });*/
 }
 
 void AudioManager::MuteOrUnmuteSoundEffects() {

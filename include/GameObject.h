@@ -8,7 +8,7 @@
 #include <SDL.h>
 
 class GameObject {
-public: // TODO Sett variabler i cpp filen istedenfor
+public:
     GameObject() = default;
 
     GameObject(int x, int y, int w, int h){
@@ -18,12 +18,12 @@ public: // TODO Sett variabler i cpp filen istedenfor
         coords.h = h;
     }
 
-    GameObject(int x, int y, int w, int h, SDL_Texture* pTexture){ // TEST
+    GameObject(int x, int y, int w, int h, SDL_Texture* texture){
         coords.x = x;
         coords.y = y;
         coords.w = w;
         coords.h = h;
-        this->texture = pTexture;
+        this->texture = texture;
     }
 
     ~GameObject();
@@ -36,7 +36,7 @@ public: // TODO Sett variabler i cpp filen istedenfor
 
     double angleTextureFlip = 0;
 
-    SDL_RendererFlip renderFlip = SDL_FLIP_NONE; // Standard
+    SDL_RendererFlip renderFlip = SDL_FLIP_NONE;
 };
 
 

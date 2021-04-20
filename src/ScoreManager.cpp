@@ -39,7 +39,7 @@ void ScoreManager::AddScore(const std::string& fileName, int currScore) {
 }
 
 void ScoreManager::LoadScores() {
-    if(!GetScoresFromFile("../scores/scores.txt", scores)){
+    if(!GetScoresFromFile("../res/scores/scores.txt", scores)){
         GameManager::GetInstance().gameRunning = false;
     };
 }
@@ -53,7 +53,7 @@ void ScoreManager::SortScores() {
         std::sort(scores.begin(), scores.end(), std::greater<>());
     }
 
-    std::ofstream scoreFile("../scores/scores.txt");
+    std::ofstream scoreFile("../res/scores/scores.txt");
 
     for(auto &score : scores) {
         scoreFile << score << std::endl;

@@ -39,7 +39,7 @@ public:
 
     void Update();
 
-    void AddScore(int number);
+    void AddScore(const int& number);
 
     void ReduceLives();
 
@@ -48,12 +48,13 @@ public:
     std::vector<std::shared_ptr<Fruit>>& GetFruitVector();
 
 private:
+    void DecreaseSpeedOverTime();
 
     void GoToNextLvl();
 
     void HandleInputs() override;
 
-    void RenderHeaderText();
+    void RenderHeaderText() const;
     
     void RenderNextLvlMessage();
 
@@ -62,7 +63,7 @@ private:
     int currentLvl;
     int score;
     int animateBonusScoreText;
-    int frameCounterSpeed;
+    int xTimesSlowerThenFPS;
     int timeLeft;
     int lives;
     bool showNextLvlMessage;
