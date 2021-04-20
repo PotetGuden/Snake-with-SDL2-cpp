@@ -113,11 +113,11 @@ void MainState::HandleInputs() {
 
 void MainState::GoToNextLvl() {
     if(Map::GetInstance().LoadNextLevel(currentLvl++)){
+        Snake::GetInstance().StartPosition();
         for(auto& fruit : fruits){
             fruit->SetNewPosition();
         }
         showNextLvlMessage = true;
-        Snake::GetInstance().StartPosition();
         animateBonusScoreText = score;  // use this to animate the bonus score you get
         score += timeLeft*5;
         timeLeft = 50;

@@ -84,9 +84,9 @@ private:
 
     std::future<bool> isNextTileWall;
 
-    bool isAbleToChangeDirection; // Siden handle inputs kjører kjappere enn vi flytter snake head, så trenger vi å "locke" input når vi først har endret direction
+    bool isAbleToChangeDirection;
 
-    std::future<void> dummyVariable;
+    std::future<void> dummyVariable;  // Is running, just not getting the value.
 };
 
 

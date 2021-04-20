@@ -7,6 +7,49 @@
 #include "../include/Snake.h"
 #include "../include/GameManager.h"
 
+Snake::Snake() :
+        snakeSpeed(0),
+        startPosition(true),
+        isAbleToChangeDirection(true)
+{
+    // Push one part for body and one for tail
+    snakeBodyVector.emplace_back(std::make_shared<SnakePart>());
+    snakeBodyVector.emplace_back(std::make_shared<SnakePart>());
+
+    StartPosition();
+
+    dummyVariable = std::async(std::launch::async, [this]() {
+        while (GameManager::GetInstance().gameRunning)
+            CheckForCollisions();
+    });
+}
+
+void Snake::MoveSnakeHead() {
+    if(isNextTileWall.get() && snakeSpeed != 0){
+        StopSnake();
+        MainState::GetInstance().ReduceLives();
+        AudioManager::GetInstance().PlaySound("crashSound");
+    } else{
+        if(snakeSpeed != 0 &&  !startPosition){
+            switch (snakeHead->partDirection) {
+                case Direction::UP:
+                    snakeHead->coords.y -= snakeSpeed;
+                    break;
+                case Direction::DOWN:
+                    snakeHead->coords.y += snakeSpeed;
+                    break;
+                case Direction::LEFT:
+                    snakeHead->coords.x -= snakeSpeed;
+                    break;
+                case Direction::RIGHT:
+                    snakeHead->coords.x += snakeSpeed;
+                    break;
+            }
+            MoveBodyAndTail();
+        }
+    }
+    isAbleToChangeDirection = true;
+}
 
 void Snake::MoveBodyAndTail() {
         SnakePart currPosition{};
@@ -29,25 +72,6 @@ void Snake::Render() {
     std::ranges::for_each(snakeBodyVector.begin(),snakeBodyVector.end(),[](auto &snakePart){
         snakePart->Render();
     });
-}
-
-Snake::Snake() :
-        snakeSpeed(0),
-        startPosition(true),
-        isAbleToChangeDirection(true)
-{
-    // Push one part for body and one for tail
-    snakeBodyVector.emplace_back(std::make_shared<SnakePart>());
-    snakeBodyVector.emplace_back(std::make_shared<SnakePart>());
-
-    StartPosition();
-
-    dummyVariable = std::async(std::launch::async, [this]() {
-        while (GameManager::GetInstance().gameRunning)
-            CheckForCollisions();
-    });
-
-
 }
 
 void Snake::Grow(int xTimes) {
@@ -82,8 +106,8 @@ void Snake::UpdateTexture() {
 
     // Body Texture
     prevPosition = *snakeHead;
-    for(int i = 0; i < snakeBodyVector.size() - 1; i++){ // dropper tail
-        if(SDL_HasIntersection(&snakeBodyVector[i]->coords, &snakeBodyVector.back()->coords)){ // When the snake grows, multiple bodyparts overlaps, this just ensures that it then has a tail texture
+    for(int i = 0; i < snakeBodyVector.size() - 1; i++){
+        if(SDL_HasIntersection(&snakeBodyVector[i]->coords, &snakeBodyVector.back()->coords)){ // When the snake grows, multiple bodyparts overlaps, this just ensures that it has a tail texture
             snakeBodyVector[i]->texture = snakeBodyVector.back()->texture;
         } else if(snakeBodyVector[i]->partDirection == Direction::UP && prevPosition.partDirection == Direction::RIGHT ||
                   snakeBodyVector[i]->partDirection == Direction::LEFT && prevPosition.partDirection == Direction::DOWN){
@@ -161,33 +185,6 @@ void Snake::ChangeDirection(Direction potentialDir, Direction oppositeDir) {
     }
 }
 
-void Snake::MoveSnakeHead() {
-    if(isNextTileWall.get() && snakeSpeed != 0){
-        StopSnake();
-        MainState::GetInstance().ReduceLives();
-        AudioManager::GetInstance().PlaySound("crashSound");
-    } else{
-        if(snakeSpeed != 0 &&  !startPosition){
-            switch (snakeHead->partDirection) {
-                case Direction::UP:
-                    snakeHead->coords.y -= snakeSpeed;
-                    break;
-                case Direction::DOWN:
-                    snakeHead->coords.y += snakeSpeed;
-                    break;
-                case Direction::LEFT:
-                    snakeHead->coords.x -= snakeSpeed;
-                    break;
-                case Direction::RIGHT:
-                    snakeHead->coords.x += snakeSpeed;
-                    break;
-            }
-            MoveBodyAndTail();
-        }
-    }
-    isAbleToChangeDirection = true;
-}
-
 void Snake::StopSnake() {
     snakeSpeed = 0;
 }
@@ -207,10 +204,8 @@ void Snake::Update() {
     prevPosition = *snakeHead;
 }
 
-//std::mutex collisionMutex;
 void Snake::CheckForCollisions() {
     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    //std::lock_guard<std::mutex> lock(collisionMutex);
     // Snake Collision
     for (const auto &bodyPart: snakeBodyVector) {
         if (SDL_HasIntersection(&snakeHead->coords, &bodyPart->coords)) {

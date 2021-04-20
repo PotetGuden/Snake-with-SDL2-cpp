@@ -33,7 +33,7 @@ public:
 
 private:
 
-    TTF_Font* font = TTF_OpenFont("../fonts/Roboto-Regular.ttf", 50 );
+    TTF_Font* font = nullptr;
 
     FontManager() = default;
 

@@ -21,7 +21,6 @@ void Fruit::SetNewPosition() {
         int y = GetRandomNumber(18) * BLOCK_SIZE + HEADER_TEXTURE_Y_OFFSET;
         potentialFruitPos.x = x;
         potentialFruitPos.y = y;
-        std::cout << "Started while loop" << std::endl;
     }
     while(Map::GetInstance().CheckForWallCollision(potentialFruitPos) ||
           Snake::GetInstance().CheckNewFruitCollisionSnake(potentialFruitPos) ||
@@ -33,7 +32,7 @@ void Fruit::SetNewPosition() {
     coords.h = BLOCK_SIZE;
 }
 
-int Fruit::GetRandomNumber(int maxNumber) { //  https://codingnest.com/generating-random-numbers-using-c-standard-library-the-problems/
+int Fruit::GetRandomNumber(int maxNumber) {
     std::mt19937 rng(std::random_device{}());
     std::uniform_int_distribution<> dist(1, maxNumber);
     return dist(rng);

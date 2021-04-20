@@ -8,19 +8,8 @@
 #include "../include/GameManager.h"
 
 
-// .reset() shared_ptr
-
-//SDL_Renderer *GameManager::renderer = nullptr;
-
-
-// TODO sette variabler med function() : variabelNavn(name)
-// TODO pass by value i funksjoner "&"
-// TODO FIKS FRUIT ON FRUIT??
-// TODO Bytt om alle LoadTexture -> LoadTextures for å få de inn i map
-// TODO Minnelekssje mest sansynlig textures (kaaanskje audio)
-
 void GameManager::Init(){
-    if(SDL_Init(SDL_INIT_EVERYTHING) == 0){ // Tar med lyd/audio
+    if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         std::cout << "Gamehandler Initialised!" << std::endl;
 
         window = SDL_CreateWindow(
@@ -38,8 +27,8 @@ void GameManager::Init(){
         gameRunning = false;
     }
 
-    TextureManager::GetInstance().ReadTexturesFromFile();
 
+    TextureManager::GetInstance().ReadTexturesFromFile();
 }
 
 void GameManager::Render() const {
@@ -65,7 +54,7 @@ void GameManager::Render() const {
 }
 
 void GameManager::DestroySDLObjects(){
-    std::cout << "Cleaning up the game window."<< std::endl;
+    std::cout << "Cleaning up the game."<< std::endl;
     AudioManager::GetInstance().CleanAudio();
     SDL_Quit();
     IMG_Quit();
@@ -96,6 +85,7 @@ GameManager::GameManager() :
     {
     TTF_Init();
     FontManager::GetInstance().SetFont();
+    // TextureManager::GetInstance().ReadTexturesFromFile();
 }
 
 void GameManager::GameLoop() {

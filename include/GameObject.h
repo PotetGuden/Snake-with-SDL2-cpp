@@ -26,8 +26,6 @@ public:
         this->texture = texture;
     }
 
-    ~GameObject();
-
     void Render() const;
 
     SDL_Texture* texture = nullptr;
